@@ -1,0 +1,56 @@
+<!-- (mouseenter)="loginMenuTrigger.openMenu()" -->
+<!-- (mouseleave)="loginMenuTrigger.closeMenu()" -->
+<p>
+  <mat-toolbar>
+    <button mat-icon-button [matMenuTriggerFor]="menu" disableRipple>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a mat-button routerLink="/" disableRipple><h1>eSearch</h1></a>
+  <span class="example-spacer"></span>
+  <button mat-button #loginMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="loginMenu"
+  (mouseenter)="loginMenuTrigger.openMenu()" disableRipple>
+    Sign In
+  </button>
+  <button mat-icon-button matBadge="{{shoppingCartBadge}}" [matBadgeHidden]="hiddenCartBadge">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+  <button mat-icon-button>
+   <mat-icon>share</mat-icon>
+ </button>
+</mat-toolbar>
+</p>
+
+<mat-menu #loginMenu="matMenu">
+  <mat-list (mouseleave)="loginMenuTrigger.closeMenu()" class="profile-info" role="mat-list">
+    <mat-list-item>
+      <a mat-flat-button routerLink="/" role="listitem">My Account</a>
+    </mat-list-item>
+    <mat-list-item>
+      <a mat-flat-button routerLink="/orders" role="listitem">Orders</a>
+    </mat-list-item>
+    <mat-list-item>
+      <a mat-flat-button routerLink="/" role="listitem">My Reviews</a>
+    </mat-list-item>
+    <mat-list-item>
+      <a mat-flat-button routerLink="/" role="listitem">Messages</a>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <a mat-raised-button routerLink="/" color="accent" role="listitem">Sign out</a>
+    </mat-list-item>
+  </mat-list>
+</mat-menu>
+
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <span>
+    <button mat-menu-item>
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+      ........
+     <mat-icon>exit_to_app</mat-icon>
+     <span>Logout</span>
+   </button>
+  </span>
+</mat-menu>
+
+
