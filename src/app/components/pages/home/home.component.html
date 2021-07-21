@@ -1,5 +1,10 @@
 <div class="container">
     <div class="mat-display-1">Trending now</div>
+    <div>
+        <div *ngFor="let product of productList" class="card-container">
+            <app-product-item [productItem]="product"></app-product-item>
+        </div>
+    </div>
     <div class="mat-display-1">Explore Popular Categories</div>
     <div class="center">
     <mat-nav-list class="list-horizontal">
