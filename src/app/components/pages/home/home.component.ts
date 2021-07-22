@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from 'src/app/core/enums/category';
 import { Product } from 'src/app/core/models/product.model';
+import { CategoryService } from 'src/app/core/services/category.service';
 import { ProductService } from 'src/app/core/services/product.service';
 
 @Component({
@@ -10,42 +11,24 @@ import { ProductService } from 'src/app/core/services/product.service';
 })
 export class HomeComponent implements OnInit {
   productList: Product[] = [];
+  dicountProducts: Product[] = [];
+  categories:{category: Category, image: string} [] = [];
 
-  categories = [
-    {
-      category: Category.Clothes,
-      image: 'assets/img/Categories/Clothes.png'
-    },
-    {
-      category: Category.Electronics,
-      image: 'assets/img/Categories/Electronics.png'
-    },
-    {
-      category: Category.Fishing,
-      image: 'assets/img/Categories/Fishing.png'
-    },
-    {
-      category: Category.HomeAndGarden,
-      image: 'assets/img/Categories/Home&Garden.png'
-    },
-    {
-      category: Category.MusicalInstruments,
-      image: 'assets/img/Categories/MusicalInstruments.png'
-    },
-    {
-      category: Category.Sports,
-      image: 'assets/img/Categories/Sports.png'
-    },
-    {
-      category: Category.AutoAccessories,
-      image: 'assets/img/Categories/AutoAccessories.png'
-    }
-  ];
-
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.productList = this.productService.getProducts();
+    this.productList     = this.productService.getProducts();
+    this.dicountProducts = this.productService.getDiscountProducts();
+    this.categories      = this.categoryService.getCategories();
+    
+    if (this.productList.length > 7)
+    {
+      this.productList.splice(7, this.productList.length - 7);
+    }
+    if (this.dicountProducts.length > 8)
+    {
+      this.dicountProducts.splice(7, this.dicountProducts.length - 7);
+    } 
   }
 
 }
