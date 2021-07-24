@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MaterialModule } from './material/material.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        MaterialModule
+        MaterialModule,
+        RouterModule
     ],
     declarations: [
       HeaderComponent,
