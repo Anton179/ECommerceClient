@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,9 +7,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'e-commerce';
+  title = 'eSearch-client';
 
-  ngOnInit() {
-    
+  public userAuthenticated = false;
+
+  constructor(private _authService: AuthService,){
+    this._authService.loginChanged
+      .subscribe(userAuthenticated => {
+        this.userAuthenticated = userAuthenticated;
+      })
   }
+
+  async ngOnInit(): Promise<void> {
+    this._authService.isAuthenticated()
+      .then(userAuthenticated => {
+        this.userAuthenticated = userAuthenticated;
+      })
+  }
+
+  // public login = () => {
+  //   this._authService.login();
+  // }
+
+  // public logout = () => {
+  //   this._authService.logout();
+  // }
 }

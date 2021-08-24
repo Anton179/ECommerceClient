@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="mat-display-1">Super Deals</div>
+    <div class="center">
+        <mat-nav-list class="list-horizontal">
+            <mat-list-item *ngFor="let product of dicountProducts">
+                <app-product-item [productItem]="product"></app-product-item>
+            </mat-list-item>
+        </mat-nav-list>
+    </div>
+    <div class="mat-display-1">Trending now</div>
+    <div class="center">
+        <mat-nav-list class="list-horizontal">
+            <mat-list-item *ngFor="let product of productList">
+                <app-product-item [productItem]="product"></app-product-item>
+            </mat-list-item>
+        </mat-nav-list>
+    </div>
+    <div class="mat-display-1">Explore Popular Categories</div>
+    <div class="center">
+    <mat-nav-list class="list-horizontal">
+        <mat-list-item *ngFor='let category of categories'>
+            <div>
+                <img src="{{category.image}}" width="160px" height="160px">
+                <h3>{{category.name}}</h3>
+            </div>
+        </mat-list-item>
+    </mat-nav-list>
+    </div>
+</div>
