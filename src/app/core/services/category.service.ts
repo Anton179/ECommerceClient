@@ -1,45 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Category } from '../enums';
+import { EnvironmentUrlService } from './environment-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private envUrlservice: EnvironmentUrlService) { }
 
-  getCategories(): {category: Category, image: string} [] {
-    return this.categoryList;
+  getMainCategories(): any {
+    return this.http.get(`${this.envUrlservice.api_url}/categories/main`);
   }
-
-  categoryList = [
-    {
-      category: Category.Clothes,
-      image: 'assets/img/Categories/Clothes.png'
-    },
-    {
-      category: Category.Electronics,
-      image: 'assets/img/Categories/Electronics.png'
-    },
-    {
-      category: Category.Fishing,
-      image: 'assets/img/Categories/Fishing.png'
-    },
-    {
-      category: Category.HomeAndGarden,
-      image: 'assets/img/Categories/Home&Garden.png'
-    },
-    {
-      category: Category.MusicalInstruments,
-      image: 'assets/img/Categories/MusicalInstruments.png'
-    },
-    {
-      category: Category.Sports,
-      image: 'assets/img/Categories/Sports.png'
-    },
-    {
-      category: Category.AutoAccessories,
-      image: 'assets/img/Categories/AutoAccessories.png'
-    }
-  ];
 }

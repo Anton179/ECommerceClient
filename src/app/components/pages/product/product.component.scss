@@ -1,0 +1,62 @@
+// .container-column{
+//     border: solid 1px black;
+//     flex-direction: column;
+//     display: flex;
+//     width: 100%;
+// }
+
+// .item{
+//     border: solid 1px red;
+//     display: inline-flex;
+// }
+
+// .container-row{
+//     border: solid 1px orange;
+//     flex-direction: row;
+//     display: flex;
+//     flex-wrap: nowrap;
+//     justify-content: space-evenly!important;
+// }
+
+//------------------------------
+
+div.category {
+    margin-left: 10px;
+    height: 40px;
+}
+
+
+.my-grid-tile {
+    border: solid 1px black;
+    height: 50px!important;
+}
+
+div.container-row {
+    position: absolute;
+    left: 0;
+}
+
+div.title {
+    align-self: flex-start;
+}
+
+div.description {
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+hr {
+  display: block;
+  margin: 10px 20px 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, .12);
+  width: 100%
+}
+
+mat-form-field {
+    width: 60px;
+    select {
+        option {
+            color: black !important;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import { ComponentsModule } from "../components.module";
 import { OrdersComponent } from "./orders/orders.component";
 import { RouterModule } from "@angular/router";
 import { ProductComponent } from './product/product.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -13,12 +14,14 @@ import { ProductComponent } from './product/product.component';
         SharedModule,
         MaterialModule,
         ComponentsModule,
-        RouterModule
+        RouterModule,
+        ReactiveFormsModule,
+        FormsModule
     ],
     declarations: [
         HomeComponent,
         OrdersComponent,
-        ProductComponent
+        ProductComponent,
     ]
 })
 

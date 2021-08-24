@@ -1,1 +1,46 @@
-<p>product works! {{id}}</p>
+<div>
+    <div class="category">{{category}}</div>
+    <mat-grid-list cols="3" rowHeight="100px">
+        <mat-grid-tile rowspan="3">
+            <img src="{{product?.imageUrl}}" width="300px" height="300px">
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="container-row title">
+                {{product?.name}}<br>
+                By <a routerLink="">{{product?.user?.userName}}</a><br>
+                "Raiting"
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile rowspan="2">
+            <div class="container-row">
+                Our price: {{price}}<br>
+                Quantity: 
+                <mat-form-field appearance="fill" color="accent">
+                    <select matNativeControl required>
+                      <option value=1>1</option>
+                      <option value=2>2</option>
+                      <option value=3>3</option>
+                    </select>
+                  </mat-form-field><br>
+                Add to card <br>
+                Add to list
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <hr style="align-self: flex-start;">
+            <div class="container-row description">
+                In stock | Out of Stock
+                <ul>
+                    <li *ngFor="let recipient of product?.characteristics | keyvalue">
+                        {{recipient.key}} --> {{recipient.value}}
+                    </li>
+                </ul>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="container-row">
+                Characteristics
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

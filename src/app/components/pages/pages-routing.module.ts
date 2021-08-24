@@ -3,20 +3,37 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ProductComponent } from './product/product.component';
+// import { LoginComponent } from './authentication/login/login.component'
+// import { RegisterComponent } from './authentication/register/register.component';
 
 const routes: Routes = [
     {
         path: 'orders',
-        component: OrdersComponent
+        component: OrdersComponent,
+        pathMatch: 'full' 
     },
     {
-        path: 'product/:id',
-        component: ProductComponent
+        path: 'product',
+        children:[
+            {
+                path: ':id',
+                component:ProductComponent
+            },
+            {
+                path: '',
+                component: HomeComponent
+            },
+        ]
     },
     {
-        path: '',
-        component: HomeComponent
-    }
+        path: 'home',
+        component: HomeComponent,
+        pathMatch: 'full'
+    },
+    { 
+        path: '', 
+        redirectTo: 'home'
+    },
 ];
 
 @NgModule({

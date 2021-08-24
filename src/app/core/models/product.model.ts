@@ -1,15 +1,16 @@
-import { Category } from "../enums";
+import { User } from "oidc-client";
+import { Category } from "./category.model";
 
 export interface Product {
-    id: number;
-    title: string;
-    description: string;
+    id?: string;
+    ownerId?: string;
+    name?: string;
+    description?: string;
     category: Category;
-    price: number;
-    // TODO: Delete ?
-    imageUrl: string;
-    // TODO: Delete size
-    size?: number;
+    price?: number;
     weight?: number;
-    raitings?: number;
+    imageUrl?: string;
+    characteristics?: Map<string, string>;
+    user?: any;
+    // raitings?: number;
 }

@@ -5,6 +5,8 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MaterialModule } from './material/material.module';
 import { RouterModule } from '@angular/router';
+import { SigninRedirectCallbackComponent } from './AuthRedirect/signin-redirect-callback/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './AuthRedirect/signout-redirect-callback/signout-redirect-callback.component';
 
 @NgModule({
     imports: [
@@ -15,12 +17,16 @@ import { RouterModule } from '@angular/router';
     ],
     declarations: [
       HeaderComponent,
-      FooterComponent
+      FooterComponent,
+      SignoutRedirectCallbackComponent,
+      SigninRedirectCallbackComponent
   ],
     exports: [
       CommonModule,
       HeaderComponent,
-      FooterComponent
+      FooterComponent,
+      SigninRedirectCallbackComponent,
+      SignoutRedirectCallbackComponent,
     ]
 })
 
