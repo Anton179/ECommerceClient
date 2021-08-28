@@ -7,6 +7,7 @@ import { OrdersComponent } from "./orders/orders.component";
 import { RouterModule } from "@angular/router";
 import { ProductComponent } from './product/product.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CartComponent } from './cart/cart.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
         HomeComponent,
         OrdersComponent,
         ProductComponent,
+        CartComponent,
     ]
 })
 

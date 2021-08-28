@@ -1,0 +1,27 @@
+<div class="container">
+    <mat-nav-list class="list-horizontal">
+        <mat-grid-list cols="7" rowHeight="70">
+            <mat-grid-tile colspan="3">
+                Product
+            </mat-grid-tile>
+            <mat-grid-tile>
+                Price
+            </mat-grid-tile>
+            <mat-grid-tile>
+                Qty
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                Total
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider></mat-divider>
+        <mat-list-item *ngFor="let cart of cartList">
+            <mat-divider></mat-divider>
+            <div class="list">
+                <app-cart-item [productItem]="cart.product"></app-cart-item>
+            </div>
+        </mat-list-item>
+    </mat-nav-list>
+
+    <button mat-raised-button (click)="clearCart()">Clear cart</button>
+</div>

@@ -7,12 +7,14 @@
       <h1>eSearch</h1>
     </a>
     <span class="example-spacer"></span>
-    <mat-label *ngIf="userAuthenticated" (mouseenter)="menuTrigger()" #loginMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="loginMenu">Usename
+    <mat-label *ngIf="userAuthenticated" (mouseenter)="menuTrigger()" #loginMenuTrigger="matMenuTrigger"
+      [matMenuTriggerFor]="loginMenu">
+      {{userName}}
     </mat-label>
-    <button mat-button *ngIf="!userAuthenticated" (mouseenter)="menuTrigger()" (click)="login($event)" disableRipple>
-      {{userAuthenticated ? "User name" : "Sign In"}}
+    <button mat-button *ngIf="!userAuthenticated" (mouseenter)="menuTrigger()" (click)="login()" disableRipple>
+      Sign In
     </button>
-    <button mat-icon-button matBadge="{{shoppingCartBadge}}" [matBadgeHidden]="hiddenCartBadge">
+    <button mat-icon-button [matBadge]="shoppingCartBadge" [matBadgeHidden]="hiddenCartBadge" (click)="cartOpen()">
       <mat-icon>shopping_cart</mat-icon>
     </button>
     <button mat-icon-button>

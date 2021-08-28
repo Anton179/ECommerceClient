@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserManager, User, UserManagerSettings } from 'oidc-client';
 import { AuthContants } from '../../constants/authConstants';
 import { Subject } from 'rxjs';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,12 @@ export class AuthService {
 
   public loginChanged = this._loginChangedSubject.asObservable();
 
-  constructor() { 
+  constructor(private _cartService: CartService) { 
     this._userManager = new UserManager(this.idpSettings);
+  }
+
+  public getUserName = () => {
+    return this._userManager.getUser().then(user => user);
   }
 
   public checkIfUserIsAdmin = (): Promise<boolean> => {
@@ -61,6 +66,7 @@ export class AuthService {
       this._user = user;
       console.log(user);
       this._loginChangedSubject.next(this.checkUser(user));
+      this._cartService.changeState('');
       return user;
     })
   }

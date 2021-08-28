@@ -1,7 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { CartService } from 'src/app/core/services/cart.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -10,24 +11,57 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('loginMenuTrigger') loginMenuTrigger: MatMenuTrigger | undefined;
+  userName: string = "test";
+  shoppingCartBadge: number = 0;
+  hiddenCartBadge: boolean = true;
 
-  shoppingCartBadge: number = 3;
-  hiddenCartBadge: boolean = !this.shoppingCartBadge;
-  
+
   public userAuthenticated = false;
 
-  constructor(private _authService: AuthService, private _router: Router){
+  constructor(private _authService: AuthService, private _router: Router, private _cartService: CartService) {
     this._authService.loginChanged
       .subscribe(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
       })
+      this._cartService.notifyObservable.subscribe((notifyState) => {
+        console.log(this.userAuthenticated)
+        if (this.userAuthenticated)
+        {
+          this.updateShoppingCartBadge();
+        }
+      })
+  }
+
+  cartOpen() {
+    if (this.userAuthenticated)
+    {
+      this._router.navigateByUrl('/cart');
+    }
+    else
+    {
+      this._authService.login();
+    }
   }
 
   async ngOnInit(): Promise<void> {
     this._authService.isAuthenticated()
       .then(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
+
+        if (this.userAuthenticated) {
+          this.updateShoppingCartBadge();
+        }
+        else {
+          this.shoppingCartBadge = 0;
+        }
       })
+  }
+
+  public updateShoppingCartBadge() {
+    this._cartService.getNumberOfProducts().subscribe((count: number) => {
+      this.shoppingCartBadge = count;
+      this.hiddenCartBadge = !this.shoppingCartBadge;
+    })
   }
 
   public menuTrigger() {
@@ -36,9 +70,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  public login = (event: MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
+  public login = () => {
     if (!this.userAuthenticated) {
       this._authService.login();
     }

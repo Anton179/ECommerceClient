@@ -1,5 +1,5 @@
-import { User } from "oidc-client";
 import { Category } from "./category.model";
+import { Characteristic } from "./characteristic.model";
 
 export interface Product {
     id?: string;
@@ -10,7 +10,6 @@ export interface Product {
     price?: number;
     weight?: number;
     imageUrl?: string;
-    characteristics?: Map<string, string>;
+    characteristics: Characteristic[];
     user?: any;
-    // raitings?: number;
 }
