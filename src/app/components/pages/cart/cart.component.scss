@@ -1,0 +1,13 @@
+mat-nav-list.list-horizontal {
+    padding: 0;
+    margin: 20px 0;
+    .mat-list-item {
+      height: auto;
+      width: auto;
+      color: black;
+    }
+  }
+
+  .mat-divider {
+    border-top-color: lightgray;
+  }

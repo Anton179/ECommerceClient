@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CartComponent } from './cart/cart.component';
 import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ProductComponent } from './product/product.component';
-// import { LoginComponent } from './authentication/login/login.component'
-// import { RegisterComponent } from './authentication/register/register.component';
 
 const routes: Routes = [
     {
         path: 'orders',
         component: OrdersComponent,
         pathMatch: 'full' 
+    },
+    {
+        path: 'cart',
+        component: CartComponent,
+        pathMatch: 'full'
     },
     {
         path: 'product',
