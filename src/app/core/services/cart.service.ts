@@ -24,11 +24,15 @@ export class CartService {
   }
 
   clearCart(): Observable<any> {
-    return this.http.delete(`${this.envUrlservice.api_url}/cart/clear`);
+    return this.http.delete(`${this.envUrlservice.api_url}/cart/removeAll`);
   }
 
   getNumberOfProducts(): Observable<any>  {
       return this.http.get(`${this.envUrlservice.api_url}/cart/getCount`);
+  }
+
+  removeCart(id: string): Observable<any> {
+    return this.http.delete(`${this.envUrlservice.api_url}/cart/remove/${id}`);
   }
 
   getCart(): Observable<any> {

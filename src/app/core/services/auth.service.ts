@@ -3,6 +3,7 @@ import { UserManager, User, UserManagerSettings } from 'oidc-client';
 import { AuthContants } from '../../constants/authConstants';
 import { Subject } from 'rxjs';
 import { CartService } from './cart.service';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,17 @@ export class AuthService {
 
   public loginChanged = this._loginChangedSubject.asObservable();
 
-  constructor(private _cartService: CartService) { 
+  constructor(private _cartService: CartService) {
     this._userManager = new UserManager(this.idpSettings);
+  }
+
+  getDecodedAccessToken(token: string): any {
+    try{
+      return jwt_decode(token);
+    }
+    catch(Error){
+      return null;
+    }
   }
 
   public getUserName = () => {
@@ -25,6 +35,10 @@ export class AuthService {
   public checkIfUserIsAdmin = (): Promise<boolean> => {
     return this._userManager.getUser()
     .then(user => {
+      this._userManager.getUser()
+        .then(user => {
+          console.log(user?.access_token)
+        })
       return user?.profile.role === 'admin';
     })
   }
@@ -85,10 +99,10 @@ export class AuthService {
       authority: AuthContants.idpAuthority,
       client_id: AuthContants.clientId,
       client_secret: AuthContants.clientSecret,
-      redirect_uri: `${AuthContants.clientRoot}/signin-callback`,
+      redirect_uri: `${AuthContants.clientRoot}/auth/signin-callback`,
       scope: "openid profile full offline_access",
       response_type: "code",
-      post_logout_redirect_uri: `${AuthContants.clientRoot}/signout-callback`
+      post_logout_redirect_uri: `${AuthContants.clientRoot}/auth/signout-callback`,
     }
   }
 
