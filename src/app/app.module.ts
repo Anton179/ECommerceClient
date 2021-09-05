@@ -8,8 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './shared/material/material.module';
 import { SharedModule } from './shared/shared.module';
-import { PagesModule } from './components/pages/pages.module';
-import { ComponentsModule } from './components/components.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
@@ -24,8 +22,6 @@ import { AuthInterceptorService } from './core/services/auth-interceptor.service
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    PagesModule,
-    ComponentsModule,
     HttpClientModule,
     MaterialModule,
     CoreModule,

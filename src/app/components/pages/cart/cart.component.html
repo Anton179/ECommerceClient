@@ -1,27 +1,189 @@
 <div class="container">
-    <mat-nav-list class="list-horizontal">
-        <mat-grid-list cols="7" rowHeight="70">
-            <mat-grid-tile colspan="3">
-                Product
-            </mat-grid-tile>
-            <mat-grid-tile>
-                Price
-            </mat-grid-tile>
-            <mat-grid-tile>
-                Qty
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2">
-                Total
-            </mat-grid-tile>
-        </mat-grid-list>
-        <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let cart of cartList">
-            <mat-divider></mat-divider>
-            <div class="list">
-                <app-cart-item [productItem]="cart.product"></app-cart-item>
-            </div>
-        </mat-list-item>
-    </mat-nav-list>
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Cart">
+      <div *ngIf="cartList.length; else elseBlock">
+        <div class="summary">
+          <table>
+            <tr>
+              <td colspan="2">
+                Order Summary
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <mat-divider></mat-divider>
+              </td>
+            </tr>
+            <tr style="font-size: 18px;">
+              <td>
+                Subtotal:
+              </td>
+              <td style="text-align: end;">
+                {{subTotalPrice}}$
+              </td>
+            </tr>
+            <tr style="font-size: 16px;">
+              <td>
+                Shipping:
+              </td>
+              <td style="text-align: end;">
+                {{chosenDelivery == 'Nova Poshta' ? '25$' : '40$'}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                {{chosenDelivery}}<br>
+                Duties & Taxes may be collected at delivery.
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <mat-divider></mat-divider>
+              </td>
+            </tr>
+            <tr style="font-size: 18px; font-weight: bold;">
+              <td>
+                Total:
+              </td>
+              <td style="text-align: end;">
+                {{totalPrice}}$
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align: center;">
+                <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <table style="width: 100%; margin: 20px 0px; padding-right: 500px;">
+          <tr>
+            <td style="width: 50px;">
+              Product
+            </td>
+            <td style="width: 250px;"></td>
+            <td>
+              Price
+            </td>
+            <td>
+              Qty
+            </td>
+            <td colspan="2">
+              Total
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <mat-divider></mat-divider>
+            </td>
+          </tr>
+          <ng-container *ngFor="let cart of cartList">
+            <tr style="vertical-align: top;">
+              <td>
+                <a [routerLink]="['/product', cart.product?.id]" style="width: 120px;">
+                  <img height="120px" src="{{cart.product?.imageUrl}}" width="120px"/>
+                </a>
+              </td>
+              <td>
+                <div class="mat-body-2">{{cart.product?.name}}</div>
+                <div class="mat-body-2">Weight: {{cart.product?.weight}}kg</div>
+                <br><br>
+                <button (click)="removeProduct(cart.product?.id)" mat-flat-button
+                        style="background: unset; color: green;">Remove
+                </button>
+              </td>
+              <td>
+                <div class="mat-caption">{{cart.product?.price}}$</div>
+              </td>
+              <td>
+                <div class="mat-caption">{{cart.quantity}}</div>
+              </td>
+              <td colspan="2">
+                <div class="mat-caption">{{(cart.product?.price ?? 0) * cart.quantity}}$</div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <mat-divider></mat-divider>
+              </td>
+            </tr>
+          </ng-container>
+          <tr>
+            <td colspan="5">
+              <br>
+              <button (click)="clearCart()" mat-raised-button>Clear cart</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <div class="delivery">
+                <div class="mat-display-1">
+                  Get shipping estimates
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <div class="deliveryBlock">
+                <mat-radio-group [(ngModel)]="chosenDelivery" class="delivery-radio-group" color="primary">
+                  <mat-radio-button value="Nova Poshta">
+                    <div>
+                      <img height="50px" src="assets/img/Delivery/novaposhta.png" style="vertical-align: bottom"
+                           width="50px">
+                      <div class="mat-title inline">
+                        Nova Poshta Delivery
+                      </div>
+                      <div class="mat-subheading-2 inline2">
+                        25$
+                      </div>
+                      <div class="inline3">
+                        Estimated Delivery: 7-14 days
+                      </div>
+                    </div>
+                  </mat-radio-button>
+                  <mat-divider style="padding-bottom: 5px"></mat-divider>
+                  <mat-radio-button value="DHL Express">
+                    <img height="50px" src="assets/img/Delivery/DHL.png" style="vertical-align: bottom" width="50px">
+                    <div class="mat-title inline">
+                      DHL Express
+                    </div>
+                    <div class="mat-subheading-2 inline2">
+                      40$
+                    </div>
+                    <div class="inline3">
+                      Estimated Delivery: 4-8 days
+                    </div>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <ng-template #elseBlock>
+        <div class="empty">
+          <div class="mat-display-1">
+            <mat-icon inline="true">shopping_cart</mat-icon>
+            <br>
+            Your shopping cart is empty
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Buy it again">
+      <div *ngIf="false; else elseBlock2">
 
-    <button mat-raised-button (click)="clearCart()">Clear cart</button>
+      </div>
+      <ng-template #elseBlock2>
+        <div class="empty">
+          <div class="mat-display-1">
+            <mat-icon inline="true">attach_money</mat-icon>
+            <br>
+            Previous purchases will be listed here
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>

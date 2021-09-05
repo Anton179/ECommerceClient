@@ -11,7 +11,7 @@ import { CartService } from 'src/app/core/services/cart.service';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('loginMenuTrigger') loginMenuTrigger: MatMenuTrigger | undefined;
-  userName: string = "test";
+  userName: string = "";
   shoppingCartBadge: number = 0;
   hiddenCartBadge: boolean = true;
 
@@ -22,9 +22,18 @@ export class HeaderComponent implements OnInit {
     this._authService.loginChanged
       .subscribe(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
+
+        if (userAuthenticated)
+        {
+          this._authService.getAccessToken().then(accessToken => {
+              console.log("AccessToken: " + accessToken)
+
+              this.userName = this._authService.getDecodedAccessToken(accessToken ?? "").userName
+            }
+          )
+        }
       })
       this._cartService.notifyObservable.subscribe((notifyState) => {
-        console.log(this.userAuthenticated)
         if (this.userAuthenticated)
         {
           this.updateShoppingCartBadge();

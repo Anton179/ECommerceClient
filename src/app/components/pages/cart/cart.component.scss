@@ -1,13 +1,104 @@
-mat-nav-list.list-horizontal {
-    padding: 0;
-    margin: 20px 0;
-    .mat-list-item {
-      height: auto;
-      width: auto;
-      color: black;
+mat-icon {
+  color: lightgray
+}
+
+:host ::ng-deep .mat-tab-label {
+  color: black;
+  border-bottom: solid 1px gray;
+}
+
+div.empty {
+  text-align: center;
+  margin: 120px 0;
+}
+
+.mat-icon {
+  font-size: 100px;
+  height: 100px;
+  width: 100px;
+}
+
+div.summary {
+  position: fixed;
+  right: 5%;
+  top: 20%;
+
+  table {
+    padding: 15px 20px 15px 20px;
+    width: 400px;
+    border: solid 1px lightgray;
+    border-radius: 10px;
+
+    tr:first-child td:first-child {
+      font-size: 24px;
+    }
+
+    td {
+      height: 30px;
     }
   }
+}
 
-  .mat-divider {
-    border-top-color: lightgray;
-  }
+div.list {
+  width: 100%;
+}
+
+div.delivery {
+  padding-top: 30px;
+}
+
+div.deliveryBlock {
+  border: solid 1px gray;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.delivery-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+div.inline {
+  display: inline-block;
+  padding-left: 20px;
+  width: 320px;
+  vertical-align: top;
+}
+
+div.inline2 {
+  display: inline-block;
+  margin-left: 100px;
+  font-weight: bold;
+}
+
+div.inline3 {
+  color: gray;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+mat-radio-button {
+  padding: 10px 0;
+}
+
+::ng-deep .mat-radio-outer-circle {
+  border-color: lightgray;
+
+}
+
+.mat-radio-inner-circle {
+  color: red !important;
+  background-color: red !important;
+}
+
+.mat-divider {
+  border-top-color: lightgray;
+}
+
+mat-button-toggle.checkout {
+  margin-top: 20px;
+  width: 200px;
+  height: 40px;
+  align-items: center;
+}
