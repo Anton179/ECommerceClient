@@ -26,8 +26,6 @@ export class HeaderComponent implements OnInit {
         if (userAuthenticated)
         {
           this._authService.getAccessToken().then(accessToken => {
-              console.log("AccessToken: " + accessToken)
-
               this.userName = this._authService.getDecodedAccessToken(accessToken ?? "").userName
             }
           )

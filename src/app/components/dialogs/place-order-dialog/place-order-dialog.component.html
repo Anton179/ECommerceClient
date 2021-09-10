@@ -1,27 +1,23 @@
-<h1 mat-dialog-title>Place order</h1>
-<div mat-dialog-content>
-  <p>Full name</p>
-  <mat-form-field [style.width.px]=350 appearance="fill">
-    <mat-label>Full name</mat-label>
-<!--    <input matInput [(ngModel)]="data.animal">-->
-    <input matInput>
-  </mat-form-field>
-  <p>Address</p>
-  <mat-form-field [style.width.px]=350 appearance="fill">
-    <mat-label>Address</mat-label>
-    <input matInput>
-    <!--    <input matInput [(ngModel)]="data.animal">-->
-  </mat-form-field>
-  <p>Phone number</p>
-  <mat-form-field [style.width.px]=350 appearance="fill">
-    <mat-label>Phone number</mat-label>
-      <input matInput>
-    <!--    <input matInput [(ngModel)]="data.animal">-->
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Place order</button>
-<!--  <button mat-button (click)="onNoClick()">No Thanks</button>-->
-<!--  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>-->
-</div>
+<form [formGroup]="placeOrderForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Place order</h1>
+  <div mat-dialog-content>
+    <p>Address</p>
+    <mat-form-field [style.width.px]=350 appearance="fill" color="accent">
+      <mat-label>Address</mat-label>
+      <input matInput required autocomplete="false" formControlName="address">
+    </mat-form-field>
+    <p>Payment type</p>
+    <mat-form-field appearance="fill" color="accent">
+      <mat-label>Payment type</mat-label>
+      <mat-select required formControlName="payment">
+        <mat-option *ngFor="let payment of payments" [value]="payment">
+          {{payment}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button type="submit" [disabled]="!placeOrderForm.valid" mat-dialog-close>Place order</button>
+  </div>
+</form>
