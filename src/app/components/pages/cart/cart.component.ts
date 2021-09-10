@@ -2,8 +2,10 @@ import {Component, DoCheck, OnInit} from '@angular/core';
 import {Cart} from 'src/app/core/models/cart.model';
 import {CartService} from 'src/app/core/services/cart.service';
 import {AuthService} from "../../../core/services/auth.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {PlaceOrderDialogComponent} from "../../dialogs/place-order-dialog/place-order-dialog.component";
+import {ShippingService} from "../../../core/services/shipping.service";
+import {Shipping} from "../../../core/models/shipping.model";
 
 @Component({
   selector: 'app-cart',
@@ -12,26 +14,36 @@ import {PlaceOrderDialogComponent} from "../../dialogs/place-order-dialog/place-
 })
 export class CartComponent implements OnInit, DoCheck {
 
+  shippingList: Shipping[] = [];
   delivery = [{name: 'Nova Poshta', price: 25}, {name: 'DHL Express', price: 40}];
-  chosenDelivery = this.delivery[0].name;
+  choosenShipping: Shipping | undefined;
+  shippingName = ''
+  shippingPrice: number = this.delivery[0].price;
   subTotalPrice: number = 0;
   totalPrice: number = 0;
   cartList: Cart[] = [];
 
-  constructor(private _cartService: CartService, private _authService: AuthService, public dialog: MatDialog) {
+  constructor(private _cartService: CartService, private _shippingService: ShippingService,
+              private _authService: AuthService, public dialog: MatDialog) {
     this._cartService.notifyObservable.subscribe((notifyState) => {
       this.updateCartList();
     })
   }
 
   ngDoCheck() {
-    this.totalPrice = this.subTotalPrice + (this.delivery.find(x => x.name == this.chosenDelivery)?.price ?? 0);
+    this.totalPrice = this.subTotalPrice + (this.choosenShipping?.price ?? 0);
   }
 
   ngOnInit(): void {
     this._cartService.getCart().subscribe((cart: Cart[]) => {
       this.updateCartList()
     });
+
+    this._shippingService.getShippings().subscribe((shipping: Shipping[]) => {
+      this.shippingList = shipping;
+      this.choosenShipping = this.shippingList[0];
+      this.shippingName = this.choosenShipping.name ?? '';
+    })
   }
 
   updateCartList() {
@@ -45,8 +57,19 @@ export class CartComponent implements OnInit, DoCheck {
     });
   }
 
+  updateShipping() {
+    this.choosenShipping = this.shippingList.find(x => x.name == this.shippingName);
+    this.shippingPrice = this.choosenShipping?.price ?? 0;
+  }
+
   placeOrder(price: number) {
-    const dialogRef = this.dialog.open(PlaceOrderDialogComponent);
+    let matDialogConfig = new MatDialogConfig();
+    matDialogConfig.data = {
+      shipping: this.choosenShipping
+    };
+    matDialogConfig.disableClose = true;
+
+    const dialogRef = this.dialog.open(PlaceOrderDialogComponent, matDialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

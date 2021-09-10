@@ -43,6 +43,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {LayoutModule} from '@angular/cdk/layout';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const MaterialModules = [
       A11yModule,
@@ -60,6 +61,7 @@ const MaterialModules = [
       MatCheckboxModule,
       MatChipsModule,
       MatStepperModule,
+      ReactiveFormsModule,
       MatDatepickerModule,
       MatDialogModule,
       MatDividerModule,

@@ -32,17 +32,6 @@ export class AuthService {
     return this._userManager.getUser().then(user => user);
   }
 
-  public checkIfUserIsAdmin = (): Promise<boolean> => {
-    return this._userManager.getUser()
-    .then(user => {
-      this._userManager.getUser()
-        .then(user => {
-          console.log(user?.access_token)
-        })
-      return user?.profile.role === 'admin';
-    })
-  }
-
   public login = () => {
     return this._userManager.signinRedirect();
   }
@@ -78,7 +67,6 @@ export class AuthService {
     return this._userManager.signinRedirectCallback()
     .then(user => {
       this._user = user;
-      console.log(user);
       this._loginChangedSubject.next(this.checkUser(user));
       this._cartService.changeState('');
       return user;
