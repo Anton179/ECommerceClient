@@ -11,8 +11,11 @@ export class OrderService {
 
   constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) { }
 
-  createOrder(order: Order) {
-    console.log(order)
+  createOrder(order: Order): Observable<any> {
     return this._httpClient.post(`${this._envUrlservice.api_url}/orders/create`, order);
+  }
+
+  getOrder(id:string): Observable<any> {
+    return this._httpClient.get(`${this._envUrlservice.api_url}/orders/get/${id}`);
   }
 }

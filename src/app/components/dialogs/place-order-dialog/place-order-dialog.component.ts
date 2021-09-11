@@ -5,6 +5,7 @@ import {OrderService} from "../../../core/services/order.service";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {Shipping} from "../../../core/models/shipping.model";
 import {CartService} from "../../../core/services/cart.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-place-order-dialog',
@@ -14,7 +15,7 @@ import {CartService} from "../../../core/services/cart.service";
 export class PlaceOrderDialogComponent implements OnInit {
   shipping: Shipping;
   constructor(private _orderService: OrderService, private _cartService: CartService,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any, private  _router: Router) {
     this.shipping = this.data.shipping;
   }
 
@@ -34,10 +35,13 @@ export class PlaceOrderDialogComponent implements OnInit {
 
     this._orderService.createOrder({shipping: this.shipping,
       payment: payment,
-      address: this.placeOrderForm.value.address}).subscribe();
+      address: this.placeOrderForm.value.address}).subscribe((orderId: string) => {
+        this._router.navigate([`/orders/${orderId}`])
+    });
+
 
     this._cartService.clearCart().subscribe(() => {
-      this._cartService.changeState('Product was removed');
+      this._cartService.changeState('Cart is empty');
     });
   }
 }
