@@ -39,6 +39,7 @@ export class AuthService {
   public getAccessToken = (): Promise<string | null> => {
     return this._userManager.getUser()
       .then(user => {
+        console.log(user?.access_token)
          return !!user && !user.expired ? user.access_token : null;
     });
   }
@@ -88,7 +89,7 @@ export class AuthService {
       client_id: AuthContants.clientId,
       client_secret: AuthContants.clientSecret,
       redirect_uri: `${AuthContants.clientRoot}/auth/signin-callback`,
-      scope: "openid profile full offline_access",
+      scope: "roles openid profile full offline_access",
       response_type: "code",
       post_logout_redirect_uri: `${AuthContants.clientRoot}/auth/signout-callback`,
     }
