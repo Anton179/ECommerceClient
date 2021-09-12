@@ -9,7 +9,8 @@ const routes: Routes = [
   },
   {
     path: 'orders',
-    loadChildren:() => import('./components/pages/orders/orders.module').then(m => m.OrdersModule)
+    loadChildren:() => import('./components/pages/orders/orders.module').then(m => m.OrdersModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'home',

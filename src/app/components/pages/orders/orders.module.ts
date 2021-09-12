@@ -4,6 +4,8 @@ import {MaterialModule} from "../../../shared/material/material.module";
 import {RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {OrdersComponent} from "./orders.component";
+import {OrdersRoutingModule} from "./orders-routing.module";
+import {OrderDetailsModule} from "./order-details/order-details.module";
 
 @NgModule({
   imports: [
@@ -12,10 +14,8 @@ import {OrdersComponent} from "./orders.component";
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forChild([{
-      path: '',
-      component: OrdersComponent
-    }])
+    OrdersRoutingModule,
+    OrderDetailsModule
   ],
   declarations: [
     OrdersComponent
