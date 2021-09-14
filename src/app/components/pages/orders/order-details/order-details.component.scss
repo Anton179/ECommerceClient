@@ -1,5 +1,83 @@
-div.pending {
+div.Pending {
   color: #0000FF;
+  font-weight: bold;
 }
 
+div.Cancelled {
+  color: red;
+  font-weight: bold;
+}
 
+div.Confirmed {
+  color: green;
+  font-weight: bold;
+}
+
+.inline {
+  display: inline-block;
+  margin-bottom: 20px!important;
+}
+
+.delivered {
+  padding-left: 30px;
+  font-size: 20px;
+  color: #4E4E4E;
+}
+
+.gray {
+  color: gray;
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+table.order {
+  width: 684px;
+  td {
+    width: 320px;
+  }
+  margin-top: 20px;
+  border: solid 1px lightgray;
+  border-radius: 10px;
+}
+
+table.shipping {
+  border-spacing: 10px;
+}
+
+ .credit-card {
+   padding-top: 0px;
+   margin-top: 0px;
+   font-size: 50px;
+}
+
+table.orderedItems {
+  td {
+    width: 114px;
+  }
+}
+
+::ng-deep .order-item-button {
+  border: solid 1px lightgray!important;
+  border-radius: 10px;
+}
+
+div.summary {
+  position: fixed;
+  right: 5%;
+  top: 20%;
+
+  table {
+    padding: 15px 20px 15px 20px;
+    width: 400px;
+    border: solid 1px lightgray;
+    border-radius: 10px;
+
+    tr:first-child td:first-child {
+      font-size: 24px;
+    }
+
+    td {
+      height: 30px;
+    }
+  }
+}

@@ -1,4 +1,152 @@
 <div class="container">
-  <a mat-stroked-button routerLink="/orders" style="color: gray">Back to orders</a>
-  <div class="mat-display-1"><b>{{OrderStatus[order?.status ?? 0]}}</b></div>
+  <div class="summary">
+    <table>
+      <tr>
+        <td colspan="2">
+          Order Summary
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-divider></mat-divider>
+        </td>
+      </tr>
+      <tr style="font-size: 18px;">
+        <td>
+          Subtotal:
+        </td>
+        <td style="text-align: end;">
+          {{subTotalPrice}}$
+        </td>
+      </tr>
+      <tr style="font-size: 16px;">
+        <td>
+          Shipping:
+        </td>
+        <td style="text-align: end;">
+          {{order?.shipping?.price}}$
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          {{order?.shipping?.name}}<br>
+          Duties & Taxes may be collected at delivery.
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-divider></mat-divider>
+        </td>
+      </tr>
+      <tr style="font-size: 18px; font-weight: bold;">
+        <td>
+          Order Total:
+        </td>
+        <td style="text-align: end;">
+          {{(order?.shipping?.price ?? 0) + subTotalPrice}}$
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <a mat-stroked-button routerLink="/orders" class="gray">Back to orders</a>
+  <div>
+    <div class="mat-headline inline {{OrderStatus[order?.status ?? 0]}}">{{OrderStatus[order?.status ?? 0]}}</div>
+    <div *ngIf="order?.status == 2" class="inline delivered">Confirmed on {{order?.updatedDate | date: 'longDate'}}</div>
+  </div>
+  <div>
+    <table class="gray">
+      <tr>
+        <td [width]="330">
+          Order #{{order?.id}}
+        </td>
+        <td>
+          Placed on {{order?.createdDate | date: 'longDate'}}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <table class="order shipping">
+      <tr>
+        <td>
+          <h2>
+            Shipping Info
+          </h2>
+        </td>
+        <td>
+          <h2>
+            Payment Info
+          </h2>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="inline">
+            <img src="{{order?.shipping?.image}}" width="50px" height="50px" style="border-radius: 5px">
+          </div>
+          <div class="inline" style="vertical-align: top; padding-left: 10px">
+            <div>
+              <h2 style="margin-bottom: 0px">{{order?.shipping?.name}}</h2>
+            </div>
+            <div>
+              {{order?.address}}
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="inline">
+            <mat-icon class="credit-card">credit_card</mat-icon>
+          </div>
+          <div class="inline" style="font-size: 20px; vertical-align: top; padding-left: 30px; margin-top: 5px;">
+            {{PaymentType[order?.payment ?? 0]}}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="orderedItems">
+    <table class="order orderedItems">
+      <tr>
+        <td colspan="6" style="padding-left: 20px!important;padding-top: 20px!important;">
+          <h2>
+            Ordered Items
+          </h2>
+        </td>
+      </tr>
+      <ng-container *ngFor="let orderItem of order?.orderProducts">
+        <tr>
+          <td colspan="6">
+            <hr>
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="3">
+            <img src="{{orderItem.product.imageUrl}}" width="100px" height="100px">
+          </td>
+          <td colspan="5">
+            <h2>
+              {{orderItem.product.name}}
+            </h2>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" style="vertical-align: top">
+            <h3 style="margin-bottom: 0px!important;">
+              Qty: {{orderItem.quantity}}
+            </h3>
+            <h3>
+              Price: {{orderItem.product.price}}$
+            </h3>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" style="vertical-align: top">
+            <button mat-stroked-button class="order-item-button">Write a review</button>
+            <button mat-stroked-button class="order-item-button" style="margin-left: 10px">Buy again</button>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
 </div>

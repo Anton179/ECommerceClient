@@ -12,4 +12,5 @@ export interface Product {
     imageUrl?: string;
     characteristics: Characteristic[];
     user?: any;
+    inStock: boolean;
 }
