@@ -4,6 +4,7 @@ import {switchMap} from "rxjs/operators";
 import {OrderService} from "../../../../core/services/order.service";
 import {Order} from "../../../../core/models/order.model";
 import {OrderStatus} from "../../../../core/enums/OrderStatus";
+import {PaymentType} from "../../../../core/enums/PaymentType";
 
 @Component({
   selector: 'app-order-details',
@@ -17,6 +18,8 @@ export class OrderDetailsComponent implements OnInit {
   order: Order | undefined;
   test: OrderStatus = OrderStatus.Confirmed;
   OrderStatus = OrderStatus;
+  PaymentType = PaymentType;
+  subTotalPrice: number = 0;
 
   ngOnInit() {
     this._activateRoute.paramMap.pipe(
@@ -25,7 +28,11 @@ export class OrderDetailsComponent implements OnInit {
     .subscribe(data => {
       this._orderService.getOrder(data).subscribe((order: Order) => {
         this.order = order;
-        console.log(OrderStatus[order.status ?? 2])
+        this.subTotalPrice = 0;
+
+        order.orderProducts?.forEach(p => {
+          this.subTotalPrice += p.product.price ?? 0;
+        })
       });
     });
   }

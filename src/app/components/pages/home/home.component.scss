@@ -11,11 +11,16 @@ mat-nav-list.list-horizontal {
   div.center {
     text-align: center;
   }
-  
+
   .card-container{
     display: inline-block;
   }
 
   .mat-display-1 {
+    margin: 25px 0;
+  }
+
+  .mat-headline {
+    font-size: 28px;
     margin: 25px 0;
   }

@@ -1,70 +1,69 @@
 <div>
-    <div class="category">{{category}}</div>
+  <div class="category">{{category}}</div>
+  <div class="product">
     <mat-grid-list cols="3" rowHeight="100px">
-        <mat-grid-tile rowspan="3">
-            <img src="{{product?.imageUrl}}" width="300px" height="300px">
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="container-row title">
-                <p class="name">{{product?.name}}</p>
-                By <a routerLink="/">{{product?.user?.userName}}</a><br>
-                "Raiting"
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="2">
-            <div class="container-row">
-                <table cols="2" width="170px">
-                    <tr>
-                        <td>
-                            Our price:
-                        </td>
-                        <td class="price">
-                            {{price}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Quantity:
-                        </td>
-                        <td align="right">
-                            <mat-form-field appearance="fill" color="accent">
-                                <select matNativeControl required (change)="selectQuantity($event)">
-                                    <option value=1>1</option>
-                                    <option value=2>2</option>
-                                    <option value=3>3</option>
-                                </select>
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">
-                            <hr>
-                            <button mat-raised-button class="addToCart" color="warn" (click)="addToCart()">Add to cart</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="4">
-            <hr style="align-self: flex-start;">
-            <div class="container-row characteristics">
-                <br>
-                In stock | Out of Stock<br><br>
-                <h2>
-                    Characteristics
-                </h2>
-                <li *ngFor="let characteristic of product?.characteristics">
-                    {{characteristic.name}}: {{characteristic.value}}
-                </li>
-            </div>
-        </mat-grid-tile>
+      <mat-grid-tile rowspan="3">
+        <img height="300px" src="{{product?.imageUrl}}" width="300px">
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="container-row title">
+          <p class="name">{{product?.name}}</p>
+          By <a routerLink="/">{{product?.user?.userName}}</a><br>
+          "Raiting"
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile rowspan="2" style="margin-left: 40px">
+        <div class="container-row">
+          <table cols="2" width="200px">
+            <tr>
+              <td>
+                Our price:
+              </td>
+              <td class="price">
+                {{price}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Quantity:
+              </td>
+              <td align="right" style="width: 70px">
+                <mat-form-field appearance="fill" color="accent" style="width: 70px">
+                  <input matInput placeholder="quantity" type="number" [formControl]="quantityControl" required>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" colspan="2">
+                <hr>
+                <button *ngIf="product?.inStock" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>Add to cart</button>
+                <button *ngIf="!product?.inStock" class="addToCart" color="accent" mat-raised-button>Notify me</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [rowspan]="charactericticRows">
+        <hr style="align-self: flex-start;">
+        <div class="container-row characteristics">
+          <br>
+          <p class="{{product?.inStock ? 'inStock' : 'outOfStock'}}">{{product?.inStock ? 'In stock' : 'Out of stock'}}</p>
+          <mat-tab-group animationDuration="0ms">
+            <mat-tab label="Characteristics">
+              <br>
+              <li *ngFor="let characteristic of product?.characteristics">
+                {{characteristic.name}}: {{characteristic.value}}
+              </li>
+            </mat-tab>
+            <mat-tab label="Description">
+              <br>
+              <div class="productDescription">
+                {{product?.description}}
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </mat-grid-tile>
     </mat-grid-list>
-    <div class="description">
-        <div class="mat-headline">
-            <b>Description</b>
-        </div>
-        <div class="productDescription">
-            {{product?.description}}
-        </div>
-    </div>
+  </div>
 </div>

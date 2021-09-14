@@ -117,7 +117,7 @@
           <tr>
             <td colspan="5">
               <div class="delivery">
-                <div class="mat-display-1">
+                <div class="mat-headline">
                   Get shipping estimates
                 </div>
               </div>
@@ -130,12 +130,12 @@
                   <ng-container *ngFor="let shipping of shippingList">
                     <mat-radio-button [value]="shipping.name">
                       <div>
-                        <img height="50px" src="{{shipping.image}}" style="vertical-align: bottom"
+                        <img height="50px" src="{{shipping.image}}" style="border-radius: 5px; vertical-align: bottom"
                              width="50px">
-                        <div class="mat-title inline">
+                        <div class="mat-title inline" style="margin-top: 10px">
                           {{shipping.name}}
                         </div>
-                        <div class="mat-subheading-2 inline2">
+                        <div class="mat-subheading-2 inline2" style="margin-top: 10px">
                           {{shipping.price}}$
                         </div>
                         <div class="inline3">
@@ -144,34 +144,6 @@
                       </div>
                     </mat-radio-button>
                   </ng-container>
-<!--                  <mat-radio-button value="Nova Poshta">-->
-<!--                    <div>-->
-<!--                      <img height="50px" src="assets/img/Delivery/novaposhta.png" style="vertical-align: bottom"-->
-<!--                           width="50px">-->
-<!--                      <div class="mat-title inline">-->
-<!--                        Nova Poshta Delivery-->
-<!--                      </div>-->
-<!--                      <div class="mat-subheading-2 inline2">-->
-<!--                        25$-->
-<!--                      </div>-->
-<!--                      <div class="inline3">-->
-<!--                        Estimated Delivery: 7-14 days-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </mat-radio-button>-->
-<!--                  <mat-divider style="padding-bottom: 5px"></mat-divider>-->
-<!--                  <mat-radio-button value="DHL Express">-->
-<!--                    <img height="50px" src="assets/img/Delivery/DHL.png" style="vertical-align: bottom" width="50px">-->
-<!--                    <div class="mat-title inline">-->
-<!--                      DHL Express-->
-<!--                    </div>-->
-<!--                    <div class="mat-subheading-2 inline2">-->
-<!--                      40$-->
-<!--                    </div>-->
-<!--                    <div class="inline3">-->
-<!--                      Estimated Delivery: 4-8 days-->
-<!--                    </div>-->
-<!--                  </mat-radio-button>-->
                 </mat-radio-group>
               </div>
             </td>
