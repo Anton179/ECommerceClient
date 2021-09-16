@@ -1,20 +1,41 @@
 <div class="container">
     <div class="mat-headline">Super Deals</div>
-    <div class="center">
+  <mat-carousel [autoplay]="false"
+                maxWidth="auto"
+                [proportion]=25 [slides]=5 [loop]="true"
+                [hideArrows]="false"
+                orientation="ltr">
+    <mat-carousel-slide #matCarouselSlide
+                        *ngFor="let pos of slidesNumber"
+                        [hideOverlay]="true">
+      <div class="center" style="padding-top: 60px">
         <mat-nav-list class="list-horizontal">
-            <mat-list-item *ngFor="let product of dicountProducts">
-                <app-product-item [productItem]="product"></app-product-item>
-            </mat-list-item>
+          <mat-list-item *ngFor="let product of dicountProducts.slice(pos, pos + 6)">
+            <app-product-item [productItem]="product"></app-product-item>
+          </mat-list-item>
         </mat-nav-list>
-    </div>
+      </div>
+    </mat-carousel-slide>
+  </mat-carousel>
+
     <div class="mat-headline">Trending now</div>
-    <div class="center">
+  <mat-carousel [autoplay]="false"
+                maxWidth="auto"
+                [proportion]=25 [slides]=5 [loop]="true"
+                [hideArrows]="false"
+                orientation="ltr">
+    <mat-carousel-slide #matCarouselSlide
+                        *ngFor="let pos of slidesNumber"
+                        [hideOverlay]="true">
+      <div class="center" style="padding-top: 60px">
         <mat-nav-list class="list-horizontal">
-            <mat-list-item *ngFor="let product of productList">
-                <app-product-item [productItem]="product"></app-product-item>
-            </mat-list-item>
+          <mat-list-item *ngFor="let product of productList.slice(pos, pos + 6)">
+            <app-product-item [productItem]="product"></app-product-item>
+          </mat-list-item>
         </mat-nav-list>
-    </div>
+      </div>
+    </mat-carousel-slide>
+  </mat-carousel>
     <div class="mat-headline">Explore Popular Categories</div>
     <div class="center">
     <mat-nav-list class="list-horizontal">

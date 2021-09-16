@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Category } from 'src/app/core/models/category.model';
-import { Product } from 'src/app/core/models/product.model';
-import { CategoryService } from 'src/app/core/services/category.service';
-import { ProductService } from 'src/app/core/services/product.service';
+import {Component, OnInit} from '@angular/core';
+import {Category} from 'src/app/core/models/category.model';
+import {Product} from 'src/app/core/models/product.model';
+import {CategoryService} from 'src/app/core/services/category.service';
+import {ProductService} from 'src/app/core/services/product.service';
+import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
+import {FilterLogicalOperators} from "../../../core/models/pageRequest/FilterLogicalOperators";
+
 
 @Component({
   selector: 'app-home',
@@ -14,30 +17,24 @@ export class HomeComponent implements OnInit {
   dicountProducts: Product[] = [];
   categories: Category[] = [];
 
-// --------
-  starCount: number = 5;
-  starColor: string = "primary";
-  rating: number = 5;
+  slidesNumber = [
+    0,6,12
+  ];
 
-//---------
 
   constructor(private productService: ProductService, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((products: Product[]) => {
-      this.productList = products;
-      if (this.productList.length > 7)
-      {
-        this.productList.splice(7, this.productList.length - 7);
-      }
+    this.productService.getProducts({pageIndex:0, pageSize:18,
+      sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'})
+      .subscribe((paginatedResult: PaginatedResult<Product>) => {
+      this.productList = paginatedResult.items;
     });
 
-    this.productService.getDiscountProducts().subscribe((products: Product[]) => {
-      this.dicountProducts = products;
-      if (this.dicountProducts.length > 7)
-      {
-        this.dicountProducts.splice(7, this.dicountProducts.length - 7);
-      }
+    this.productService.getDiscountProducts({pageIndex:0, pageSize:18,
+      sortDirection: 'Ascending', columnNameForSorting: 'Name'})
+      .subscribe((paginatedResult: PaginatedResult<Product>) => {
+        this.dicountProducts = paginatedResult.items;
     });
 
     this.categoryService.getMainCategories().subscribe((categories: Category[]) => {

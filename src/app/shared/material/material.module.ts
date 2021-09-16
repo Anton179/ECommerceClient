@@ -44,6 +44,7 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {LayoutModule} from '@angular/cdk/layout';
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatCarouselModule} from "@ngbmodule/material-carousel";
 
 const MaterialModules = [
       A11yModule,
@@ -91,7 +92,8 @@ const MaterialModules = [
       OverlayModule,
       PortalModule,
       ScrollingModule,
-      LayoutModule
+      LayoutModule,
+      MatCarouselModule,
 ]
 
 @NgModule({

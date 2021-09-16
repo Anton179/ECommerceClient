@@ -8,6 +8,7 @@ export interface Order {
   orderProducts?: [{product: Product, quantity: number}];
   shipping: Shipping;
   status?: OrderStatus;
+  price?: number;
   payment: PaymentType;
   address: string;
   createdDate?: Date;
