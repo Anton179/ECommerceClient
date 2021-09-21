@@ -65,7 +65,6 @@ export class OrdersComponent implements OnInit {
         pageIndex: 0, pageSize: 10,
         sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
         requestFilters: {logicalOperator: FilterLogicalOperators.And,
-          // filters: [{path: "x => x.Status", value: `(OrderStatus)${orderStatus}`, operator: FilterOperators.Equals}]}
           filters: [{path: "x => x.Status", value: orderStatus.toString(), operator: FilterOperators.EqualsNumber}]}
       })
         .subscribe((paginatedResult: PaginatedResult<Order>) => {

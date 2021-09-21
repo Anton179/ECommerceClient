@@ -5,7 +5,7 @@ import {ShippingMethod} from "./shippingMethod.model";
 
 export interface Order {
   id?: string;
-  orderProducts?: [{product?: Product, quantity?: number}];
+  orderProducts?: [{ product?: Product, quantity?: number }];
   shipping: ShippingMethod;
   status?: OrderStatus;
   price?: number;
