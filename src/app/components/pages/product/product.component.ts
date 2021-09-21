@@ -45,7 +45,7 @@ export class ProductComponent implements OnInit {
         if (!userAuthenticated) {
           this._authService.login();
         } else {
-          this._cartService.addToCart({productId: this.id, quantity: this.quantityControl.value});
+          this._cartService.addCartItem({productId: this.id, quantity: this.quantityControl.value});
         }
       })
   }

@@ -1,20 +1,41 @@
 
+.mat-divider {
+  border-top-color: lightgray;
+}
 
+// <mat-form-field>
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0 .75em 0 .75em!important;
+}
 
-//
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0!important;
+}
 
+:host ::ng-deep .mat-form-field-underline {
+  display: none;
+}
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+  background-color: #E7E7E7;
+}
 
-::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-   //background-color: rgba(0,0,0,.04);
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: blue;
+}
+
+:host ::ng-deep .mat-select-arrow {
+  color: black;
+}
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
    background-color: #E7E7E7;
  }
 
-::ng-deep .mat-select-value {
+:host ::ng-deep .mat-select-value {
   color: rgba(0,0,0,.87);
 }
 
 ::ng-deep .mat-option {
-  //color: rgba(0,0,0,.87);
   color: black;
 }
 
@@ -29,7 +50,7 @@
 ::ng-deep .mat-select-panel {
   background: #E7E7E7
 }
-//
+// </mat-form-field>
 
 a.account {
   text-decoration: none;

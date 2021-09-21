@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cart } from '../models/cart.model';
+import { CartItem } from '../models/cartItem.model';
 import { EnvironmentUrlService } from './environment-url.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -17,25 +17,31 @@ export class CartService {
     this.notify.next(value);
   }
 
-  addToCart(cart: Cart) {
-    this.http.post(`${this.envUrlservice.api_url}/cart/add`, cart).subscribe(() => {
+  addCartItem(cart: CartItem) {
+    this.http.post(`${this.envUrlservice.api_url}/cart`, cart).subscribe(() => {
         this.changeState('Product added')
     });
   }
 
-  clearCart(): Observable<any> {
-    return this.http.delete(`${this.envUrlservice.api_url}/cart/removeAll`);
+  clearCart(): Observable<void> {
+    return this.http.delete<void>(`${this.envUrlservice.api_url}/cart`);
   }
 
-  getNumberOfProducts(): Observable<any>  {
-      return this.http.get(`${this.envUrlservice.api_url}/cart/getCount`);
+  getNumberOfProducts(): Observable<number>  {
+      return this.http.get<number>(`${this.envUrlservice.api_url}/cart/getCount`);
   }
 
-  removeCart(id: string): Observable<any> {
-    return this.http.delete(`${this.envUrlservice.api_url}/cart/remove/${id}`);
+  removeCartItem(id: string): Observable<string> {
+    return this.http.delete<string>(`${this.envUrlservice.api_url}/cart/${id}`);
   }
 
-  getCart(): Observable<any> {
-    return this.http.get(`${this.envUrlservice.api_url}/cart/getCart`);
+  getCart(): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>(`${this.envUrlservice.api_url}/cart`);
+  }
+
+  reorderProducts(orderId: string) {
+    this.http.post(`${this.envUrlservice.api_url}/cart/reorder/${orderId}`, null).subscribe(() => {
+      this.changeState('Products added')
+    });
   }
 }

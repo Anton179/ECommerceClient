@@ -1,7 +1,7 @@
 <div class="container" style="padding-left: 50px">
   <table class="orders">
     <tr>
-      <td colspan="4" style="border: 0px!important">
+      <td colspan="4" style="border: 0px!important" rowspan="2">
         <div>
           <h2 style="margin-bottom: 0px"><b>Orders</b></h2>
           <a class="account" routerLink="/home">My account</a> > Orders
@@ -9,13 +9,12 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2">
+      <td>
         <input matInput>
       </td>
       <td align="right">
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="orderStatusFilter">
-            <mat-option value="All orders">All orders</mat-option>
+          <mat-select (selectionChange)="filterStatus()" [(value)]="selectedOrderStatus">
             <mat-option *ngFor="let st of status" value="{{st}}">
               {{st}}
             </mat-option>
@@ -46,26 +45,34 @@
     <table class="orders products">
       <tr style="border: solid 1px black!important;">
         <td colspan="3" style="vertical-align: top;">
-          <div class="{{OrderStatus[order?.status ?? 0]}}">
-            <h2>{{OrderStatus[order?.status ?? 0]}}</h2>
+          <div class="{{OrderStatus[order?.status ?? 0]}}" >
+            <h2 style="margin-bottom: 0px">
+              {{OrderStatus[order?.status ?? 0]}}
+            </h2>
+          </div>
+          <div *ngIf="order?.status == 2" style="padding-bottom: 15px; color: gray">
+            Confirmed on {{order?.updatedDate | date: 'longDate'}}
           </div>
         </td>
-        <td align="right" rowspan="2" style="vertical-align: top;">
+        <td align="right" rowspan="3" style="vertical-align: center;">
           <div class="order-button">
             <button class="order-button" (click)="orderDetails(order?.id)" mat-button>Order Details</button>
           </div>
-          <div>
-            <button class="order-button" mat-button>Reorder</button>
+          <div class="order-button">
+            <button class="order-button" mat-button (click)="reorder(order?.id)">Reorder</button>
+          </div>
+          <div *ngIf="order?.status == 0">
+            <button class="order-button" mat-button (click)="cancelOrder(order?.id)">Cancel</button>
           </div>
         </td>
       </tr>
       <ng-container *ngFor="let product of order.orderProducts">
         <tr>
           <td rowspan="3" width="120px">
-            <img height="90" src="{{product.product.imageUrl}}" width="90">
+            <img height="90" src="{{product.product?.imageUrl}}" width="90">
           </td>
           <td height="30px">
-            {{product.product.name}}
+            {{product.product?.name}}
           </td>
         </tr>
         <tr>
@@ -74,8 +81,8 @@
           </td>
         </tr>
         <tr>
-          <td style="padding-bottom: 30px!important;">
-            <button class="product-button" mat-button>Buy again</button>
+          <td style="padding-bottom: 20px!important; padding-top: 15px">
+            <button class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
           </td>
         </tr>
       </ng-container>

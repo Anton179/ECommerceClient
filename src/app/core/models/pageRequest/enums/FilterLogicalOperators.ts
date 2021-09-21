@@ -1,4 +1,4 @@
 export enum FilterLogicalOperators {
-  And,
-  Or,
+  And = 0,
+  Or = 1,
 }
