@@ -4,7 +4,6 @@ import {Product} from 'src/app/core/models/product.model';
 import {CategoryService} from 'src/app/core/services/category.service';
 import {ProductService} from 'src/app/core/services/product.service';
 import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
-import {FilterLogicalOperators} from "../../../core/models/pageRequest/FilterLogicalOperators";
 
 
 @Component({
@@ -14,7 +13,7 @@ import {FilterLogicalOperators} from "../../../core/models/pageRequest/FilterLog
 })
 export class HomeComponent implements OnInit {
   productList: Product[] = [];
-  dicountProducts: Product[] = [];
+  superDealsProducts: Product[] = [];
   categories: Category[] = [];
 
   slidesNumber = [
@@ -31,10 +30,10 @@ export class HomeComponent implements OnInit {
       this.productList = paginatedResult.items;
     });
 
-    this.productService.getDiscountProducts({pageIndex:0, pageSize:18,
-      sortDirection: 'Ascending', columnNameForSorting: 'Name'})
+    this.productService.getProducts({pageIndex:0, pageSize:18,
+      sortDirection: 'Descending', columnNameForSorting: 'Price'})
       .subscribe((paginatedResult: PaginatedResult<Product>) => {
-        this.dicountProducts = paginatedResult.items;
+        this.superDealsProducts = paginatedResult.items;
     });
 
     this.categoryService.getMainCategories().subscribe((categories: Category[]) => {

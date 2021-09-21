@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {MaterialModule} from "../../shared/material/material.module";
 import { PlaceOrderDialogComponent } from './place-order-dialog/place-order-dialog.component';
 import {CommonModule} from "@angular/common";
+import { CancelOrderDialogComponent } from './cancel-order-dialog/cancel-order-dialog.component';
 
 
 @NgModule({
@@ -10,10 +11,12 @@ import {CommonModule} from "@angular/common";
     CommonModule
   ],
   declarations: [
-    PlaceOrderDialogComponent
+    PlaceOrderDialogComponent,
+    CancelOrderDialogComponent
   ],
   exports: [
-    PlaceOrderDialogComponent
+    PlaceOrderDialogComponent,
+    CancelOrderDialogComponent
   ]
 })
 

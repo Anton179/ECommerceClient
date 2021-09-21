@@ -10,7 +10,7 @@
                         [hideOverlay]="true">
       <div class="center" style="padding-top: 60px">
         <mat-nav-list class="list-horizontal">
-          <mat-list-item *ngFor="let product of dicountProducts.slice(pos, pos + 6)">
+          <mat-list-item *ngFor="let product of superDealsProducts.slice(pos, pos + 6)">
             <app-product-item [productItem]="product"></app-product-item>
           </mat-list-item>
         </mat-nav-list>

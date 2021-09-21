@@ -96,9 +96,10 @@
         </td>
         <td>
           <div class="inline">
-            <mat-icon class="credit-card">credit_card</mat-icon>
+            <mat-icon *ngIf="order?.payment == 0" class="credit-card">attach_money</mat-icon>
+            <mat-icon *ngIf="order?.payment == 1" class="credit-card">credit_card</mat-icon>
           </div>
-          <div class="inline" style="font-size: 20px; vertical-align: top; padding-left: 30px; margin-top: 5px;">
+          <div class="inline" style="font-size: 20px; vertical-align: top; padding-left: 25px; margin-top: 15px;">
             {{PaymentType[order?.payment ?? 0]}}
           </div>
         </td>
@@ -106,10 +107,10 @@
     </table>
   </div>
   <div class="orderedItems">
-    <table class="order orderedItems" style="padding-bottom: 10px">
+    <table class="order orderedItems" style="padding-bottom: 10px; padding-left: 15px; padding-right: 15px">
       <tr>
-        <td colspan="6" style="padding-left: 20px!important;padding-top: 20px!important;">
-          <h2>
+        <td colspan="6" style="padding-left: 20px;" >
+          <h2 style="padding-top: 10px;margin-bottom: 0px;">
             Ordered Items
           </h2>
         </td>
@@ -117,16 +118,16 @@
       <ng-container *ngFor="let orderItem of order?.orderProducts">
         <tr>
           <td colspan="6">
-            <hr>
+            <mat-divider></mat-divider>
           </td>
         </tr>
         <tr>
           <td rowspan="3">
-            <img src="{{orderItem.product.imageUrl}}" width="100px" height="100px">
+            <img src="{{orderItem.product?.imageUrl}}" width="100px" height="100px">
           </td>
           <td colspan="5">
             <h2>
-              {{orderItem.product.name}}
+              {{orderItem.product?.name}}
             </h2>
           </td>
         </tr>
@@ -136,14 +137,14 @@
               Qty: {{orderItem.quantity}}
             </h3>
             <h3>
-              Price: {{orderItem.product.price}}$
+              Price: {{orderItem.product?.price}}$
             </h3>
           </td>
         </tr>
         <tr>
           <td colspan="5" style="vertical-align: top">
             <button mat-stroked-button class="order-item-button">Write a review</button>
-            <button mat-stroked-button class="order-item-button" style="margin-left: 10px">Buy again</button>
+            <button mat-stroked-button (click)="addToCart(orderItem?.product?.id)" class="order-item-button" style="margin-left: 10px">Buy again</button>
           </td>
         </tr>
       </ng-container>

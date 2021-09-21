@@ -5,6 +5,7 @@ import {OrderService} from "../../../../core/services/order.service";
 import {Order} from "../../../../core/models/order.model";
 import {OrderStatus} from "../../../../core/enums/OrderStatus";
 import {PaymentType} from "../../../../core/enums/PaymentType";
+import {CartService} from "../../../../core/services/cart.service";
 
 @Component({
   selector: 'app-order-details',
@@ -13,7 +14,8 @@ import {PaymentType} from "../../../../core/enums/PaymentType";
 })
 export class OrderDetailsComponent implements OnInit {
 
-  constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService) { }
+  constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService,
+              private _cartService: CartService) { }
 
   order: Order | undefined;
   test: OrderStatus = OrderStatus.Confirmed;
@@ -31,10 +33,14 @@ export class OrderDetailsComponent implements OnInit {
         this.subTotalPrice = 0;
 
         order.orderProducts?.forEach(p => {
-          this.subTotalPrice += p.product.price ?? 0;
+          this.subTotalPrice += p.product?.price ?? 0;
         })
       });
     });
+  }
+
+  addToCart(id: string | undefined) {
+    this._cartService.addCartItem({productId: id ?? '', quantity: 1})
   }
 
 }
