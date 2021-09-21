@@ -14,29 +14,30 @@ import {CartService} from "../../../../core/services/cart.service";
 })
 export class OrderDetailsComponent implements OnInit {
 
-  constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService,
-              private _cartService: CartService) { }
-
   order: Order | undefined;
   test: OrderStatus = OrderStatus.Confirmed;
   OrderStatus = OrderStatus;
   PaymentType = PaymentType;
   subTotalPrice: number = 0;
 
+  constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService,
+              private _cartService: CartService) {
+  }
+
   ngOnInit() {
     this._activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id'))
     )
-    .subscribe(data => {
-      this._orderService.getOrder(data).subscribe((order: Order) => {
-        this.order = order;
-        this.subTotalPrice = 0;
+      .subscribe(data => {
+        this._orderService.getOrder(data).subscribe((order: Order) => {
+          this.order = order;
+          this.subTotalPrice = 0;
 
-        order.orderProducts?.forEach(p => {
-          this.subTotalPrice += p.product?.price ?? 0;
-        })
+          order.orderProducts?.forEach(p => {
+            this.subTotalPrice += p.product?.price ?? 0;
+          })
+        });
       });
-    });
   }
 
   addToCart(id: string | undefined) {

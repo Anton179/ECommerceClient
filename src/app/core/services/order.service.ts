@@ -12,7 +12,8 @@ import {PaginatedResult} from "../models/pageRequest/paginatedResult.model";
 })
 export class OrderService {
 
-  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) { }
+  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  }
 
   createOrder(order: Order): Observable<string> {
     console.log(order)
@@ -34,13 +35,14 @@ export class OrderService {
       .append('PagedRequest.columnNameForSorting', pagedRequest.columnNameForSorting)
       .append('PagedRequest.sortDirection', pagedRequest.sortDirection)
 
-    if (pagedRequest.requestFilters != null)
-    {
+    if (pagedRequest.requestFilters != null) {
       params = params.append('PagedRequest.RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
 
       pagedRequest.requestFilters.filters.forEach((filter, index) => {
         params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Path`, filter.path)
-        params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Value`, filter.value)
+        if (filter.value) {
+          params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Value`, filter.value)
+        }
         params = params.append(`PagedRequest.RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Equals)
       })
     }

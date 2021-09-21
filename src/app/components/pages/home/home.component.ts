@@ -4,6 +4,8 @@ import {Product} from 'src/app/core/models/product.model';
 import {CategoryService} from 'src/app/core/services/category.service';
 import {ProductService} from 'src/app/core/services/product.service';
 import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
+import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOperators";
+import {FilterLogicalOperators} from "../../../core/models/pageRequest/enums/FilterLogicalOperators";
 
 
 @Component({
@@ -36,9 +38,14 @@ export class HomeComponent implements OnInit {
         this.superDealsProducts = paginatedResult.items;
     });
 
-    this.categoryService.getMainCategories().subscribe((categories: Category[]) => {
-      this.categories = categories;
-    });
+    this.categoryService.getCategories({
+      pageIndex:0, pageSize:7,
+      sortDirection: "Ascending", columnNameForSorting: "Name",
+      requestFilters: {logicalOperator: FilterLogicalOperators.And,
+        filters: [{path: "x => x.Image", operator: FilterOperators.NotEqualsNumber}]}
+    }).subscribe((pagedResult: PaginatedResult<Category>) => {
+      this.categories = pagedResult.items;
+    })
   }
 
 }
