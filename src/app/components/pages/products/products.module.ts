@@ -3,9 +3,10 @@ import {SharedModule} from "../../../shared/shared.module";
 import {MaterialModule} from "../../../shared/material/material.module";
 import {RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ProductComponent} from "./product.component";
-import {ProductRoutingModule} from "./product-routing.module";
 import {ItemsModule} from "../../items/items.module";
+import {ProductsComponent} from "./products.component";
+import {ProductDetailsModule} from "./product-details/product-details.module";
+import {ProductsRoutingModule} from "./products-routing.module";
 
 @NgModule({
   imports: [
@@ -15,12 +16,13 @@ import {ItemsModule} from "../../items/items.module";
     ReactiveFormsModule,
     FormsModule,
     ItemsModule,
-    ProductRoutingModule
+    ProductsRoutingModule,
+    ProductDetailsModule,
   ],
   declarations: [
-    ProductComponent,
+    ProductsComponent
   ]
 })
 
-export class ProductModule {
+export class ProductsModule {
 }

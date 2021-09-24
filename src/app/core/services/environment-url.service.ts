@@ -6,5 +6,4 @@ import { Injectable } from '@angular/core';
 })
 export class EnvironmentUrlService {
   public api_url: string = environment.api_url;
-  constructor() { }
 }

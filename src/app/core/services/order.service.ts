@@ -16,7 +16,6 @@ export class OrderService {
   }
 
   createOrder(order: Order): Observable<string> {
-    console.log(order)
     return this._httpClient.post<string>(`${this._envUrlservice.api_url}/orders`, order);
   }
 

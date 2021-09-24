@@ -16,7 +16,7 @@ import {Product} from "../../../core/models/product.model";
 })
 export class PlaceOrderDialogComponent implements OnInit {
   shipping: ShippingMethod;
-  orderProducts: [{ product?: Product, quantity?: number }] = [{}];
+  orderProducts: { product?: Product, quantity?: number }[] = [];
   placeOrderForm = new FormGroup({
     address: new FormControl(''),
     payment: new FormControl(''),
@@ -31,12 +31,6 @@ export class PlaceOrderDialogComponent implements OnInit {
       const orderProduct = {product: item.product, quantity: item.quantity}
       this.orderProducts.push(orderProduct)
     })
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.orderProducts = this.orderProducts.slice(1, this.orderProducts.length);
-
-    console.log(this.orderProducts)
   }
 
   ngOnInit(): void {
