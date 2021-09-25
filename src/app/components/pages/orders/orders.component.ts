@@ -11,6 +11,9 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CancelOrderDialogComponent} from "../../dialogs/cancel-order-dialog/cancel-order-dialog.component";
 import {Filter} from "../../../core/models/pageRequest/filter.model";
 import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
+import {AuthService} from "../../../core/services/auth.service";
+import {Product} from "../../../core/models/product.model";
+import {OrderProduct} from "../../../core/models/orderProduct.model";
 
 @Component({
   selector: 'app-orders',
@@ -24,10 +27,11 @@ export class OrdersComponent implements OnInit {
   selectedOrderStatus: string = 'All orders';
   timeFilter: string = 'All time';
   timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months']
+  orderProducts: OrderProduct[] = [];
 
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog, private _authService: AuthService) {
     const arr = Object.keys(this.OrderStatus).filter(k => isNaN(Number(k)))
 
     arr.forEach(status => {
@@ -36,17 +40,31 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._orderService.getOrders({
+    const pagedRequest: PagedRequest = {
       pageIndex: 1, pageSize: 10,
-      sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
+      sortDirection: 'Descending',
+      columnNameForSorting: 'CreatedDate'
+    }
+
+    this._authService.getRole().then(role => {
+      if (role == 'vendor') {
+        this._orderService.getOrderProducts(pagedRequest)
+          .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
+            this.orderProducts = paginatedResult.items;
+            console.log(this.orderProducts)
+        })
+      }
+      else {
+        this._orderService.getOrders(pagedRequest)
+          .subscribe((paginatedResult: PaginatedResult<Order>) => {
+            this.orders = paginatedResult.items;
+          })
+      }
     })
-      .subscribe((paginatedResult: PaginatedResult<Order>) => {
-        this.orders = paginatedResult.items;
-      })
   }
 
   filterStatus() {
-    let request: PagedRequest = {
+    const request: PagedRequest = {
       pageIndex: 1, pageSize: 10,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
       requestFilters: {
@@ -77,28 +95,6 @@ export class OrdersComponent implements OnInit {
       .subscribe((paginatedResult: PaginatedResult<Order>) => {
         this.orders = paginatedResult.items;
       })
-
-    // if (orderStatus == -1) {
-    //   this._orderService.getOrders({
-    //     pageIndex: 1, pageSize: 10,
-    //     sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
-    //   })
-    //     .subscribe((paginatedResult: PaginatedResult<Order>) => {
-    //       this.orders = paginatedResult.items;
-    //     })
-    // } else {
-    //   this._orderService.getOrders({
-    //     pageIndex: 1, pageSize: 10,
-    //     sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
-    //     requestFilters: {
-    //       logicalOperator: FilterLogicalOperators.And,
-    //       filters: [{path: "Status", value: orderStatus.toString(), operator: FilterOperators.EqualsNumber}]
-    //     }
-    //   })
-    //     .subscribe((paginatedResult: PaginatedResult<Order>) => {
-    //       this.orders = paginatedResult.items;
-    //     })
-    // }
   }
 
   cancelOrder(id: string | undefined) {

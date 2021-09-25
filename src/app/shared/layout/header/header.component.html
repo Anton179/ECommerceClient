@@ -29,7 +29,8 @@
     <button (click)="login()" (mouseenter)="menuTrigger()" *ngIf="!userAuthenticated" disableRipple mat-button>
       Sign In
     </button>
-    <button (click)="cartOpen()" [matBadgeHidden]="hiddenCartBadge" [matBadge]="shoppingCartBadge" mat-icon-button>
+    <button *ngIf="!userAuthenticated || userRole == 'user'" (click)="cartOpen()"
+            [matBadgeHidden]="hiddenCartBadge" [matBadge]="shoppingCartBadge" mat-icon-button>
       <mat-icon>shopping_cart</mat-icon>
     </button>
     <button mat-icon-button>

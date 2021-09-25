@@ -16,8 +16,8 @@ import {FormControl, Validators} from "@angular/forms";
 export class ProductDetailsComponent implements OnInit {
   price: number | undefined;
   product: Product | undefined;
-  category: string | undefined;
   charactericticRows: number = 4;
+  categoryLink: string[] = [];
 
   quantityControl = new FormControl(1, [
     Validators.required,
@@ -63,12 +63,14 @@ export class ProductDetailsComponent implements OnInit {
         this.charactericticRows = 4;
       }
 
-      this.category = this.product.category.name;
+      this.categoryLink.push(this.product.category.name)
       let category: Category = this.product?.category;
       while (category?.parent) {
         category = category.parent;
-        this.category = category.name + " -> " + this.category;
+        this.categoryLink.push(category.name)
       }
+
+      this.categoryLink.reverse()
     });
   }
 

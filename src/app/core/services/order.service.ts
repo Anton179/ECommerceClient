@@ -6,6 +6,8 @@ import {Order} from "../models/order.model";
 import {PagedRequest} from "../models/pageRequest/pagedRequest.model";
 import {FilterOperators} from "../models/pageRequest/enums/FilterOperators";
 import {PaginatedResult} from "../models/pageRequest/paginatedResult.model";
+import {Product} from "../models/product.model";
+import {OrderProduct} from "../models/orderProduct.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,22 +29,36 @@ export class OrderService {
     return this._httpClient.get<Order>(`${this._envUrlservice.api_url}/orders/${id}`);
   }
 
+  getOrderProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<OrderProduct>> {
+    const params = new HttpParams()
+      .append('PageIndex', pagedRequest.pageIndex)
+      .append('PageSize', pagedRequest.pageSize)
+      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
+      .append('SortDirection', pagedRequest.sortDirection)
+
+    console.log(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`)
+
+    return this._httpClient.get<PaginatedResult<OrderProduct>>(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`);
+  }
+
   getOrders(pagedRequest: PagedRequest): Observable<PaginatedResult<Order>> {
     let params = new HttpParams()
-      .append('PagedRequest.pageIndex', pagedRequest.pageIndex)
-      .append('PagedRequest.pageSize', pagedRequest.pageSize)
-      .append('PagedRequest.columnNameForSorting', pagedRequest.columnNameForSorting)
-      .append('PagedRequest.sortDirection', pagedRequest.sortDirection)
+      .append('PageIndex', pagedRequest.pageIndex)
+      .append('PageSize', pagedRequest.pageSize)
+      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
+      .append('SortDirection', pagedRequest.sortDirection)
 
     if (pagedRequest.requestFilters != null) {
-      params = params.append('PagedRequest.RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
+      params = params.append('RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
 
       pagedRequest.requestFilters.filters.forEach((filter, index) => {
-        params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Path`, filter.path)
+        params = params.append(`RequestFilters.Filters[${index}].Path`, filter.path)
+
         if (filter.value) {
-          params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Value`, filter.value)
+          params = params.append(`RequestFilters.Filters[${index}].Value`, filter.value)
         }
-        params = params.append(`PagedRequest.RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Equals)
+
+        params = params.append(`RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Equals)
       })
     }
 

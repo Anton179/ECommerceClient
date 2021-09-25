@@ -1,11 +1,11 @@
-import {Product} from "./product.model";
 import {PaymentType} from "../enums/PaymentType";
 import {OrderStatus} from "../enums/OrderStatus";
 import {ShippingMethod} from "./shippingMethod.model";
+import {OrderProduct} from "./orderProduct.model";
 
 export interface Order {
   id?: string;
-  orderProducts?: { product?: Product, quantity?: number }[];
+  orderProducts?: OrderProduct[];
   shipping: ShippingMethod;
   status?: OrderStatus;
   price?: number;

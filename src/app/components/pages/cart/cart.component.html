@@ -27,12 +27,12 @@
                 Shipping:
               </td>
               <td style="text-align: end;">
-                {{choosenShipping?.price | currency}}
+                {{selectedShipping?.price | currency}}
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                {{choosenShipping?.name}}<br>
+                {{selectedShipping?.name}}<br>
                 Duties & Taxes may be collected at delivery.
               </td>
             </tr>
@@ -161,8 +161,80 @@
       </ng-template>
     </mat-tab>
     <mat-tab label="Buy it again">
-      <div *ngIf="false; else elseBlock2">
-
+      <div *ngIf="orderedProducts.length; else elseBlock2" style="min-height: 400px">
+        <div class="summary">
+          <table>
+            <tr>
+              <td colspan="2">
+                Order Summary
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <mat-divider></mat-divider>
+              </td>
+            </tr>
+            <tr style="font-size: 18px;">
+              <td>
+                Subtotal:
+              </td>
+              <td style="text-align: end;">
+                {{subTotalPrice | currency}}
+              </td>
+            </tr>
+            <tr style="font-size: 16px;">
+              <td>
+                Shipping:
+              </td>
+              <td style="text-align: end;">
+                {{selectedShipping?.price | currency}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                {{selectedShipping?.name}}<br>
+                Duties & Taxes may be collected at delivery.
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <mat-divider></mat-divider>
+              </td>
+            </tr>
+            <tr style="font-size: 18px; font-weight: bold;">
+              <td>
+                Total:
+              </td>
+              <td style="text-align: end;">
+                {{totalPrice | currency}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align: center;">
+                <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div style="max-width: 800px">
+          <mat-carousel [autoplay]="false"
+                        [hideArrows]="false"
+                        [loop]="true" [proportion]=50 [slides]="slidesNumber.length - 1"
+                        maxWidth="auto"
+                        orientation="ltr">
+            <mat-carousel-slide #matCarouselSlide
+                                *ngFor="let pos of slidesNumber"
+                                [hideOverlay]="true">
+              <div class="center">
+                <mat-nav-list class="list-horizontal">
+                  <mat-list-item *ngFor="let product of orderedProducts.slice(pos, pos + 4)">
+                    <app-product-item [productItem]="product"></app-product-item>
+                  </mat-list-item>
+                </mat-nav-list>
+              </div>
+            </mat-carousel-slide>
+          </mat-carousel>
+        </div>
       </div>
       <ng-template #elseBlock2>
         <div class="empty">

@@ -16,6 +16,7 @@ import {HttpParams} from "@angular/common/http";
 export class HeaderComponent implements OnInit {
   @ViewChild('loginMenuTrigger') loginMenuTrigger: MatMenuTrigger | undefined;
   userName: string = '';
+  userRole: string = '';
   productName: string = '';
   shoppingCartBadge: number = 0;
   hiddenCartBadge: boolean = true;
@@ -32,6 +33,10 @@ export class HeaderComponent implements OnInit {
         if (userAuthenticated) {
           this._authService.getUserName().then(userName => {
             this.userName = userName
+          })
+
+          this._authService.getRole().then(role => {
+            this.userRole = role;
           })
         }
 

@@ -6,6 +6,11 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {PlaceOrderDialogComponent} from "../../dialogs/place-order-dialog/place-order-dialog.component";
 import {ShippingService} from "../../../core/services/shipping.service";
 import {ShippingMethod} from "../../../core/models/shippingMethod.model";
+import {Product} from "../../../core/models/product.model";
+import {ProductService} from "../../../core/services/product.service";
+import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
+import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
+import {publish} from "rxjs/operators";
 
 @Component({
   selector: 'app-cart',
@@ -16,22 +21,27 @@ export class CartComponent implements OnInit, DoCheck {
 
   shippingList: ShippingMethod[] = [];
   delivery = [{name: 'Nova Poshta', price: 25}, {name: 'DHL Express', price: 40}];
-  choosenShipping: ShippingMethod | undefined;
+  selectedShipping: ShippingMethod | undefined;
   shippingName = ''
   shippingPrice: number = this.delivery[0].price;
   subTotalPrice: number = 0;
   totalPrice: number = 0;
   cartList: CartItem[] = [];
+  orderedProducts: Product[] = [];
+  slidesNumber = [
+    0, 4, 8
+  ];
+
 
   constructor(private _cartService: CartService, private _shippingService: ShippingService,
-              private _authService: AuthService, public dialog: MatDialog) {
+              private _authService: AuthService, public dialog: MatDialog, private _productService: ProductService) {
     this._cartService.notifyObservable.subscribe((notifyState) => {
       this.updateCartList();
     })
   }
 
   ngDoCheck() {
-    this.totalPrice = this.subTotalPrice + (this.choosenShipping?.price ?? 0);
+    this.totalPrice = this.subTotalPrice + (this.selectedShipping?.price ?? 0);
   }
 
   ngOnInit(): void {
@@ -41,8 +51,27 @@ export class CartComponent implements OnInit, DoCheck {
 
     this._shippingService.getShippings().subscribe((shipping: ShippingMethod[]) => {
       this.shippingList = shipping;
-      this.choosenShipping = this.shippingList[0];
-      this.shippingName = this.choosenShipping.name ?? '';
+      this.selectedShipping = this.shippingList[0];
+      this.shippingName = this.selectedShipping.name ?? '';
+    })
+
+    const request: PagedRequest = {
+      pageIndex: 1, pageSize: 20,
+      sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
+    }
+
+    this._productService.getOrderedProducts(request).subscribe((paginatedResult: PaginatedResult<Product>) => {
+      this.orderedProducts = paginatedResult.items;
+
+      this.slidesNumber = [];
+      for (let i = 0; i < this.orderedProducts.length; i += 4)
+      {
+        this.slidesNumber.push(i);
+
+        if (i + 4 >= this.orderedProducts.length && i + 1 < this.orderedProducts.length) {
+          this.slidesNumber.push(i + 4)
+        }
+      }
     })
   }
 
@@ -58,14 +87,14 @@ export class CartComponent implements OnInit, DoCheck {
   }
 
   updateShipping() {
-    this.choosenShipping = this.shippingList.find(x => x.name == this.shippingName);
-    this.shippingPrice = this.choosenShipping?.price ?? 0;
+    this.selectedShipping = this.shippingList.find(x => x.name == this.shippingName);
+    this.shippingPrice = this.selectedShipping?.price ?? 0;
   }
 
   placeOrder(price: number) {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.data = {
-      shipping: this.choosenShipping,
+      shipping: this.selectedShipping,
       cartItems: this.cartList
     };
     matDialogConfig.disableClose = true;

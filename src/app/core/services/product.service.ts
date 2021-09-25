@@ -19,23 +19,35 @@ export class ProductService {
 
   getProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {
     let params = new HttpParams()
-      .append('PagedRequest.pageIndex', pagedRequest.pageIndex)
-      .append('PagedRequest.pageSize', pagedRequest.pageSize)
-      .append('PagedRequest.columnNameForSorting', pagedRequest.columnNameForSorting)
-      .append('PagedRequest.sortDirection', pagedRequest.sortDirection)
+      .append('PageIndex', pagedRequest.pageIndex)
+      .append('PageSize', pagedRequest.pageSize)
+      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
+      .append('SortDirection', pagedRequest.sortDirection)
 
     if (pagedRequest.requestFilters != null) {
-      params = params.append('PagedRequest.RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
+      params = params.append('RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
 
       pagedRequest.requestFilters.filters.forEach((filter, index) => {
-        params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Path`, filter.path)
+        params = params.append(`RequestFilters.Filters[${index}].Path`, filter.path)
+
         if (filter.value) {
-          params = params.append(`PagedRequest.RequestFilters.Filters[${index}].Value`, filter.value)
+          params = params.append(`RequestFilters.Filters[${index}].Value`, filter.value)
         }
-        params = params.append(`PagedRequest.RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Contains)
+
+        params = params.append(`RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Contains)
       })
     }
     return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlservice.api_url}/products?${params.toString()}`);
+  }
+
+  getOrderedProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {
+    const params = new HttpParams()
+      .append('PageIndex', pagedRequest.pageIndex)
+      .append('PageSize', pagedRequest.pageSize)
+      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
+      .append('SortDirection', pagedRequest.sortDirection)
+
+    return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlservice.api_url}/products/getOrderedProducts?${params.toString()}`);
   }
 
   getProduct(id: string): Observable<Product> {
