@@ -6,24 +6,23 @@ import {Order} from "../../../core/models/order.model";
 import {OrderStatus} from "../../../core/enums/OrderStatus";
 
 @Component({
-  selector: 'app-cancel-order-dialog',
-  templateUrl: './cancel-order-dialog.component.html',
-  styleUrls: ['./cancel-order-dialog.component.scss']
+  selector: 'app-confirm-order-dialog',
+  templateUrl: './confirm-order-dialog.component.html',
+  styleUrls: ['./confirm-order-dialog.component.scss']
 })
-export class CancelOrderDialogComponent {
-
+export class ConfirmOrderDialogComponent {
   order?: Order;
 
   constructor(private _orderService: OrderService, @Inject(MAT_DIALOG_DATA) public data: any,
-              private _router: Router) {
+              private  _router: Router) {
     this._orderService.getOrder(data.orderId).subscribe((order: Order) => {
       this.order = order;
     })
   }
 
-  cancelOrder() {
+  confirmOrder() {
     if (this.order) {
-      this.order.status = OrderStatus.Cancelled;
+      this.order.status = OrderStatus.Confirmed;
 
       this._orderService.updateOrder(this.order).subscribe(() => {
         this._router.navigate([`/orders/${this.order?.id}`])
