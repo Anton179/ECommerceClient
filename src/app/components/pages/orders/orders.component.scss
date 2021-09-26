@@ -3,6 +3,20 @@
   border-top-color: lightgray;
 }
 
+div.orders-not-found {
+  text-align: center;
+  height: 400px;
+  width: 1200px;
+  margin-top: 100px;
+
+}
+
+mat-icon.orders-history {
+  font-size: 100px;
+  color: lightgray;
+  margin-right: 60px;
+}
+
 // <mat-form-field>
 :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
   padding: 0 .75em 0 .75em!important;

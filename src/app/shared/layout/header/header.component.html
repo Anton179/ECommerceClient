@@ -1,20 +1,36 @@
 <p>
   <mat-toolbar>
-    <button mat-icon-button [matMenuTriggerFor]="menu" disableRipple>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <a mat-button routerLink="/" disableRipple>
+    <a disableRipple mat-button routerLink="/" class="title">
       <h1>eSearch</h1>
     </a>
+    <button class="category" mat-button>
+      Shop by category
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-form-field class="search">
+      <span matPrefix> </span>
+      <input matInput name="search" placeholder="Search for anything" [(ngModel)]="productName" type="tel">
+      <button mat-button matSuffix (click)="searchProducts()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field class="filterCategory">
+      <mat-select [(ngModel)]="selectedCategory">
+        <mat-option *ngFor="let category of filterCategories" value="{{category}}">
+          {{category}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <span class="example-spacer"></span>
-    <mat-label *ngIf="userAuthenticated" (mouseenter)="menuTrigger()" #loginMenuTrigger="matMenuTrigger"
-      [matMenuTriggerFor]="loginMenu" style="font-size: 16px">
+    <mat-label #loginMenuTrigger="matMenuTrigger" (mouseenter)="menuTrigger()" *ngIf="userAuthenticated"
+               [matMenuTriggerFor]="loginMenu" style="font-size: 16px">
       {{userName}}
     </mat-label>
-    <button mat-button *ngIf="!userAuthenticated" (mouseenter)="menuTrigger()" (click)="login()" disableRipple>
+    <button (click)="login()" (mouseenter)="menuTrigger()" *ngIf="!userAuthenticated" disableRipple mat-button>
       Sign In
     </button>
-    <button mat-icon-button [matBadge]="shoppingCartBadge" [matBadgeHidden]="hiddenCartBadge" (click)="cartOpen()">
+    <button *ngIf="!userAuthenticated || userRole == 'user'" (click)="cartOpen()"
+            [matBadgeHidden]="hiddenCartBadge" [matBadge]="shoppingCartBadge" mat-icon-button>
       <mat-icon>shopping_cart</mat-icon>
     </button>
     <button mat-icon-button>
@@ -26,31 +42,20 @@
 <mat-menu #loginMenu="matMenu">
   <mat-list (mouseleave)="loginMenuTrigger?.closeMenu()" class="profile-info" role="mat-list">
     <mat-list-item>
-      <a mat-flat-button routerLink="/" role="listitem">My Account</a>
+      <a mat-flat-button role="listitem" routerLink="/">My Account</a>
     </mat-list-item>
     <mat-list-item>
-      <a mat-flat-button routerLink="/orders" role="listitem">Orders</a>
+      <a mat-flat-button role="listitem" routerLink="/orders">Orders</a>
     </mat-list-item>
     <mat-list-item>
-      <a mat-flat-button routerLink="/" role="listitem">My Reviews</a>
+      <a mat-flat-button role="listitem" routerLink="/">My Reviews</a>
     </mat-list-item>
     <mat-list-item>
-      <a mat-flat-button routerLink="/" role="listitem">Messages</a>
+      <a mat-flat-button role="listitem" routerLink="/">Messages</a>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <a mat-raised-button routerLink="/" color="accent" role="listitem" (click)="logout()">Sign out</a>
+      <a (click)="logout()" color="accent" mat-raised-button role="listitem" routerLink="/">Sign out</a>
     </mat-list-item>
   </mat-list>
-</mat-menu>
-
-<mat-menu #menu="matMenu" [overlapTrigger]="false">
-  <span>
-    <button mat-menu-item>
-      <mat-icon>home</mat-icon>
-      <span>Home</span>
-      <mat-icon>exit_to_app</mat-icon>
-      <span>Logout</span>
-    </button>
-  </span>
 </mat-menu>

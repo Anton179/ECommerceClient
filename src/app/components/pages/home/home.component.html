@@ -1,14 +1,14 @@
 <div class="container">
-    <div class="mat-headline">Super Deals</div>
+  <div class="mat-headline">Super Deals</div>
   <mat-carousel [autoplay]="false"
-                maxWidth="auto"
-                [proportion]=25 [slides]=5 [loop]="true"
                 [hideArrows]="false"
+                [loop]="true" [proportion]=25 [slides]=5
+                maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide #matCarouselSlide
                         *ngFor="let pos of slidesNumber"
                         [hideOverlay]="true">
-      <div class="center" style="padding-top: 60px">
+      <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of superDealsProducts.slice(pos, pos + 6)">
             <app-product-item [productItem]="product"></app-product-item>
@@ -17,17 +17,18 @@
       </div>
     </mat-carousel-slide>
   </mat-carousel>
-
-    <div class="mat-headline">Trending now</div>
+  <div class="mat-headline">
+    Trending now
+  </div>
   <mat-carousel [autoplay]="false"
-                maxWidth="auto"
-                [proportion]=25 [slides]=5 [loop]="true"
                 [hideArrows]="false"
+                [loop]="true" [proportion]=25 [slides]=5
+                maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide #matCarouselSlide
                         *ngFor="let pos of slidesNumber"
                         [hideOverlay]="true">
-      <div class="center" style="padding-top: 60px">
+      <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of productList.slice(pos, pos + 6)">
             <app-product-item [productItem]="product"></app-product-item>
@@ -36,15 +37,15 @@
       </div>
     </mat-carousel-slide>
   </mat-carousel>
-    <div class="mat-headline">Explore Popular Categories</div>
-    <div class="center">
+  <div class="mat-headline">Explore Popular Categories</div>
+  <div class="center">
     <mat-nav-list class="list-horizontal">
-        <mat-list-item *ngFor='let category of categories'>
-            <div>
-                <img src="{{category.image}}" width="160px" height="160px">
-                <h3>{{category.name}}</h3>
-            </div>
-        </mat-list-item>
+      <mat-list-item *ngFor='let category of categories'>
+        <div (click)="goToCategory(category.name)">
+          <img height="160px" src="{{category.image}}" width="160px">
+          <h3>{{category.name}}</h3>
+        </div>
+      </mat-list-item>
     </mat-nav-list>
-    </div>
+  </div>
 </div>

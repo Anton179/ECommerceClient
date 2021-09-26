@@ -12,6 +12,27 @@ div.empty {
   margin: 120px 0;
 }
 
+//:host ::ng-deep .carousel {
+//  height: 400px!important;
+//}
+
+mat-nav-list.list-horizontal {
+  //padding-top: 50px;
+  padding: 0px;
+  .mat-list-item {
+    display: inline-block;
+    height: auto;
+    width: auto;
+    color: black;
+  }
+}
+
+div.center {
+  text-align: center;
+  width: 800px;
+  padding-top: 60px;
+}
+
 ::ng-deep mat-dialog-container {
   background: #5D5D5D !important;
 }

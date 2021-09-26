@@ -8,6 +8,7 @@ import {CartService} from "../../../core/services/cart.service";
 import {Router} from "@angular/router";
 import {CartItem} from "../../../core/models/cartItem.model";
 import {Product} from "../../../core/models/product.model";
+import {OrderProduct} from "../../../core/models/orderProduct.model";
 
 @Component({
   selector: 'app-place-order-dialog',
@@ -16,7 +17,7 @@ import {Product} from "../../../core/models/product.model";
 })
 export class PlaceOrderDialogComponent implements OnInit {
   shipping: ShippingMethod;
-  orderProducts: [{ product?: Product, quantity?: number }] = [{}];
+  orderProducts: OrderProduct[] = [];
   placeOrderForm = new FormGroup({
     address: new FormControl(''),
     payment: new FormControl(''),
@@ -28,15 +29,9 @@ export class PlaceOrderDialogComponent implements OnInit {
     this.shipping = data.shipping;
 
     data.cartItems.forEach((item: CartItem) => {
-      const orderProduct = {product: item.product, quantity: item.quantity}
+      const orderProduct: OrderProduct = {product: item.product, quantity: item.quantity}
       this.orderProducts.push(orderProduct)
     })
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.orderProducts = this.orderProducts.slice(1, this.orderProducts.length);
-
-    console.log(this.orderProducts)
   }
 
   ngOnInit(): void {

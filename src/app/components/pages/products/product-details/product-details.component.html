@@ -1,5 +1,14 @@
 <div>
-  <div class="category">{{category}}</div>
+  <div class="category">
+    <ng-container *ngFor="let cat of categoryLink; let idx = index">
+      <a [routerLink]="'/products'" [queryParams]="{category: cat}">
+        {{cat}}
+      </a>
+      <ng-container *ngIf="idx < categoryLink.length - 1">
+        ->
+      </ng-container>
+    </ng-container>
+  </div>
   <div class="product">
     <mat-grid-list cols="3" rowHeight="100px">
       <mat-grid-tile rowspan="3">
@@ -20,7 +29,7 @@
                 Our price:
               </td>
               <td class="price">
-                {{price}}
+                {{price | currency}}
               </td>
             </tr>
             <tr>

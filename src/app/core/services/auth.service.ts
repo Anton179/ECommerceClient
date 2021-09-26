@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { UserManager, User, UserManagerSettings } from 'oidc-client';
-import { AuthContants } from '../../constants/authConstants';
-import { Subject } from 'rxjs';
-import { CartService } from './cart.service';
+import {Injectable} from '@angular/core';
+import {User, UserManager, UserManagerSettings} from 'oidc-client';
+import {AuthContants} from '../../constants/authConstants';
+import {Subject} from 'rxjs';
+import {CartService} from './cart.service';
 import jwt_decode from 'jwt-decode';
+import {UserClaims} from "../models/userClaims.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,28 @@ export class AuthService {
     this._userManager = new UserManager(this.idpSettings);
   }
 
-  getDecodedAccessToken(token: string): any {
-    try{
-      return jwt_decode(token);
-    }
-    catch(Error){
-      return null;
+  private get idpSettings(): UserManagerSettings {
+    return {
+      authority: AuthContants.idpAuthority,
+      client_id: AuthContants.clientId,
+      client_secret: AuthContants.clientSecret,
+      redirect_uri: `${AuthContants.clientRoot}/auth/signin-callback`,
+      scope: "roles openid profile offline_access",
+      response_type: "code",
+      post_logout_redirect_uri: `${AuthContants.clientRoot}/auth/signout-callback`,
     }
   }
 
   public getUserName = () => {
-    return this._userManager.getUser().then(user => user);
+    return this.getAccessToken().then(token => {
+      return this.getDecodedAccessToken(token ?? '')?.userName ?? ''
+    })
+  }
+
+  public getRole = () => {
+    return this.getAccessToken().then(token => {
+      return this.getDecodedAccessToken(token ?? '')?.role ?? ''
+    })
   }
 
   public login = () => {
@@ -39,38 +51,39 @@ export class AuthService {
   public getAccessToken = (): Promise<string | null> => {
     return this._userManager.getUser()
       .then(user => {
-         return !!user && !user.expired ? user.access_token : null;
-    });
+        return !!user && !user.expired ? user.access_token : null;
+      });
   }
 
   public getRefreshToken = (): Promise<string | null> => {
     return this._userManager.getUser()
       .then(user => {
-         return !!user && !!user.refresh_token ? user.refresh_token : null;
-    });
+        return !!user && !!user.refresh_token ? user.refresh_token : null;
+      });
   }
 
   public isAuthenticated = (): Promise<boolean> => {
     return this._userManager.getUser()
-    .then(user => {
-      if(this._user !== user){
-        this._loginChangedSubject.next(this.checkUser(user));
-      }
+      .then(user => {
+        if (this._user !== user) {
+          this._loginChangedSubject.next(this.checkUser(user));
+        }
 
-      this._user = user; // Check
+        this._user = user; // Check
 
-      return this.checkUser(this._user);
-    })
+        return this.checkUser(this._user);
+      })
   }
 
   public finishLogin = (): Promise<User> => {
     return this._userManager.signinRedirectCallback()
-    .then(user => {
-      this._user = user;
-      this._loginChangedSubject.next(this.checkUser(user));
-      this._cartService.changeState('');
-      return user;
-    })
+      .then(user => {
+        this._user = user;
+        this._loginChangedSubject.next(this.checkUser(user));
+        this._cartService.changeState('');
+        this.getDecodedAccessToken(user.access_token);
+        return user;
+      })
   }
 
   public logout = () => {
@@ -82,15 +95,13 @@ export class AuthService {
     return this._userManager.signoutRedirectCallback();
   }
 
-  private get idpSettings() : UserManagerSettings {
-    return {
-      authority: AuthContants.idpAuthority,
-      client_id: AuthContants.clientId,
-      client_secret: AuthContants.clientSecret,
-      redirect_uri: `${AuthContants.clientRoot}/auth/signin-callback`,
-      scope: "roles openid profile offline_access",
-      response_type: "code",
-      post_logout_redirect_uri: `${AuthContants.clientRoot}/auth/signout-callback`,
+  private getDecodedAccessToken(token: string): UserClaims | null {
+    try {
+      const userClaims = jwt_decode<UserClaims>(token);
+
+      return userClaims;
+    } catch (Error) {
+      return null;
     }
   }
 

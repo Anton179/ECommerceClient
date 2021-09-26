@@ -1,7 +1,7 @@
-<a [routerLink]="['/product', productItem?.id]">
+<a [routerLink]="['/products', productItem?.id]">
     <div>
         <img src="{{productItem?.imageUrl}}" width="150px" height="150px" />
-        <div class="mat-body-2">{{productItem?.name}}</div>
-        <div class="mat-caption">{{productItem?.price}}$</div>
+        <div class="mat-body-2" style="max-width: 150px">{{productItem?.name}}</div>
+        <div class="mat-caption">{{productItem?.price | currency}}</div>
     </div>
 </a>

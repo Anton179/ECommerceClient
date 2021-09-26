@@ -9,6 +9,11 @@ import {FilterLogicalOperators} from "../../../core/models/pageRequest/enums/Fil
 import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOperators";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CancelOrderDialogComponent} from "../../dialogs/cancel-order-dialog/cancel-order-dialog.component";
+import {Filter} from "../../../core/models/pageRequest/filter.model";
+import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
+import {AuthService} from "../../../core/services/auth.service";
+import {Product} from "../../../core/models/product.model";
+import {OrderProduct} from "../../../core/models/orderProduct.model";
 
 @Component({
   selector: 'app-orders',
@@ -21,11 +26,13 @@ export class OrdersComponent implements OnInit {
   status: string[] = ['All orders'];
   selectedOrderStatus: string = 'All orders';
   timeFilter: string = 'All time';
+  timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months']
+  orderProducts: OrderProduct[] = [];
 
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
-              public dialog: MatDialog) {
-    let arr = Object.keys(this.OrderStatus).filter(k => isNaN(Number(k)))
+              public dialog: MatDialog, private _authService: AuthService) {
+    const arr = Object.keys(this.OrderStatus).filter(k => isNaN(Number(k)))
 
     arr.forEach(status => {
       this.status.push(status)
@@ -33,48 +40,65 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._orderService.getOrders({
-      pageIndex: 0, pageSize: 10,
-      sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
+    const pagedRequest: PagedRequest = {
+      pageIndex: 1, pageSize: 10,
+      sortDirection: 'Descending',
+      columnNameForSorting: 'CreatedDate'
+    }
+
+    this._authService.getRole().then(role => {
+      if (role == 'vendor') {
+        this._orderService.getOrderProducts(pagedRequest)
+          .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
+            this.orderProducts = paginatedResult.items;
+            console.log(this.orderProducts)
+        })
+      }
+      else {
+        this._orderService.getOrders(pagedRequest)
+          .subscribe((paginatedResult: PaginatedResult<Order>) => {
+            this.orders = paginatedResult.items;
+          })
+      }
     })
+  }
+
+  filterStatus() {
+    const request: PagedRequest = {
+      pageIndex: 1, pageSize: 10,
+      sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
+      requestFilters: {
+        logicalOperator: FilterLogicalOperators.And,
+        filters: []
+      }
+    }
+
+    const orderStatus: number = Object.keys(this.OrderStatus)
+      .filter(k => isNaN(Number(k)))
+      .findIndex(x => x == this.selectedOrderStatus)
+
+    if (orderStatus != -1) {
+      request.requestFilters?.filters.push({
+        path: "Status",
+        value: orderStatus.toString(),
+        operator: FilterOperators.EqualsNumber
+      })
+    }
+
+    const timeFilter: Filter | null = this.getTimeFilter();
+
+    if (timeFilter) {
+      request.requestFilters?.filters.push(timeFilter)
+    }
+
+    this._orderService.getOrders(request)
       .subscribe((paginatedResult: PaginatedResult<Order>) => {
         this.orders = paginatedResult.items;
       })
   }
 
-  filterStatus() {
-    console.log(this.selectedOrderStatus)
-
-    console.log(Object.keys(this.OrderStatus).filter(k => isNaN(Number(k))).findIndex(x => x == this.selectedOrderStatus))
-    let orderStatus: number = Object.keys(this.OrderStatus)
-      .filter(k => isNaN(Number(k)))
-      .findIndex(x => x == this.selectedOrderStatus)
-
-    if (orderStatus == -1)
-    {
-      this._orderService.getOrders({
-        pageIndex: 0, pageSize: 10,
-        sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
-      })
-        .subscribe((paginatedResult: PaginatedResult<Order>) => {
-          this.orders = paginatedResult.items;
-        })
-    }
-    else {
-      this._orderService.getOrders({
-        pageIndex: 0, pageSize: 10,
-        sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
-        requestFilters: {logicalOperator: FilterLogicalOperators.And,
-          filters: [{path: "x => x.Status", value: orderStatus.toString(), operator: FilterOperators.EqualsNumber}]}
-      })
-        .subscribe((paginatedResult: PaginatedResult<Order>) => {
-          this.orders = paginatedResult.items;
-        })
-    }
-  }
-
   cancelOrder(id: string | undefined) {
-    let matDialogConfig = new MatDialogConfig();
+    const matDialogConfig = new MatDialogConfig();
     matDialogConfig.data = {
       orderId: id
     };
@@ -95,5 +119,24 @@ export class OrdersComponent implements OnInit {
 
   orderDetails(id: string | undefined) {
     this._router.navigate([id], {relativeTo: this._route});
+  }
+
+  private getTimeFilter(): Filter | null {
+    let filter: Filter | null = null;
+    switch (this.timeFilter) {
+      case 'Last 7 Days': {
+        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-7)", operator: FilterOperators.Custom}
+        break;
+      }
+      case 'Last 30 Days': {
+        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-30)", operator: FilterOperators.Custom}
+        break;
+      }
+      case 'Last 6 Months': {
+        filter = {path: "CreatedDate >= DateTime.Today.AddMonths(-6)", operator: FilterOperators.Custom}
+        break;
+      }
+    }
+    return filter;
   }
 }

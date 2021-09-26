@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="center" style="padding-top: 60px">
+    <mat-nav-list class="list-horizontal">
+      <mat-list-item *ngFor="let product of products">
+        <app-product-item [productItem]="product"></app-product-item>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>

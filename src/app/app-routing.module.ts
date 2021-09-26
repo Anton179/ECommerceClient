@@ -13,6 +13,10 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'products',
+    loadChildren:() => import('./components/pages/products/products.module').then(m => m.ProductsModule)
+  },
+  {
     path: 'home',
     loadChildren:() => import('./components/pages/home/home.module').then(m => m.HomeModule)
   },
@@ -20,10 +24,6 @@ const routes: Routes = [
     path: 'cart',
     loadChildren:() => import('./components/pages/cart/cart.module').then(m => m.CartModule),
     canActivate: [AuthGuardService]
-  },
-  {
-    path: 'product',
-    loadChildren:() => import('./components/pages/product/product.module').then(m => m.ProductModule)
   },
   {
     path: '',

@@ -9,15 +9,15 @@ import {ProductService} from 'src/app/core/services/product.service';
 import {FormControl, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: 'app-product-details',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit {
   price: number | undefined;
   product: Product | undefined;
-  category: string | undefined;
   charactericticRows: number = 4;
+  categoryLink: string[] = [];
 
   quantityControl = new FormControl(1, [
     Validators.required,
@@ -55,7 +55,7 @@ export class ProductComponent implements OnInit {
       this.product = product;
       this.price = product.price;
 
-      let rows = product.characteristics.length / 3;
+      const rows = product.characteristics.length / 3;
       if (rows > 4) {
         this.charactericticRows = rows;
       }
@@ -63,12 +63,14 @@ export class ProductComponent implements OnInit {
         this.charactericticRows = 4;
       }
 
-      this.category = this.product.category.name;
+      this.categoryLink.push(this.product.category.name)
       let category: Category = this.product?.category;
       while (category?.parent) {
         category = category.parent;
-        this.category = category.name + " -> " + this.category;
+        this.categoryLink.push(category.name)
       }
+
+      this.categoryLink.reverse()
     });
   }
 

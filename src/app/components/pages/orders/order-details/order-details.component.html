@@ -16,7 +16,7 @@
           Subtotal:
         </td>
         <td style="text-align: end;">
-          {{subTotalPrice}}$
+          {{subTotalPrice | currency}}
         </td>
       </tr>
       <tr style="font-size: 16px;">
@@ -24,7 +24,7 @@
           Shipping:
         </td>
         <td style="text-align: end;">
-          {{order?.shipping?.price}}$
+          {{order?.shipping?.price | currency}}
         </td>
       </tr>
       <tr>
@@ -43,7 +43,7 @@
           Order Total:
         </td>
         <td style="text-align: end;">
-          {{(order?.shipping?.price ?? 0) + subTotalPrice}}$
+          {{(order?.shipping?.price ?? 0) + subTotalPrice | currency}}
         </td>
       </tr>
     </table>
@@ -137,7 +137,7 @@
               Qty: {{orderItem.quantity}}
             </h3>
             <h3>
-              Price: {{orderItem.product?.price}}$
+              Price: {{orderItem.product?.price | currency}}
             </h3>
           </td>
         </tr>

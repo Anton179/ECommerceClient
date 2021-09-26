@@ -9,10 +9,7 @@
       </td>
     </tr>
     <tr>
-      <td>
-        <input matInput>
-      </td>
-      <td align="right">
+      <td align="right" colspan="2">
         <mat-form-field appearance="fill">
           <mat-select (selectionChange)="filterStatus()" [(value)]="selectedOrderStatus">
             <mat-option *ngFor="let st of status" value="{{st}}">
@@ -23,70 +20,81 @@
       </td>
       <td align="right" style="width: 250px">
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="timeFilter">
-            <mat-option value="All time">All time</mat-option>
-            <mat-option value="Last 30 Days">Last 30 Days</mat-option>
-            <mat-option value="Last 6 Months">Last 6 Months</mat-option>
+          <mat-select (selectionChange)="filterStatus()" [(value)]="timeFilter">
+            <mat-option *ngFor="let time of timeFilterArray" [value]="time">{{time}}</mat-option>
           </mat-select>
         </mat-form-field>
       </td>
     </tr>
   </table>
-  <ng-container *ngFor="let order of orders">
-    <div class="inline">
-      Order #{{order?.id}}
-    </div>
-    <div class="inline">
-      Placed on {{order?.createdDate | date: 'longDate'}}
-    </div>
-    <div class="inline">
-      Total: {{order?.price}} $
-    </div>
-    <table class="orders products">
-      <tr style="border: solid 1px black!important;">
-        <td colspan="3" style="vertical-align: top;">
-          <div class="{{OrderStatus[order?.status ?? 0]}}" >
-            <h2 style="margin-bottom: 0px">
-              {{OrderStatus[order?.status ?? 0]}}
-            </h2>
-          </div>
-          <div *ngIf="order?.status == 2" style="padding-bottom: 15px; color: gray">
-            Confirmed on {{order?.updatedDate | date: 'longDate'}}
-          </div>
-        </td>
-        <td align="right" rowspan="3" style="vertical-align: center;">
-          <div class="order-button">
-            <button class="order-button" (click)="orderDetails(order?.id)" mat-button>Order Details</button>
-          </div>
-          <div class="order-button">
-            <button class="order-button" mat-button (click)="reorder(order?.id)">Reorder</button>
-          </div>
-          <div *ngIf="order?.status == 0">
-            <button class="order-button" mat-button (click)="cancelOrder(order?.id)">Cancel</button>
-          </div>
-        </td>
-      </tr>
-      <ng-container *ngFor="let product of order.orderProducts">
-        <tr>
-          <td rowspan="3" width="120px">
-            <img height="90" src="{{product.product?.imageUrl}}" width="90">
+  <ng-container *ngIf="orders.length; else ordersNotFoundBlock">
+    <ng-container *ngFor="let order of orders">
+      <div class="inline">
+        Order #{{order?.id}}
+      </div>
+      <div class="inline">
+        Placed on {{order?.createdDate | date: 'longDate'}}
+      </div>
+      <div class="inline">
+        Total: {{order?.price | currency}}
+      </div>
+      <table class="orders products">
+        <tr style="border: solid 1px black!important;">
+          <td colspan="3" style="vertical-align: top;">
+            <div class="{{OrderStatus[order?.status ?? 0]}}" >
+              <h2 style="margin-bottom: 0px">
+                {{OrderStatus[order?.status ?? 0]}}
+              </h2>
+            </div>
+            <div *ngIf="order?.status == 2" style="padding-bottom: 15px; color: gray">
+              Confirmed on {{order?.updatedDate | date: 'longDate'}}
+            </div>
           </td>
-          <td height="30px">
-            {{product.product?.name}}
+          <td align="right" rowspan="3" style="vertical-align: center;">
+            <div class="order-button">
+              <button class="order-button" (click)="orderDetails(order?.id)" mat-button>Order Details</button>
+            </div>
+            <div class="order-button">
+              <button class="order-button" mat-button (click)="reorder(order?.id)">Reorder</button>
+            </div>
+            <div *ngIf="order?.status == 0">
+              <button class="order-button" mat-button (click)="cancelOrder(order?.id)">Cancel</button>
+            </div>
           </td>
         </tr>
-        <tr>
-          <td style="vertical-align: top">
-            Qty: {{product.quantity}}
-          </td>
-        </tr>
-        <tr>
-          <td style="padding-bottom: 20px!important; padding-top: 15px">
-            <button class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
-          </td>
-        </tr>
-      </ng-container>
-    </table>
-    <br><br>
+        <ng-container *ngFor="let product of order.orderProducts">
+          <tr>
+            <td rowspan="3" width="120px">
+              <img height="90" src="{{product.product?.imageUrl}}" width="90">
+            </td>
+            <td height="30px">
+              {{product.product?.name}}
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top">
+              Qty: {{product.quantity}}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 20px!important; padding-top: 15px">
+              <button class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+      <br><br>
+    </ng-container>
   </ng-container>
+  <ng-template #ordersNotFoundBlock>
+  <div class="orders-not-found">
+    <mat-icon class="orders-history">history</mat-icon>
+    <h2>
+      No results were found within the period specified
+    </h2>
+    <h4>
+      Try updating your date range to find a specific order.
+    </h4>
+  </div>
+  </ng-template>
 </div>
