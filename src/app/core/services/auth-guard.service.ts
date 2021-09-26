@@ -27,6 +27,13 @@ export class AuthGuardService implements CanActivate {
             }
             break;
           }
+          case 'account': {
+            if (this._userRole == 'operator') {
+              this._router.navigateByUrl('/home')
+              return false;
+            }
+            break;
+          }
         }
         return true;
       }

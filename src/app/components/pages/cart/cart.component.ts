@@ -10,7 +10,6 @@ import {Product} from "../../../core/models/product.model";
 import {ProductService} from "../../../core/services/product.service";
 import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
 import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
-import {publish} from "rxjs/operators";
 
 @Component({
   selector: 'app-cart',
@@ -28,9 +27,7 @@ export class CartComponent implements OnInit, DoCheck {
   totalPrice: number = 0;
   cartList: CartItem[] = [];
   orderedProducts: Product[] = [];
-  slidesNumber = [
-    0, 4, 8
-  ];
+  slidesNumber: number[] = [];
 
 
   constructor(private _cartService: CartService, private _shippingService: ShippingService,
@@ -63,14 +60,13 @@ export class CartComponent implements OnInit, DoCheck {
     this._productService.getOrderedProducts(request).subscribe((paginatedResult: PaginatedResult<Product>) => {
       this.orderedProducts = paginatedResult.items;
 
-      this.slidesNumber = [];
-      for (let i = 0; i < this.orderedProducts.length; i += 4)
-      {
-        this.slidesNumber.push(i);
+      this.slidesNumber = [0];
 
-        if (i + 4 >= this.orderedProducts.length && i + 1 < this.orderedProducts.length) {
-          this.slidesNumber.push(i + 4)
-        }
+      let i = this.orderedProducts.length / 4;
+      i += this.orderedProducts.length % 4 == 0 ? 0 : 1;
+
+      for (let j = 1; j < Math.floor(i); j++) {
+        this.slidesNumber.push(4 * j)
       }
     })
   }

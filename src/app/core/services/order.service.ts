@@ -6,8 +6,8 @@ import {Order} from "../models/order.model";
 import {PagedRequest} from "../models/pageRequest/pagedRequest.model";
 import {FilterOperators} from "../models/pageRequest/enums/FilterOperators";
 import {PaginatedResult} from "../models/pageRequest/paginatedResult.model";
-import {Product} from "../models/product.model";
 import {OrderProduct} from "../models/orderProduct.model";
+import {OrderStatus} from "../enums/OrderStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -29,39 +29,25 @@ export class OrderService {
     return this._httpClient.get<Order>(`${this._envUrlservice.api_url}/orders/${id}`);
   }
 
+  getNumberOfOrders(orderStatus?: OrderStatus): Observable<number> {
+    return orderStatus === undefined ?
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getCount`) :
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getCount?Status=${orderStatus}`);
+  }
+
+  getNumberOfOrderProducts(orderStatus?: OrderStatus): Observable<number> {
+    return orderStatus === undefined ?
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount`) :
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount?Status=${orderStatus}`);
+  }
+
   getOrderProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<OrderProduct>> {
-    const params = new HttpParams()
-      .append('PageIndex', pagedRequest.pageIndex)
-      .append('PageSize', pagedRequest.pageSize)
-      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
-      .append('SortDirection', pagedRequest.sortDirection)
-
-    console.log(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`)
-
+    const params = this._envUrlservice.getParams(pagedRequest)
     return this._httpClient.get<PaginatedResult<OrderProduct>>(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`);
   }
 
   getOrders(pagedRequest: PagedRequest): Observable<PaginatedResult<Order>> {
-    let params = new HttpParams()
-      .append('PageIndex', pagedRequest.pageIndex)
-      .append('PageSize', pagedRequest.pageSize)
-      .append('ColumnNameForSorting', pagedRequest.columnNameForSorting)
-      .append('SortDirection', pagedRequest.sortDirection)
-
-    if (pagedRequest.requestFilters != null) {
-      params = params.append('RequestFilters.LogicalOperator', pagedRequest.requestFilters.logicalOperator)
-
-      pagedRequest.requestFilters.filters.forEach((filter, index) => {
-        params = params.append(`RequestFilters.Filters[${index}].Path`, filter.path)
-
-        if (filter.value) {
-          params = params.append(`RequestFilters.Filters[${index}].Value`, filter.value)
-        }
-
-        params = params.append(`RequestFilters.Filters[${index}].operator`, filter.operator ?? FilterOperators.Equals)
-      })
-    }
-
+    const params = this._envUrlservice.getParams(pagedRequest)
     return this._httpClient.get<PaginatedResult<Order>>(`${this._envUrlservice.api_url}/orders?${params.toString()}`);
   }
 }

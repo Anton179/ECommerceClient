@@ -6,6 +6,7 @@ import {Order} from "../../../../core/models/order.model";
 import {OrderStatus} from "../../../../core/enums/OrderStatus";
 import {PaymentType} from "../../../../core/enums/PaymentType";
 import {CartService} from "../../../../core/services/cart.service";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-order-details',
@@ -19,9 +20,10 @@ export class OrderDetailsComponent implements OnInit {
   OrderStatus = OrderStatus;
   PaymentType = PaymentType;
   subTotalPrice: number = 0;
+  userRole: string = ''
 
   constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService,
-              private _cartService: CartService) {
+              private _cartService: CartService, private _authService: AuthService) {
   }
 
   ngOnInit() {
@@ -38,6 +40,10 @@ export class OrderDetailsComponent implements OnInit {
           })
         });
       });
+
+    this._authService.getRole().then(role => {
+      this.userRole = role;
+    })
   }
 
   addToCart(id: string | undefined) {
