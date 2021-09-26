@@ -1,0 +1,102 @@
+<div class="container">
+  <table class="account-info">
+    <tr>
+      <td rowspan="2" style="width: 100px!important;">
+        <mat-icon style="font-size: 100px">supervised_user_circle</mat-icon>
+      </td>
+      <td>
+        <div style="font-size: 24px; font-weight: bold;">
+          Hey, {{userName}}!
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top">
+        <div>
+          Unread messages: 0
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="userRole== 'user'">
+      <td colspan="5">
+        <mat-divider style="background: white; margin-bottom: 10px"></mat-divider>
+      </td>
+    </tr>
+    <tr *ngIf="userRole == 'user'" style="text-align: center;">
+      <td style="vertical-align: top; width: 250px" colspan="2">
+        <div>
+          {{numberOfOrders}}
+          <br> All orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{pendingOrders}}
+          <br> Pending orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{confirmedOrders}}
+          <br> Confirmed orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{cancelledOrders}}
+          <br> Cancelled orders
+        </div>
+      </td>
+    </tr>
+  </table>
+  <table *ngIf="order" class="order-info">
+    <tr>
+      <td style="width: 200px; padding-left: 15px">
+        <div style="font-size: 20px; font-weight: bold">
+          Your last order
+        </div>
+      </td>
+      <td style="width: 630px">
+        Order number: <a [routerLink]="['/orders', order?.id]">#{{order?.id}}</a>
+        | Order Date: <b>{{order?.createdDate | date: 'longDate'}}</b>
+      </td>
+      <td>
+        <div class="{{OrderStatus[order?.status ?? 0]}}">
+          {{OrderStatus[order?.status ?? 0]}}
+        </div>
+      </td>
+      <td align="right" style="padding-right: 15px">
+        <a [routerLink]="['/orders']">View all</a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <mat-divider style="background: lightgray; margin: 10px 0"></mat-divider>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <mat-carousel [autoplay]="false"
+                      [hideArrows]="false"
+                      [loop]="true" [proportion]=15
+                      maxWidth="auto"
+                      orientation="ltr">
+          <mat-carousel-slide
+                              *ngFor="let pos of slidesNumber"
+                              [hideOverlay]="true">
+            <div class="center">
+              <mat-nav-list class="list-horizontal">
+                <mat-list-item *ngFor="let orderProduct of order?.orderProducts?.slice(pos, pos + 6)">
+                  <a [routerLink]="['/products', orderProduct.product?.id]">
+                    <img height="120" src="{{orderProduct.product?.imageUrl}}" width="120">
+                  </a>
+                </mat-list-item>
+              </mat-nav-list>
+            </div>
+          </mat-carousel-slide>
+        </mat-carousel>
+      </td>
+    </tr>
+  </table>
+  <div *ngIf="!order" style="min-height: 250px"></div>
+</div>

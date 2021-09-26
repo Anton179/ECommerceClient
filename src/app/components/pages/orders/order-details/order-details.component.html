@@ -52,16 +52,21 @@
   <a mat-stroked-button routerLink="/orders" class="gray">Back to orders</a>
   <div>
     <div class="mat-headline inline {{OrderStatus[order?.status ?? 0]}}">{{OrderStatus[order?.status ?? 0]}}</div>
-    <div *ngIf="order?.status == 2" class="inline delivered">Confirmed on {{order?.updatedDate | date: 'longDate'}}</div>
+    <div *ngIf="order?.status == 2" class="inline delivered">Confirmed on {{order?.updatedDate | date: 'medium'}}</div>
   </div>
   <div>
     <table class="gray">
+      <tr>
+        <td colspan="2">
+          Ordered by {{order?.user?.userName}}
+        </td>
+      </tr>
       <tr>
         <td [width]="330">
           Order #{{order?.id}}
         </td>
         <td>
-          Placed on {{order?.createdDate | date: 'longDate'}}
+          Placed on {{order?.createdDate | date: 'medium'}}
         </td>
       </tr>
     </table>
@@ -141,7 +146,7 @@
             </h3>
           </td>
         </tr>
-        <tr>
+        <tr *ngIf="userRole == 'user'">
           <td colspan="5" style="vertical-align: top">
             <button mat-stroked-button class="order-item-button">Write a review</button>
             <button mat-stroked-button (click)="addToCart(orderItem?.product?.id)" class="order-item-button" style="margin-left: 10px">Buy again</button>

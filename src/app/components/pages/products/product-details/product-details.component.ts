@@ -16,8 +16,9 @@ import {FormControl, Validators} from "@angular/forms";
 export class ProductDetailsComponent implements OnInit {
   price: number | undefined;
   product: Product | undefined;
-  charactericticRows: number = 4;
+  characteristicRows: number = 4;
   categoryLink: string[] = [];
+  userRole: string = ''
 
   quantityControl = new FormControl(1, [
     Validators.required,
@@ -45,22 +46,28 @@ export class ProductDetailsComponent implements OnInit {
         if (!userAuthenticated) {
           this._authService.login();
         } else {
-          this._cartService.addCartItem({productId: this.id, quantity: this.quantityControl.value});
+          if (this.userRole == 'user') {
+            this._cartService.addCartItem({productId: this.id, quantity: this.quantityControl.value});
+          }
         }
       })
   }
 
   ngOnInit() {
+    this._authService.getRole().then(role => {
+      this.userRole = role;
+    })
+
     this.productService.getProduct(this.id).subscribe((product: Product) => {
       this.product = product;
       this.price = product.price;
 
       const rows = product.characteristics.length / 3;
       if (rows > 4) {
-        this.charactericticRows = rows;
+        this.characteristicRows = rows;
       }
       else {
-        this.charactericticRows = 4;
+        this.characteristicRows = 4;
       }
 
       this.categoryLink.push(this.product.category.name)

@@ -11,10 +11,12 @@ import { SharedModule } from './shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
+import { AccountComponent } from './components/pages/account/account.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserAnimationsModule,

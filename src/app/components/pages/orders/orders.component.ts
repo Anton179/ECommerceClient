@@ -12,8 +12,8 @@ import {CancelOrderDialogComponent} from "../../dialogs/cancel-order-dialog/canc
 import {Filter} from "../../../core/models/pageRequest/filter.model";
 import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
 import {AuthService} from "../../../core/services/auth.service";
-import {Product} from "../../../core/models/product.model";
 import {OrderProduct} from "../../../core/models/orderProduct.model";
+import {ConfirmOrderDialogComponent} from "../../dialogs/confirm-order-dialog/confirm-order-dialog.component";
 
 @Component({
   selector: 'app-orders',
@@ -28,6 +28,7 @@ export class OrdersComponent implements OnInit {
   timeFilter: string = 'All time';
   timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months']
   orderProducts: OrderProduct[] = [];
+  userRole: string = '';
 
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
@@ -40,26 +41,9 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const pagedRequest: PagedRequest = {
-      pageIndex: 1, pageSize: 10,
-      sortDirection: 'Descending',
-      columnNameForSorting: 'CreatedDate'
-    }
-
     this._authService.getRole().then(role => {
-      if (role == 'vendor') {
-        this._orderService.getOrderProducts(pagedRequest)
-          .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
-            this.orderProducts = paginatedResult.items;
-            console.log(this.orderProducts)
-        })
-      }
-      else {
-        this._orderService.getOrders(pagedRequest)
-          .subscribe((paginatedResult: PaginatedResult<Order>) => {
-            this.orders = paginatedResult.items;
-          })
-      }
+      this.userRole = role;
+      this.filterStatus();
     })
   }
 
@@ -77,24 +61,40 @@ export class OrdersComponent implements OnInit {
       .filter(k => isNaN(Number(k)))
       .findIndex(x => x == this.selectedOrderStatus)
 
-    if (orderStatus != -1) {
-      request.requestFilters?.filters.push({
-        path: "Status",
-        value: orderStatus.toString(),
-        operator: FilterOperators.EqualsNumber
-      })
-    }
-
     const timeFilter: Filter | null = this.getTimeFilter();
 
     if (timeFilter) {
       request.requestFilters?.filters.push(timeFilter)
     }
 
-    this._orderService.getOrders(request)
-      .subscribe((paginatedResult: PaginatedResult<Order>) => {
-        this.orders = paginatedResult.items;
-      })
+    if (this.userRole == 'vendor') {
+      if (orderStatus != -1) {
+        request.requestFilters?.filters.push({
+          path: "Order.Status",
+          value: orderStatus.toString(),
+          operator: FilterOperators.EqualsNumber
+        })
+      }
+
+      this._orderService.getOrderProducts(request)
+        .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
+          this.orderProducts = paginatedResult.items;
+        })
+    }
+    else {
+      if (orderStatus != -1) {
+        request.requestFilters?.filters.push({
+          path: "Status",
+          value: orderStatus.toString(),
+          operator: FilterOperators.EqualsNumber
+        })
+      }
+
+      this._orderService.getOrders(request)
+        .subscribe((paginatedResult: PaginatedResult<Order>) => {
+          this.orders = paginatedResult.items;
+        })
+    }
   }
 
   cancelOrder(id: string | undefined) {
@@ -105,6 +105,18 @@ export class OrdersComponent implements OnInit {
     matDialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(CancelOrderDialogComponent, matDialogConfig);
+
+    dialogRef.afterClosed().subscribe();
+  }
+
+  confirmOrder(id: string | undefined) {
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.data = {
+      orderId: id
+    };
+    matDialogConfig.disableClose = true;
+
+    const dialogRef = this.dialog.open(ConfirmOrderDialogComponent, matDialogConfig);
 
     dialogRef.afterClosed().subscribe();
   }

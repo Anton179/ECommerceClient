@@ -42,12 +42,12 @@
 <mat-menu #loginMenu="matMenu">
   <mat-list (mouseleave)="loginMenuTrigger?.closeMenu()" class="profile-info" role="mat-list">
     <mat-list-item>
-      <a mat-flat-button role="listitem" routerLink="/">My Account</a>
+      <a mat-flat-button role="listitem" routerLink="/account">My Account</a>
     </mat-list-item>
     <mat-list-item>
       <a mat-flat-button role="listitem" routerLink="/orders">Orders</a>
     </mat-list-item>
-    <mat-list-item>
+    <mat-list-item *ngIf="userRole == 'user'">
       <a mat-flat-button role="listitem" routerLink="/">My Reviews</a>
     </mat-list-item>
     <mat-list-item>

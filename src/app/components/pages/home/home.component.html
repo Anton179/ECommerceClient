@@ -2,10 +2,10 @@
   <div class="mat-headline">Super Deals</div>
   <mat-carousel [autoplay]="false"
                 [hideArrows]="false"
-                [loop]="true" [proportion]=25 [slides]=5
+                [loop]="true" [proportion]=25
                 maxWidth="auto"
                 orientation="ltr">
-    <mat-carousel-slide #matCarouselSlide
+    <mat-carousel-slide
                         *ngFor="let pos of slidesNumber"
                         [hideOverlay]="true">
       <div class="center">
@@ -25,7 +25,7 @@
                 [loop]="true" [proportion]=25 [slides]=5
                 maxWidth="auto"
                 orientation="ltr">
-    <mat-carousel-slide #matCarouselSlide
+    <mat-carousel-slide
                         *ngFor="let pos of slidesNumber"
                         [hideOverlay]="true">
       <div class="center">

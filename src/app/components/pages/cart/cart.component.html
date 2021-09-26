@@ -222,7 +222,7 @@
                         [loop]="true" [proportion]=50 [slides]="slidesNumber.length - 1"
                         maxWidth="auto"
                         orientation="ltr">
-            <mat-carousel-slide #matCarouselSlide
+            <mat-carousel-slide
                                 *ngFor="let pos of slidesNumber"
                                 [hideOverlay]="true">
               <div class="center">
