@@ -35,6 +35,12 @@ export class OrderService {
       this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getCount?Status=${orderStatus}`);
   }
 
+  getNumberOfOrderProducts(orderStatus?: OrderStatus): Observable<number> {
+    return orderStatus === undefined ?
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount`) :
+      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount?Status=${orderStatus}`);
+  }
+
   getOrderProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<OrderProduct>> {
     const params = this._envUrlservice.getParams(pagedRequest)
     return this._httpClient.get<PaginatedResult<OrderProduct>>(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`);

@@ -50,6 +50,19 @@ export class AccountComponent implements OnInit {
           this.cancelledOrders = count;
         })
       }
+      else {
+        this._orderService.getNumberOfOrderProducts(OrderStatus.Pending).subscribe(count => {
+          this.pendingOrders = count;
+        })
+
+        this._orderService.getNumberOfOrderProducts(OrderStatus.Confirmed).subscribe(count => {
+          this.confirmedOrders = count;
+        })
+
+        this._orderService.getNumberOfOrderProducts(OrderStatus.Cancelled).subscribe(count => {
+          this.cancelledOrders = count;
+        })
+      }
 
     })
 

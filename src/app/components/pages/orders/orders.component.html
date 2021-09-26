@@ -4,7 +4,9 @@
       <td colspan="4" style="border: 0px!important" rowspan="2">
         <div>
           <h2 style="margin-bottom: 0px"><b>Orders</b></h2>
-          <a class="account" routerLink="/account">My account</a> > Orders
+          <ng-container *ngIf="userRole != 'operator'">
+            <a class="account" routerLink="/account">My account</a> > Orders
+          </ng-container>
         </div>
       </td>
     </tr>
@@ -90,7 +92,7 @@
             </tr>
             <tr>
               <td style="padding-bottom: 20px!important; padding-top: 15px">
-                <button class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
+                <button *ngIf="userRole == 'user'" class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
               </td>
             </tr>
           </ng-container>

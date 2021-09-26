@@ -17,7 +17,7 @@
         </div>
       </td>
     </tr>
-    <tr *ngIf="userRole== 'user'">
+    <tr>
       <td colspan="5">
         <mat-divider style="background: white; margin-bottom: 10px"></mat-divider>
       </td>
@@ -45,6 +45,32 @@
         <div>
           {{cancelledOrders}}
           <br> Cancelled orders
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="userRole == 'vendor'" style="text-align: center;">
+      <td style="vertical-align: top; width: 250px" colspan="2">
+        <div>
+          {{pendingOrders + confirmedOrders + cancelledOrders}}
+          <br> All products in orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{pendingOrders}}
+          <br> Pending products in orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{confirmedOrders}}
+          <br> Confirmed products in orders
+        </div>
+      </td>
+      <td style="vertical-align: top; width: 250px">
+        <div>
+          {{cancelledOrders}}
+          <br> Cancelled products in orders
         </div>
       </td>
     </tr>
