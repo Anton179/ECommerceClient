@@ -3,6 +3,7 @@ import {SharedModule} from "../../../shared/shared.module";
 import {MaterialModule} from "../../../shared/material/material.module";
 import {RouterModule} from "@angular/router";
 import {AccountComponent} from "./account.component";
+import {ItemsModule} from "../../items/items.module";
 
 
 @NgModule({
@@ -10,6 +11,7 @@ import {AccountComponent} from "./account.component";
     SharedModule,
     MaterialModule,
     RouterModule,
+    ItemsModule,
     RouterModule.forChild([{
       path: '',
       component: AccountComponent

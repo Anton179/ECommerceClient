@@ -1,5 +1,5 @@
 export interface UserClaims {
-    sub: number;
+    sub: string;
     userName: string;
     role: string;
     email: string;

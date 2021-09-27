@@ -44,6 +44,12 @@ export class AuthService {
     })
   }
 
+  public getUserId = () => {
+    return this.getAccessToken().then(token => {
+      return this.getDecodedAccessToken(token ?? '')?.sub ?? ''
+    })
+  }
+
   public login = () => {
     return this._userManager.signinRedirect();
   }

@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
       .then(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
 
-        if (this.userAuthenticated) {
+        if (this.userAuthenticated && this.userRole == 'user') {
           this.updateShoppingCartBadge();
         } else {
           this.shoppingCartBadge = 0;

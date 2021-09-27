@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="min-height: 500px!important;">
   <table class="account-info">
     <tr>
       <td rowspan="2" style="width: 100px!important;">
@@ -75,7 +75,7 @@
       </td>
     </tr>
   </table>
-  <table *ngIf="order" class="order-info">
+  <table *ngIf="userRole == 'user' && order" class="order-info">
     <tr>
       <td style="width: 200px; padding-left: 15px">
         <div style="font-size: 20px; font-weight: bold">
@@ -108,11 +108,11 @@
                       maxWidth="auto"
                       orientation="ltr">
           <mat-carousel-slide
-                              *ngFor="let pos of slidesNumber"
-                              [hideOverlay]="true">
+            *ngFor="let pos of slidesNumber"
+            [hideOverlay]="true">
             <div class="center">
               <mat-nav-list class="list-horizontal">
-                <mat-list-item *ngFor="let orderProduct of order?.orderProducts?.slice(pos, pos + 6)">
+                <mat-list-item *ngFor="let orderProduct of order?.orderProducts?.slice(pos, pos + 5)">
                   <a [routerLink]="['/products', orderProduct.product?.id]">
                     <img height="120" src="{{orderProduct.product?.imageUrl}}" width="120">
                   </a>
@@ -124,5 +124,30 @@
       </td>
     </tr>
   </table>
-  <div *ngIf="!order" style="min-height: 250px"></div>
+  <div *ngIf="userRole == 'vendor'" class="products">
+    <h2>Your products</h2>
+      <div class="center" style="border: solid 1px lightgray; border-radius: 10px">
+        <mat-nav-list class="list-horizontal">
+          <mat-list-item *ngFor="let product of products?.slice(0, 5)">
+            <a [routerLink]="['/products', product.id]">
+              <img height="120" src="{{product.imageUrl}}" width="120">
+              <h5>{{product.name}}</h5>
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+        <mat-nav-list class="list-horizontal">
+          <mat-list-item *ngFor="let product of products?.slice(5, 10)">
+            <a [routerLink]="['/products', product.id]">
+              <img height="120" src="{{product.imageUrl}}" width="120">
+              <h5>{{product.name}}</h5>
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    <mat-paginator [length]="length"
+                   [pageSize]="10"
+                   (page)="getProducts($event.pageIndex)"
+                   aria-label="Select page">
+    </mat-paginator>
+  </div>
 </div>
