@@ -17,21 +17,21 @@ export class ProductsComponent {
 
   products: Product[] = []
   str = '';
+  length: number = 0;
+  pagedRequest: PagedRequest = {
+    pageIndex: 1, pageSize: 21,
+    sortDirection: 'Ascending', columnNameForSorting: 'Name',
+    requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
+  };
   private _querySubscription: Subscription;
 
   constructor(private _route: ActivatedRoute, private _prooductService: ProductService) {
     this._querySubscription = _route.queryParams.subscribe((queryParam: any) => {
-      const categoryName: string = queryParam['category'];
+      const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
 
-      const pagedRequest: PagedRequest = {
-        pageIndex: 1, pageSize: 30,
-        sortDirection: 'Ascending', columnNameForSorting: 'Name',
-        requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
-      };
-
       if (productName) {
-        pagedRequest.requestFilters?.filters.push({
+        this.pagedRequest.requestFilters?.filters.push({
           path: 'Name',
           value: productName,
           operator: FilterOperators.Contains
@@ -39,16 +39,23 @@ export class ProductsComponent {
       }
 
       if (categoryName) {
-        pagedRequest.requestFilters?.filters.push({
+        this.pagedRequest.requestFilters?.filters.push({
           path: 'Category.Name',
           value: categoryName,
           operator: FilterOperators.Equals
         })
       }
 
-      this._prooductService.getProducts(pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
-        this.products = paginatedResult.items;
-      })
+      this.getProducts(0)
+    })
+  }
+
+  getProducts(pageIndex: number) {
+    this.pagedRequest.pageIndex = pageIndex + 1;
+
+    this._prooductService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
+      this.products = paginatedResult.items;
+      this.length = paginatedResult.total;
     })
   }
 }

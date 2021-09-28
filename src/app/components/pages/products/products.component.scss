@@ -12,3 +12,12 @@ mat-nav-list.list-horizontal {
 div.center {
   text-align: center;
 }
+
+:host ::ng-deep .mat-icon-button.mat-button-disabled.mat-button-disabled {
+  color: #C3C3C3;
+}
+
+:host ::ng-deep .mat-paginator-outer-container {
+  color: black;
+  background: white;
+}
