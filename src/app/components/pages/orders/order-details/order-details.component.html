@@ -114,7 +114,7 @@
   <div class="orderedItems">
     <table class="order orderedItems" style="padding-bottom: 10px; padding-left: 15px; padding-right: 15px">
       <tr>
-        <td colspan="6" style="padding-left: 20px;" >
+        <td colspan="6" style="padding-left: 20px;">
           <h2 style="padding-top: 10px;margin-bottom: 0px;">
             Ordered Items
           </h2>
@@ -149,7 +149,9 @@
         <tr *ngIf="userRole == 'user'">
           <td colspan="5" style="vertical-align: top">
             <button mat-stroked-button class="order-item-button">Write a review</button>
-            <button mat-stroked-button (click)="addToCart(orderItem?.product?.id)" class="order-item-button" style="margin-left: 10px">Buy again</button>
+            <button mat-stroked-button (click)="addToCart(orderItem?.product?.id)" class="order-item-button"
+                    style="margin-left: 10px">Buy again
+            </button>
           </td>
         </tr>
       </ng-container>

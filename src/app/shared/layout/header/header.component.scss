@@ -8,18 +8,18 @@ a.title {
 
 
 :host ::ng-deep .mat-select-value-text {
-  font-size: 14px!important;
+  font-size: 14px !important;
 }
 
 :host ::ng-deep .mat-toolbar .mat-input-element {
-  font-size: 14px!important;
+  font-size: 14px !important;
 }
 
 :host ::ng-deep .mat-form-field-label-wrapper {
-  font-size: 14px!important;
+  font-size: 14px !important;
 }
 
-:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
   background-color: #E7E7E7;
 }
 
@@ -43,15 +43,16 @@ a.title {
 ::ng-deep .mat-select-panel {
   background: #E7E7E7
 }
+
 // </mat-form-field>
 
 ::ng-deep .mat-select-panel {
-  font-size: 14px!important;
-  width: 120px!important;
+  font-size: 14px !important;
+  width: 120px !important;
 }
 
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: rgba(255,255,255,.1);
+  background-color: rgba(255, 255, 255, .1);
 }
 
 .profile-info {
@@ -72,7 +73,7 @@ button.category {
   margin-left: 120px;
 }
 
-.noHover{
+.noHover {
   pointer-events: none;
 }
 

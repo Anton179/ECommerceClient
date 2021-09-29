@@ -2,8 +2,11 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from "../../../shared/shared.module";
 import {MaterialModule} from "../../../shared/material/material.module";
 import {RouterModule} from "@angular/router";
-import {AccountComponent} from "./account.component";
 import {ItemsModule} from "../../items/items.module";
+import {AccountRoutingModule} from "./account-routing.module";
+import {AccountComponent} from "./account.component";
+import {UploadModule} from "../../upload/upload.module";
+import {ProductEditorModule} from "./product-editor/product-editor.module";
 
 
 @NgModule({
@@ -12,12 +15,15 @@ import {ItemsModule} from "../../items/items.module";
     MaterialModule,
     RouterModule,
     ItemsModule,
-    RouterModule.forChild([{
-      path: '',
-      component: AccountComponent
-    }])
+    AccountRoutingModule,
+    UploadModule,
+    ProductEditorModule
   ],
   declarations: [
+    AccountComponent,
+  ],
+  exports: [
+    UploadModule
   ]
 })
 

@@ -1,6 +1,6 @@
 div.category {
-    margin-left: 10px;
-    height: 40px;
+  margin-left: 10px;
+  height: 40px;
 }
 
 
@@ -13,27 +13,27 @@ div.product {
 }
 
 .my-grid-tile {
-    border: solid 1px black;
-    height: 50px!important;
+  border: solid 1px black;
+  height: 50px !important;
 }
 
 div.container-row {
-    position: absolute;
-    left: 0;
+  position: absolute;
+  left: 0;
 }
 
 div.title {
-    align-self: flex-start;
+  align-self: flex-start;
 }
 
 div.characteristics {
-    margin-top: 10px;
-    align-self: flex-start;
+  margin-top: 10px;
+  align-self: flex-start;
 }
 
 div.description {
-    margin-left: 50px;
-    border: solid lightgray 1px;
+  margin-left: 50px;
+  border: solid lightgray 1px;
 }
 
 hr {
@@ -44,45 +44,46 @@ hr {
 }
 
 div.productDescription {
-    margin-left: 10px;
-    margin-bottom: 20px;
+  margin-left: 10px;
+  margin-bottom: 20px;
 }
 
 div.mat-headline {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 mat-form-field {
-    width: 60px;
-    select {
-        option {
-            color: black !important;
-        }
+  width: 60px;
+
+  select {
+    option {
+      color: black !important;
     }
+  }
 }
 
 table {
-    border: 1px solid lightgray;
-    padding: 10px;
- }
+  border: 1px solid lightgray;
+  padding: 10px;
+}
 
 a {
-    text-decoration: none;
-    color:#0000FF;
+  text-decoration: none;
+  color: #0000FF;
 }
 
 button.addToCart {
-    width: 140px;
+  width: 140px;
 }
 
-p.name{
-    font-size: 24px;
-    font-weight: bold;
+p.name {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 td.price {
-    text-align: right;
-    padding-right: 42px;
+  text-align: right;
+  padding-right: 42px;
 }
 
 :host ::ng-deep .mat-tab-label {

@@ -18,17 +18,18 @@ export class ProductsComponent {
   products: Product[] = []
   str = '';
   length: number = 0;
-  pagedRequest: PagedRequest = {
-    pageIndex: 1, pageSize: 21,
-    sortDirection: 'Ascending', columnNameForSorting: 'Name',
-    requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
-  };
-  private _querySubscription: Subscription;
+  pagedRequest?: PagedRequest;
 
   constructor(private _route: ActivatedRoute, private _prooductService: ProductService) {
-    this._querySubscription = _route.queryParams.subscribe((queryParam: any) => {
+    _route.queryParams.subscribe((queryParam: any) => {
       const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
+
+      this.pagedRequest = {
+        pageIndex: 1, pageSize: 21,
+        sortDirection: 'Ascending', columnNameForSorting: 'Name',
+        requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
+      };
 
       if (productName) {
         this.pagedRequest.requestFilters?.filters.push({
@@ -51,11 +52,13 @@ export class ProductsComponent {
   }
 
   getProducts(pageIndex: number) {
-    this.pagedRequest.pageIndex = pageIndex + 1;
+    if (this.pagedRequest) {
+      this.pagedRequest.pageIndex = pageIndex + 1;
 
-    this._prooductService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
-      this.products = paginatedResult.items;
-      this.length = paginatedResult.total;
-    })
+      this._prooductService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
+        this.products = paginatedResult.items;
+        this.length = paginatedResult.total;
+      })
+    }
   }
 }

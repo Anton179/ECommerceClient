@@ -56,8 +56,7 @@ export class AccountComponent implements OnInit {
         this._orderService.getNumberOfOrders(OrderStatus.Cancelled).subscribe(count => {
           this.cancelledOrders = count;
         })
-      }
-      else {
+      } else {
         this._orderService.getNumberOfOrderProducts(OrderStatus.Pending).subscribe(count => {
           this.pendingOrders = count;
         })
@@ -79,7 +78,6 @@ export class AccountComponent implements OnInit {
     })
   }
 
-
   getProducts(index: number) {
     this._authService.getUserId().then(id => {
       const pagedRequest: PagedRequest = {
@@ -88,7 +86,7 @@ export class AccountComponent implements OnInit {
         sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
         requestFilters: {
           logicalOperator: FilterLogicalOperators.And,
-          filters: [{path: 'OwnerId.ToString()', value: id, operator: FilterOperators.Equals }]
+          filters: [{path: 'OwnerId.ToString()', value: id, operator: FilterOperators.Equals}]
         }
       }
 

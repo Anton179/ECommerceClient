@@ -125,11 +125,16 @@
     </tr>
   </table>
   <div *ngIf="userRole == 'vendor'" class="products">
-    <h2>Your products</h2>
+    <div class="inline">
+      <h2>Your products</h2>
+    </div>
+    <div class="inline create-product">
+      <button mat-flat-button [routerLink]="['product']">Create product</button>
+    </div>
     <div class="center" style="border: solid 1px lightgray; border-radius: 10px">
       <mat-nav-list class="list-horizontal">
         <mat-list-item *ngFor="let product of products">
-          <a [routerLink]="['/products', product.id]">
+          <a [routerLink]="['product']" [queryParams]="{id: product.id}">
             <img height="120" src="{{product.imageUrl}}" width="120">
             <h5>{{product.name}}</h5>
           </a>
@@ -143,4 +148,3 @@
                    [showFirstLastButtons]="true">
     </mat-paginator>
   </div>
-</div>

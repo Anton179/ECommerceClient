@@ -6,8 +6,8 @@
                 maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide
-                        *ngFor="let pos of slidesNumber"
-                        [hideOverlay]="true">
+      *ngFor="let pos of slidesNumber"
+      [hideOverlay]="true">
       <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of superDealsProducts.slice(pos, pos + 6)">
@@ -26,8 +26,8 @@
                 maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide
-                        *ngFor="let pos of slidesNumber"
-                        [hideOverlay]="true">
+      *ngFor="let pos of slidesNumber"
+      [hideOverlay]="true">
       <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of productList.slice(pos, pos + 6)">
