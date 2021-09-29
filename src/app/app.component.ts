@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   public userAuthenticated = false;
 
-  constructor(private _authService: AuthService,){
+  constructor(private _authService: AuthService,) {
     this._authService.loginChanged
       .subscribe(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;

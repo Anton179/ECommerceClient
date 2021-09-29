@@ -47,7 +47,7 @@
         <table class="orders products">
           <tr style="border: solid 1px black!important;">
             <td colspan="3" style="vertical-align: top;">
-              <div class="{{OrderStatus[order?.status ?? 0]}}" >
+              <div class="{{OrderStatus[order?.status ?? 0]}}">
                 <h2 style="margin-bottom: 0px">
                   {{OrderStatus[order?.status ?? 0]}}
                 </h2>
@@ -74,7 +74,7 @@
           <ng-container *ngFor="let product of order.orderProducts">
             <tr>
               <td rowspan="4" width="120px">
-                <img height="90" src="{{product.product?.imageUrl}}" width="90">
+                <img height="90" src="{{product.product?.imagePath}}" width="90">
               </td>
               <td height="35px!important">
                 {{product.product?.name}}
@@ -92,7 +92,9 @@
             </tr>
             <tr>
               <td style="padding-bottom: 20px!important; padding-top: 15px">
-                <button *ngIf="userRole == 'user'" class="product-button" mat-button (click)="addToCart(product?.product?.id)">Buy again</button>
+                <button *ngIf="userRole == 'user'" class="product-button" mat-button
+                        (click)="addToCart(product?.product?.id)">Buy again
+                </button>
               </td>
             </tr>
           </ng-container>
@@ -115,13 +117,13 @@
           </tr>
           <tr>
             <td rowspan="3" style="width: 120px">
-              <img src="{{orderProduct.product?.imageUrl}}" width="100" height="100">
+              <img src="{{orderProduct.product?.imagePath}}" width="100" height="100">
             </td>
             <td colspan="4">
               <div style="font-size: 18px">
                 Bought by {{orderProduct.user?.userName}}
               </div>
-              <div class="{{OrderStatus[orderProduct?.status ?? 0]}}" style="font-size: 16" >
+              <div class="{{OrderStatus[orderProduct?.status ?? 0]}}" style="font-size: 16">
                 <h2 style="margin-bottom: 0px">
                   {{OrderStatus[orderProduct?.status ?? 0]}}
                 </h2>
@@ -149,14 +151,14 @@
     </ng-container>
   </ng-template>
   <ng-template #ordersNotFoundBlock>
-  <div class="orders-not-found">
-    <mat-icon class="orders-history">history</mat-icon>
-    <h2>
-      No results were found within the period specified
-    </h2>
-    <h4>
-      Try updating your date range to find a specific order.
-    </h4>
-  </div>
+    <div class="orders-not-found">
+      <mat-icon class="orders-history">history</mat-icon>
+      <h2>
+        No results were found within the period specified
+      </h2>
+      <h4>
+        Try updating your date range to find a specific order.
+      </h4>
+    </div>
   </ng-template>
 </div>

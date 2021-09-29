@@ -1,12 +1,13 @@
-import { Product } from "./product.model";
+import {Product} from "./product.model";
 
 export interface Category {
-    id?: string;
-    parentId?: string 
-    parent?: Category;
-    name: string;
-    image?: string
-    // Characteristics: Characteristic [];
-    subCategories?: Category; 
-    products?: Product[];
+  id?: string;
+  parentId?: string
+  parent?: Category;
+  name: string;
+  imagePath?: string
+  // Characteristics: Characteristic [];
+  subCategories?: Category;
+  products?: Product[];
 }
+

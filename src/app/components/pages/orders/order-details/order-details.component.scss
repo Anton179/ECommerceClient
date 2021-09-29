@@ -12,7 +12,7 @@
 
 .inline {
   display: inline-block;
-  margin-bottom: 20px!important;
+  margin-bottom: 20px !important;
 }
 
 .delivered {
@@ -34,9 +34,11 @@
 
 table.order {
   width: 684px;
+
   td {
     width: 320px;
   }
+
   margin-top: 20px;
   border: solid 1px lightgray;
   border-radius: 10px;
@@ -46,10 +48,10 @@ table.shipping {
   border-spacing: 10px;
 }
 
- .credit-card {
-   padding-top: 0px;
-   margin-top: 0px;
-   font-size: 50px;
+.credit-card {
+  padding-top: 0px;
+  margin-top: 0px;
+  font-size: 50px;
 }
 
 table.orderedItems {
@@ -59,7 +61,7 @@ table.orderedItems {
 }
 
 ::ng-deep .order-item-button {
-  border: solid 1px lightgray!important;
+  border: solid 1px lightgray !important;
   border-radius: 10px;
 }
 

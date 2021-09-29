@@ -1,0 +1,115 @@
+<div class="container">
+    <mat-stepper orientation="vertical" [linear]="false" #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Product Information</ng-template>
+          <table>
+            <tr>
+              <td>
+                Product Name
+              </td>
+              <td>
+                <mat-form-field class="width-70"  appearance="fill">
+                  <mat-label>Product Name</mat-label>
+                  <input matInput formControlName="nameCtrl" required>
+                  <mat-error *ngIf="true">{{firstFormGroup.controls['nameCtrl'].status}}</mat-error>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Description
+              </td>
+              <td>
+                <mat-form-field class="width-70" appearance="fill">
+                  <mat-label>Description</mat-label>
+                  <textarea maxlength="470" class="description" required formControlName="descriptionCtrl"
+                            matInput></textarea>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Category
+              </td>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-select (selectionChange)="changeCategory()" [(value)]="selectedCategory">
+                    <mat-option *ngFor="let categoryName of categoriesName" value="{{categoryName}}">
+                      {{categoryName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="1" rowspan="3" style="vertical-align: bottom">
+                <app-upload-image (onUploadFinished)="uploadFinished($event)" [imageId]="product?.imageId"></app-upload-image>
+              </td>
+              <td>
+                <img *ngIf="product?.imagePath" [src]="product?.imagePath" width="300px">
+              </td>
+            </tr>
+          </table>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Characteristics</ng-template>
+          <table>
+            <ng-container *ngFor="let characteristic of characteristics">
+              <tr>
+                <td>
+                  {{characteristic.name}}
+                </td>
+                <td>
+                  <mat-form-field class="width-70"  appearance="fill">
+                    <mat-label>{{characteristic.type}}</mat-label>
+                    <input matInput [type]="getType(characteristic.type)" required>
+                    <!--                  <mat-error *ngIf="true">{{firstFormGroup.controls['nameControl'].status}}</mat-error>-->
+                  </mat-form-field>
+                </td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td>
+                Price
+              </td>
+              <td>
+                <mat-form-field class="width-70"  appearance="fill">
+                  <mat-label>Price</mat-label>
+                  <input matInput type="number" required formControlName="priceCtrl">
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Weight
+              </td>
+              <td>
+                <mat-form-field class="width-70"  appearance="fill">
+                  <mat-label>Weight</mat-label>
+                  <input matInput type="number" required formControlName="weightCtrl">
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button>Create product</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+</div>

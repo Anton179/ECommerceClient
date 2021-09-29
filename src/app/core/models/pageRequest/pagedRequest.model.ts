@@ -1,4 +1,4 @@
-import { RequestFilters } from './requestFilters.model';
+import {RequestFilters} from './requestFilters.model';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 

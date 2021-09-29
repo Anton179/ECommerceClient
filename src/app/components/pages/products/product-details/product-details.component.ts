@@ -36,8 +36,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
-    if (this.quantityControl.invalid)
-    {
+    if (this.quantityControl.invalid) {
       return;
     }
 
@@ -65,8 +64,7 @@ export class ProductDetailsComponent implements OnInit {
       const rows = product.characteristics.length / 3;
       if (rows > 4) {
         this.characteristicRows = rows;
-      }
-      else {
+      } else {
         this.characteristicRows = 4;
       }
 

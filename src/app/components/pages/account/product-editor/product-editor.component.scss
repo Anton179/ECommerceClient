@@ -1,0 +1,54 @@
+table {
+  width: 100%;
+}
+
+mat-form-field.width-70 {
+  width: 70%;
+}
+
+textarea {
+  height: 7em;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-label, .mat-step-header .mat-step-optional {
+  color: black;
+}
+
+:host ::ng-deep .mat-step-text-label {
+  color: black;
+}
+
+:host ::ng-deep .mat-stepper-vertical {
+  background-color: white;
+}
+
+:host ::ng-deep .mat-stepper-vertical-line::before {
+  background: #828282;
+}
+
+::ng-deep .mat-step-header .mat-step-icon {
+  background-color: #006EFF;
+  color: #fff;
+}
+
+:host ::ng-deep .mat-select-value-text {
+  color: black;
+}
+
+:host ::ng-deep .mat-select-arrow {
+  color: black;
+}
+
+// <mat-form-field>
+:host ::ng-deep .mat-input-element::placeholder{
+  color: #828282;
+}
+
+:host ::ng-deep .mat-form-field-label{
+  color: #828282;
+}
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #E7E7E7;
+}
+// </mat-form-field>

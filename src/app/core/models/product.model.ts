@@ -10,7 +10,8 @@ export interface Product {
   category: Category;
   price?: number;
   weight?: number;
-  imageUrl?: string;
+  imagePath?: string;
+  imageId?: string;
   characteristics: Characteristic[];
   user?: User;
   inStock: boolean;

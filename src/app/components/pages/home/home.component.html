@@ -6,8 +6,8 @@
                 maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide
-                        *ngFor="let pos of slidesNumber"
-                        [hideOverlay]="true">
+      *ngFor="let pos of slidesNumber"
+      [hideOverlay]="true">
       <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of superDealsProducts.slice(pos, pos + 6)">
@@ -26,8 +26,8 @@
                 maxWidth="auto"
                 orientation="ltr">
     <mat-carousel-slide
-                        *ngFor="let pos of slidesNumber"
-                        [hideOverlay]="true">
+      *ngFor="let pos of slidesNumber"
+      [hideOverlay]="true">
       <div class="center">
         <mat-nav-list class="list-horizontal">
           <mat-list-item *ngFor="let product of productList.slice(pos, pos + 6)">
@@ -42,7 +42,7 @@
     <mat-nav-list class="list-horizontal">
       <mat-list-item *ngFor='let category of categories'>
         <div (click)="goToCategory(category.name)">
-          <img height="160px" src="{{category.image}}" width="160px">
+          <img height="160px" src="{{category.imagePath}}" width="160px">
           <h3>{{category.name}}</h3>
         </div>
       </mat-list-item>

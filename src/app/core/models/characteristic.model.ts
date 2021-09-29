@@ -1,6 +1,6 @@
-export interface Characteristic
-{
-    name: string;
-    type: string;
-    value: any;
+export interface Characteristic {
+  id: string;
+  name: string;
+  type: string;
+  value: any;
 }

@@ -81,7 +81,7 @@
             <tr style="vertical-align: top;">
               <td>
                 <a [routerLink]="['/products', cart.product?.id]" style="width: 120px;">
-                  <img height="120px" src="{{cart.product?.imageUrl}}" width="120px"/>
+                  <img height="120px" src="{{cart.product?.imagePath}}" width="120px"/>
                 </a>
               </td>
               <td>
@@ -126,11 +126,12 @@
           <tr>
             <td colspan="5">
               <div class="deliveryBlock">
-                <mat-radio-group [(ngModel)]="shippingName" (change)="updateShipping()" class="delivery-radio-group" color="primary">
+                <mat-radio-group [(ngModel)]="shippingName" (change)="updateShipping()" class="delivery-radio-group"
+                                 color="primary">
                   <ng-container *ngFor="let shipping of shippingList">
                     <mat-radio-button [value]="shipping.name">
                       <div>
-                        <img height="50px" src="{{shipping.image}}" style="border-radius: 5px; vertical-align: bottom"
+                        <img height="50px" src="{{shipping.imagePath}}" style="border-radius: 5px; vertical-align: bottom"
                              width="50px">
                         <div class="mat-title inline" style="margin-top: 10px">
                           {{shipping.name}}
@@ -219,12 +220,12 @@
         <div style="max-width: 800px">
           <mat-carousel [autoplay]="false"
                         [hideArrows]="false"
-                        [loop]="true" [proportion]=50 [slides]="slidesNumber.length - 1"
+                        [loop]="true" [proportion]=50 [slides]="slidesNumber.length"
                         maxWidth="auto"
                         orientation="ltr">
             <mat-carousel-slide
-                                *ngFor="let pos of slidesNumber"
-                                [hideOverlay]="true">
+              *ngFor="let pos of slidesNumber"
+              [hideOverlay]="true">
               <div class="center">
                 <mat-nav-list class="list-horizontal">
                   <mat-list-item *ngFor="let product of orderedProducts.slice(pos, pos + 4)">

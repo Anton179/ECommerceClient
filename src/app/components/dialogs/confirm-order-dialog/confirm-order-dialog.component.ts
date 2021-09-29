@@ -14,7 +14,7 @@ export class ConfirmOrderDialogComponent {
   order?: Order;
 
   constructor(private _orderService: OrderService, @Inject(MAT_DIALOG_DATA) public data: any,
-              private  _router: Router) {
+              private _router: Router) {
     this._orderService.getOrder(data.orderId).subscribe((order: Order) => {
       this.order = order;
     })

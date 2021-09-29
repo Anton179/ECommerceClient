@@ -12,7 +12,7 @@
   <div class="product">
     <mat-grid-list cols="3" rowHeight="100px">
       <mat-grid-tile rowspan="3">
-        <img height="300px" src="{{product?.imageUrl}}" width="300px">
+        <img height="300px" src="{{product?.imagePath}}" width="300px">
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="container-row title">
@@ -45,7 +45,9 @@
             <tr>
               <td align="center" colspan="2">
                 <hr>
-                <button *ngIf="product?.inStock" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>Add to cart</button>
+                <button *ngIf="product?.inStock" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>
+                  Add to cart
+                </button>
                 <button *ngIf="!product?.inStock" class="addToCart" color="accent" mat-raised-button>Notify me</button>
               </td>
             </tr>
@@ -56,7 +58,8 @@
         <hr style="align-self: flex-start;">
         <div class="container-row characteristics">
           <br>
-          <p class="{{product?.inStock ? 'inStock' : 'outOfStock'}}">{{product?.inStock ? 'In stock' : 'Out of stock'}}</p>
+          <p
+            class="{{product?.inStock ? 'inStock' : 'outOfStock'}}">{{product?.inStock ? 'In stock' : 'Out of stock'}}</p>
           <mat-tab-group animationDuration="0ms">
             <mat-tab label="Characteristics">
               <br>
