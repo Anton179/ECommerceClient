@@ -5,6 +5,6 @@ export interface ShippingMethod {
   name?: string;
   price?: number;
   orders?: Order[];
-  image?: string;
+  imagePath?: string;
   estimated?: string;
 }

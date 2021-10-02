@@ -1,29 +1,30 @@
 mat-nav-list.list-horizontal {
-    padding: 0;
-    .mat-list-item {
-      display: inline-block;
-      height: auto;
-      width: auto;
-      color: black;
-    }
-  }
+  padding: 0;
 
-  div.center {
-    text-align: center;
-    padding-top: 60px;
-  }
-
-  .card-container{
+  .mat-list-item {
     display: inline-block;
+    height: auto;
+    width: auto;
+    color: black;
   }
+}
 
-  .mat-display-1 {
-    margin: 25px 0;
-  }
+div.center {
+  text-align: center;
+  padding-top: 60px;
+}
 
-  .mat-headline {
-    font-size: 28px;
-    margin: 25px 0 0 0;
-  }
+.card-container {
+  display: inline-block;
+}
+
+.mat-display-1 {
+  margin: 25px 0;
+}
+
+.mat-headline {
+  font-size: 28px;
+  margin: 25px 0 0 0;
+}
 
 

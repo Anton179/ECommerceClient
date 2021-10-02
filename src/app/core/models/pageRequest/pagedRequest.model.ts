@@ -1,6 +1,4 @@
-import { RequestFilters } from './requestFilters.model';
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import {RequestFilters} from './requestFilters.model';
 
 export interface PagedRequest {
   pageIndex: number;

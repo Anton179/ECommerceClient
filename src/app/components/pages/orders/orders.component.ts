@@ -80,8 +80,7 @@ export class OrdersComponent implements OnInit {
         .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
           this.orderProducts = paginatedResult.items;
         })
-    }
-    else {
+    } else {
       if (orderStatus != -1) {
         request.requestFilters?.filters.push({
           path: "Status",

@@ -7,10 +7,12 @@ export interface Product {
   ownerId?: string;
   name?: string;
   description?: string;
-  category: Category;
+  categoryId?: string;
+  category?: Category;
   price?: number;
   weight?: number;
-  imageUrl?: string;
+  imagePath?: string;
+  imageId?: string;
   characteristics: Characteristic[];
   user?: User;
   inStock: boolean;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Category} from 'src/app/core/models/category.model';
@@ -13,7 +13,7 @@ import {FormControl, Validators} from "@angular/forms";
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, AfterViewChecked {
   price: number | undefined;
   product: Product | undefined;
   characteristicRows: number = 4;
@@ -36,8 +36,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
-    if (this.quantityControl.invalid)
-    {
+    if (this.quantityControl.invalid) {
       return;
     }
 
@@ -65,20 +64,28 @@ export class ProductDetailsComponent implements OnInit {
       const rows = product.characteristics.length / 3;
       if (rows > 4) {
         this.characteristicRows = rows;
-      }
-      else {
+      } else {
         this.characteristicRows = 4;
       }
 
-      this.categoryLink.push(this.product.category.name)
-      let category: Category = this.product?.category;
-      while (category?.parent) {
-        category = category.parent;
-        this.categoryLink.push(category.name)
+      this.categoryLink.push(this.product.category?.name ?? '')
+
+      if (this.product?.category) {
+        let category: Category = this.product.category;
+        while (category?.parent) {
+          category = category.parent;
+          this.categoryLink.push(category.name)
+        }
       }
 
       this.categoryLink.reverse()
     });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.product?.imagePath) {
+      this.product.imagePath += '?' + Date.now();
+    }
   }
 
 }

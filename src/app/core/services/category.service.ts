@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {EnvironmentUrlService} from './environment-url.service';
 import {Category} from "../models/category.model";
