@@ -1,10 +1,9 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {EnvironmentUrlService} from './environment-url.service';
 import {Observable} from "rxjs";
 import {Order} from "../models/order.model";
 import {PagedRequest} from "../models/pageRequest/pagedRequest.model";
-import {FilterOperators} from "../models/pageRequest/enums/FilterOperators";
 import {PaginatedResult} from "../models/pageRequest/paginatedResult.model";
 import {OrderProduct} from "../models/orderProduct.model";
 import {OrderStatus} from "../enums/OrderStatus";

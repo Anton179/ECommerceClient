@@ -7,7 +7,6 @@ import {ShippingMethod} from "../../../core/models/shippingMethod.model";
 import {CartService} from "../../../core/services/cart.service";
 import {Router} from "@angular/router";
 import {CartItem} from "../../../core/models/cartItem.model";
-import {Product} from "../../../core/models/product.model";
 import {OrderProduct} from "../../../core/models/orderProduct.model";
 
 @Component({

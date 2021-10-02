@@ -1,6 +1,7 @@
-import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {HttpClient, HttpEventType} from '@angular/common/http';
 import {EnvironmentUrlService} from "../../../core/services/environment-url.service";
+import {UploadService} from "../../../core/services/upload.service";
 
 @Component({
   selector: 'app-upload-image',
@@ -15,7 +16,8 @@ export class UploadImageComponent {
   @Output() public onUploadFinished = new EventEmitter();
   @Input() imageId: string | undefined;
 
-  constructor(private http: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  constructor(private http: HttpClient, private _envUrlservice: EnvironmentUrlService,
+              private _uploadService: UploadService) {
   }
 
   public uploadFile = (files: any) => {
@@ -27,8 +29,7 @@ export class UploadImageComponent {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
 
-    this.http.post<{ dbPath: string, productId: string }>(`${this._envUrlservice.api_url}/upload?${this.imageId != undefined ? 'imageId=' + this.imageId : ''}`,
-      formData, {reportProgress: true, observe: 'events'})
+    this._uploadService.uploadImage(formData, this.imageId)
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / (event.total ?? 0));

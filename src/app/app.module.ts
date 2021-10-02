@@ -8,7 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {MaterialModule} from './shared/material/material.module';
 import {SharedModule} from './shared/shared.module';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {CoreModule} from './core/core.module';
 import {AuthInterceptorService} from './core/services/auth-interceptor.service';
 import {UploadModule} from "./components/upload/upload.module";

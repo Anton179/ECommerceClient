@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
 import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model";
 import {FilterLogicalOperators} from "../../../core/models/pageRequest/enums/FilterLogicalOperators";
 import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOperators";

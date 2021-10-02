@@ -11,6 +11,7 @@ import {FilterOperators} from "../../../../core/models/pageRequest/enums/FilterO
 import {PaginatedResult} from "../../../../core/models/pageRequest/paginatedResult.model";
 import {CharacteristicService} from "../../../../core/services/characteristic.service";
 import {Characteristic} from "../../../../core/models/characteristic.model";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-product-editor',
@@ -55,6 +56,56 @@ export class ProductEditorComponent {
       Validators.required,
       Validators.min(1)])
   });
+
+  constructor(private _route: ActivatedRoute, private _productService: ProductService,
+              private _formBuilder: FormBuilder, private _categoryService: CategoryService,
+              private _characteristicService: CharacteristicService, private cdr: ChangeDetectorRef,
+              private _router: Router, private _authService: AuthService) {
+
+    const pagedRequest: PagedRequest = {
+      pageIndex: 1, pageSize: 40,
+      columnNameForSorting: 'Name',
+      sortDirection: 'Ascending',
+      requestFilters: {
+        logicalOperator: FilterLogicalOperators.And,
+        filters: [{path: 'SubCategories.Count()', value: '0', operator: FilterOperators.EqualsNumber}]
+      }
+    }
+
+    _route.queryParams.subscribe((queryParam: Params) => {
+      const id: string | undefined = queryParam['id'];
+
+      this._categoryService.getCategories(pagedRequest)
+        .subscribe((paginatedResult: PaginatedResult<Category>) => {
+          this.categories = paginatedResult.items;
+
+          this.categories.forEach((category: Category) => {
+            this.categoriesName.push(category.name)
+          })
+
+          if (id) {
+            _productService.getProduct(id).subscribe((product: Product) => {
+              this._authService.getUserId().then(userId => {
+                if (product.ownerId != userId) {
+                  this._router.navigateByUrl('/account/product')
+                } else {
+                  this.setProductValues(product)
+                }
+              })
+            })
+          } else {
+            this.selectedCategory = this.categoriesName[0];
+
+            this._characteristicService.getCharacteristicsByCategoryId(this.categories[0].id ?? '')
+              .subscribe((characteristics: Characteristic[]) => {
+                this.characteristics = characteristics;
+
+                this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
+              })
+          }
+        })
+    })
+  }
 
   getType(type: string) {
     switch (type) {
@@ -114,50 +165,6 @@ export class ProductEditorComponent {
     }
 
     return group;
-  }
-
-  constructor(private _route: ActivatedRoute, private _productService: ProductService,
-              private _formBuilder: FormBuilder, private _categoryService: CategoryService,
-              private _characteristicService: CharacteristicService, private cdr: ChangeDetectorRef,
-              private _router: Router) {
-
-    const pagedRequest: PagedRequest = {
-      pageIndex: 1, pageSize: 40,
-      columnNameForSorting: 'Name',
-      sortDirection: 'Ascending',
-      requestFilters: {
-        logicalOperator: FilterLogicalOperators.And,
-        filters: [{path: 'SubCategories.Count()', value: '0', operator: FilterOperators.EqualsNumber}]
-      }
-    }
-
-    _route.queryParams.subscribe((queryParam: Params) => {
-      const id: string | undefined = queryParam['id'];
-
-      this._categoryService.getCategories(pagedRequest)
-        .subscribe((paginatedResult: PaginatedResult<Category>) => {
-          this.categories = paginatedResult.items;
-
-          this.categories.forEach((category: Category) => {
-            this.categoriesName.push(category.name)
-          })
-
-          if (id) {
-            _productService.getProduct(id).subscribe((product: Product) => {
-              this.setProductValues(product)
-            })
-          } else {
-            this.selectedCategory = this.categoriesName[0];
-
-            this._characteristicService.getCharacteristicsByCategoryId(this.categories[0].id ?? '')
-              .subscribe((characteristics: Characteristic[]) => {
-                this.characteristics = characteristics;
-
-                this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
-              })
-          }
-        })
-    })
   }
 
   createProduct() {

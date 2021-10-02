@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Category} from 'src/app/core/models/category.model';
@@ -13,7 +13,7 @@ import {FormControl, Validators} from "@angular/forms";
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, AfterViewChecked {
   price: number | undefined;
   product: Product | undefined;
   characteristicRows: number = 4;
@@ -80,6 +80,12 @@ export class ProductDetailsComponent implements OnInit {
 
       this.categoryLink.reverse()
     });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.product?.imagePath) {
+      this.product.imagePath += '?' + Date.now();
+    }
   }
 
 }
