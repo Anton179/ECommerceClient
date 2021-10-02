@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {PaymentType} from "../../../core/enums/PaymentType";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OrderService} from "../../../core/services/order.service";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ShippingMethod} from "../../../core/models/shippingMethod.model";
 import {CartService} from "../../../core/services/cart.service";
 import {Router} from "@angular/router";
@@ -18,13 +18,18 @@ export class PlaceOrderDialogComponent implements OnInit {
   shipping: ShippingMethod;
   orderProducts: OrderProduct[] = [];
   placeOrderForm = new FormGroup({
-    address: new FormControl(''),
-    payment: new FormControl(''),
+    address: new FormControl(undefined, [
+      Validators.required
+    ]),
+    payment: new FormControl(undefined, [
+      Validators.required
+    ]),
   });
   payments = Object.values(PaymentType);
 
   constructor(private _orderService: OrderService, private _cartService: CartService,
-              @Inject(MAT_DIALOG_DATA) public data: any, private _router: Router) {
+              @Inject(MAT_DIALOG_DATA) public data: any, private _router: Router,
+              private dialogRef: MatDialogRef<PlaceOrderDialogComponent>) {
     this.shipping = data.shipping;
 
     data.cartItems.forEach((item: CartItem) => {
@@ -38,21 +43,20 @@ export class PlaceOrderDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    const payment: PaymentType = PaymentType[this.placeOrderForm.value.payment as keyof typeof PaymentType]
+    if (this.placeOrderForm.valid) {
+      const payment: PaymentType = PaymentType[this.placeOrderForm.value.payment as keyof typeof PaymentType]
 
-    this._orderService.createOrder({
-      orderProducts: this.orderProducts,
-      shipping: this.shipping,
-      payment: payment,
-      address: this.placeOrderForm.value.address
-    }).subscribe((orderId: string) => {
-      this._router.navigate([`/orders/${orderId}`])
-      this._cartService.changeState('Cart is empty')
-    });
+      this._orderService.createOrder({
+        orderProducts: this.orderProducts,
+        shipping: this.shipping,
+        payment: payment,
+        address: this.placeOrderForm.value.address
+      }).subscribe((orderId: string) => {
+        this._router.navigate([`/orders/${orderId}`])
+        this._cartService.changeState('Cart is empty')
+      });
 
-
-    // this._cartService.clearCart().subscribe(() => {
-    //   this._cartService.changeState('Cart is empty');
-    // });
+      this.dialogRef.close()
+    }
   }
 }
