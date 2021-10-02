@@ -1,115 +1,140 @@
 <div class="container">
-    <mat-stepper orientation="vertical" [linear]="false" #stepper>
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-          <ng-template matStepLabel>Product Information</ng-template>
-          <table>
+  <mat-stepper orientation="vertical" [linear]="true">
+    <mat-step [stepControl]="productInformationFormGroup" #stepper>
+      <form [formGroup]="productInformationFormGroup">
+        <ng-template matStepLabel>Product Information</ng-template>
+        <table>
+          <tr>
+            <td>
+              Product Name
+            </td>
+            <td>
+              <mat-form-field class="width-70" appearance="fill">
+                <mat-label>Product Name</mat-label>
+                <input matInput formControlName="nameCtrl" required>
+                <mat-error *ngIf="productInformationFormGroup.controls['nameCtrl'].invalid">
+                  The minimum length of product name must be 4 and max 120!
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Description
+            </td>
+            <td>
+              <mat-form-field class="width-70" appearance="fill">
+                <mat-label>Description</mat-label>
+                <textarea maxlength="470" class="description" required formControlName="descriptionCtrl"
+                          matInput></textarea>
+                <mat-error *ngIf="productInformationFormGroup.controls['descriptionCtrl'].invalid">
+                  The minimum length of product description must be 4 and max 470!
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Category
+            </td>
+            <td>
+              <mat-form-field appearance="fill">
+                <mat-select formControlName="categoryCtrl" (selectionChange)="changeCategory()"
+                            [(value)]="selectedCategory">
+                  <mat-option *ngFor="let categoryName of categoriesName" value="{{categoryName}}">
+                    {{categoryName}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="productInformationFormGroup.controls['categoryCtrl'].invalid">
+                  You must select the category!
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" rowspan="3" style="vertical-align: bottom">
+              <app-upload-image (onUploadFinished)="uploadFinished($event)"
+                                [imageId]="imageId"></app-upload-image>
+            </td>
+            <td>
+              <img *ngIf="displayImagePath" [src]="displayImagePath" width="300px">
+              <mat-error *ngIf="productInformationFormGroup.controls['imageCtrl'].errors
+                && productInformationFormGroup.controls['imageCtrl'].touched">
+                You must upload the image!
+              </mat-error>
+            </td>
+          </tr>
+        </table>
+        <div>
+          <button (click)="next()" mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="characteristicFormGroup">
+      <form [formGroup]="characteristicFormGroup">
+        <ng-template matStepLabel>Characteristics</ng-template>
+        <table>
+          <ng-container *ngFor="let characteristic of characteristics">
             <tr>
               <td>
-                Product Name
-              </td>
-              <td>
-                <mat-form-field class="width-70"  appearance="fill">
-                  <mat-label>Product Name</mat-label>
-                  <input matInput formControlName="nameCtrl" required>
-                  <mat-error *ngIf="true">{{firstFormGroup.controls['nameCtrl'].status}}</mat-error>
-                </mat-form-field>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Description
+                {{characteristic.name}}
               </td>
               <td>
                 <mat-form-field class="width-70" appearance="fill">
-                  <mat-label>Description</mat-label>
-                  <textarea maxlength="470" class="description" required formControlName="descriptionCtrl"
-                            matInput></textarea>
+                  <mat-label>{{characteristic.type}}</mat-label>
+                  <input matInput [type]="getType(characteristic.type)" [formControlName]="characteristic.name"
+                         required>
+                  <mat-error *ngIf="characteristicFormGroup.controls[characteristic.name]?.invalid">
+                    The field is required !
+                  </mat-error>
                 </mat-form-field>
               </td>
             </tr>
-            <tr>
-              <td>
-                Category
-              </td>
-              <td>
-                <mat-form-field appearance="fill">
-                  <mat-select (selectionChange)="changeCategory()" [(value)]="selectedCategory">
-                    <mat-option *ngFor="let categoryName of categoriesName" value="{{categoryName}}">
-                      {{categoryName}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="1" rowspan="3" style="vertical-align: bottom">
-                <app-upload-image (onUploadFinished)="uploadFinished($event)" [imageId]="product?.imageId"></app-upload-image>
-              </td>
-              <td>
-                <img *ngIf="product?.imagePath" [src]="product?.imagePath" width="300px">
-              </td>
-            </tr>
-          </table>
-          <div>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
-          <ng-template matStepLabel>Characteristics</ng-template>
-          <table>
-            <ng-container *ngFor="let characteristic of characteristics">
-              <tr>
-                <td>
-                  {{characteristic.name}}
-                </td>
-                <td>
-                  <mat-form-field class="width-70"  appearance="fill">
-                    <mat-label>{{characteristic.type}}</mat-label>
-                    <input matInput [type]="getType(characteristic.type)" required>
-                    <!--                  <mat-error *ngIf="true">{{firstFormGroup.controls['nameControl'].status}}</mat-error>-->
-                  </mat-form-field>
-                </td>
-              </tr>
-            </ng-container>
-            <tr>
-              <td>
-                Price
-              </td>
-              <td>
-                <mat-form-field class="width-70"  appearance="fill">
-                  <mat-label>Price</mat-label>
-                  <input matInput type="number" required formControlName="priceCtrl">
-                </mat-form-field>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Weight
-              </td>
-              <td>
-                <mat-form-field class="width-70"  appearance="fill">
-                  <mat-label>Weight</mat-label>
-                  <input matInput type="number" required formControlName="weightCtrl">
-                </mat-form-field>
-              </td>
-            </tr>
-          </table>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
+          </ng-container>
+          <tr>
+            <td>
+              Price
+            </td>
+            <td>
+              <mat-form-field class="width-70" appearance="fill">
+                <mat-label>Price</mat-label>
+                <input matInput type="number" required
+                       [formControl]="$any(characteristicFormGroup.controls['priceCtrl'])">
+                <mat-error *ngIf="characteristicFormGroup.controls['priceCtrl'].invalid">
+                  The minimum price must be 1$ !
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Weight
+            </td>
+            <td>
+              <mat-form-field class="width-70" appearance="fill">
+                <mat-label>Weight</mat-label>
+                <input matInput type="number" required formControlName="weightCtrl">
+                <mat-error *ngIf="characteristicFormGroup.controls['weightCtrl'].invalid">
+                  The weight must be between 0.1 and 5000
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button>Create product</button>
+          <button mat-button matStepperNext>Next</button>
         </div>
-      </mat-step>
-    </mat-stepper>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button *ngIf="!product?.id" mat-button (click)="createProduct()">Create product</button>
+        <button *ngIf="product?.id" mat-button (click)="updateProduct()">Update product</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </div>

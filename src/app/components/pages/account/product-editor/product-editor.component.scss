@@ -40,15 +40,16 @@ textarea {
 }
 
 // <mat-form-field>
-:host ::ng-deep .mat-input-element::placeholder{
+:host ::ng-deep .mat-input-element::placeholder {
   color: #828282;
 }
 
-:host ::ng-deep .mat-form-field-label{
+:host ::ng-deep .mat-form-field-label {
   color: #828282;
 }
 
 :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
   background-color: #E7E7E7;
 }
+
 // </mat-form-field>

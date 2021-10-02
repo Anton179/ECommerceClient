@@ -1,5 +1,5 @@
-import {Component} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ChangeDetectorRef, Component} from "@angular/core";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Product} from "../../../../core/models/product.model";
 import {ProductService} from "../../../../core/services/product.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -18,7 +18,7 @@ import {Characteristic} from "../../../../core/models/characteristic.model";
   styleUrls: ['./product-editor.component.scss']
 })
 export class ProductEditorComponent {
-  productId?: string;
+  imageId?: string;
   product?: Product;
   categories: Category[] = [];
   categoriesName: string[] = [];
@@ -26,55 +26,35 @@ export class ProductEditorComponent {
   characteristics: Characteristic[] = [];
   type: string = 'number';
   imagePath?: string;
+  displayImagePath?: string
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  // productForm: FormGroup = new FormGroup({
-  //   nameCtrl: new FormControl('', [
-  //     Validators.required,
-  //     Validators.minLength(4),
-  //     Validators.maxLength(120)
-  //   ]),
-  //   descriptionCtrl: new FormControl (['',
-  //     Validators.required,
-  //     Validators.minLength(4),
-  //     Validators.maxLength(120)]),
-  //   weightCtrl: new FormControl([0,
-  //   Validators.required,
-  //   Validators.min(0.1),
-  //   Validators.max(5000)]),
-  //   priceCtrl: new FormControl([0,
-  //   Validators.required,
-  //   Validators.min(1)])
-  // })
+  productInformationFormGroup: FormGroup = new FormGroup({
+    nameCtrl: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(120)
+    ]),
+    descriptionCtrl: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(470)]),
+    categoryCtrl: new FormControl(undefined, [
+      Validators.required
+    ]),
+    imageCtrl: new FormControl('', [
+      Validators.required
+    ])
+  });
 
-
-  ngOnInit() {
-    const pagedRequest: PagedRequest = {
-      pageIndex: 1, pageSize: 40,
-      columnNameForSorting: 'Name',
-      sortDirection: 'Ascending',
-      requestFilters: {
-        logicalOperator: FilterLogicalOperators.And,
-        filters: [{path: 'SubCategories.Count()', value: '0', operator: FilterOperators.EqualsNumber}]
-      }
-    }
-
-    this._categoryService.getCategories(pagedRequest)
-      .subscribe((paginatedResult: PaginatedResult<Category>) => {
-        this.categories = paginatedResult.items;
-
-        this.categories.forEach((category: Category) => {
-          this.categoriesName.push(category.name)
-        })
-        this.selectedCategory = this.categoriesName[0];
-
-        this._characteristicService.getCharacteristicsByCategoryId(this.categories[0].id ?? '')
-          .subscribe((characteristics: Characteristic[]) => {
-            this.characteristics = characteristics;
-          })
-      })
-  }
+  characteristicFormGroup: FormGroup = new FormGroup({
+    weightCtrl: new FormControl(0, [
+      Validators.required,
+      Validators.min(0.1),
+      Validators.max(5000)]),
+    priceCtrl: new FormControl(0, [
+      Validators.required,
+      Validators.min(1)])
+  });
 
   getType(type: string) {
     switch (type) {
@@ -91,8 +71,11 @@ export class ProductEditorComponent {
   }
 
   uploadFinished = (event: any) => {
-    this.productId = event.result.productId;
-    this.imagePath = event.result.dbPath;
+    this.displayImagePath = event.result.imagePath + '?' + Date.now()
+    this.imagePath = event.result.imagePath
+    this.imageId = event.result.imageId;
+
+    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
   }
 
   changeCategory() {
@@ -101,37 +84,146 @@ export class ProductEditorComponent {
     this._characteristicService.getCharacteristicsByCategoryId(id)
       .subscribe((characteristics: Characteristic[]) => {
         this.characteristics = characteristics;
+
+        this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
       })
+  }
+
+  createCharacteristicFormGroup(characteristics: Characteristic[], setValue: boolean = false,
+                                weight: number = 0, price: number = 0) {
+    const group = this._formBuilder.group({
+      weightCtrl: new FormControl(0, [
+        Validators.required,
+        Validators.min(0.1),
+        Validators.max(5000)]),
+      priceCtrl: new FormControl(0, [
+        Validators.required,
+        Validators.min(1)])
+    });
+
+    characteristics.forEach(ch => group.addControl(ch.name,
+      this._formBuilder.control('', [
+        Validators.required
+      ])))
+
+    if (setValue) {
+      group.controls['weightCtrl'].setValue(weight)
+      group.controls['priceCtrl'].setValue(price)
+
+      characteristics.forEach(ch => group.controls[ch.name].setValue(ch.value))
+    }
+
+    return group;
   }
 
   constructor(private _route: ActivatedRoute, private _productService: ProductService,
               private _formBuilder: FormBuilder, private _categoryService: CategoryService,
-              private _characteristicService: CharacteristicService) {
+              private _characteristicService: CharacteristicService, private cdr: ChangeDetectorRef,
+              private _router: Router) {
+
+    const pagedRequest: PagedRequest = {
+      pageIndex: 1, pageSize: 40,
+      columnNameForSorting: 'Name',
+      sortDirection: 'Ascending',
+      requestFilters: {
+        logicalOperator: FilterLogicalOperators.And,
+        filters: [{path: 'SubCategories.Count()', value: '0', operator: FilterOperators.EqualsNumber}]
+      }
+    }
+
     _route.queryParams.subscribe((queryParam: Params) => {
       const id: string | undefined = queryParam['id'];
 
-      if (id) {
-        _productService.getProduct(id).subscribe((product: Product) => {
-          this.product = product;
-          this.productId = product.id;
+      this._categoryService.getCategories(pagedRequest)
+        .subscribe((paginatedResult: PaginatedResult<Category>) => {
+          this.categories = paginatedResult.items;
+
+          this.categories.forEach((category: Category) => {
+            this.categoriesName.push(category.name)
+          })
+
+          if (id) {
+            _productService.getProduct(id).subscribe((product: Product) => {
+              this.setProductValues(product)
+            })
+          } else {
+            this.selectedCategory = this.categoriesName[0];
+
+            this._characteristicService.getCharacteristicsByCategoryId(this.categories[0].id ?? '')
+              .subscribe((characteristics: Characteristic[]) => {
+                this.characteristics = characteristics;
+
+                this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
+              })
+          }
         })
-      }
+    })
+  }
+
+  createProduct() {
+    this.characteristics.forEach(ch => {
+      ch.value = this.characteristicFormGroup.controls[ch.name].value
     })
 
-    this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(120)
-      ]),
-      descriptionCtrl: new FormControl ('',[
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(120)]),
-    });
+    const categoryId: string = this.categories.find(x => x.name == this.selectedCategory)?.id ?? '';
 
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+    const product: Product = {
+      name: this.productInformationFormGroup.controls['nameCtrl'].value,
+      description: this.productInformationFormGroup.controls['descriptionCtrl'].value,
+      categoryId: categoryId,
+      weight: this.characteristicFormGroup.controls['weightCtrl'].value,
+      price: this.characteristicFormGroup.controls['priceCtrl'].value,
+      imagePath: this.imagePath,
+      imageId: this.imageId,
+      inStock: true,
+      characteristics: this.characteristics
+    }
+
+    this._productService.createProduct(product).subscribe((id) => {
+      this._router.navigateByUrl(`/products/${id}`)
     });
+  }
+
+  updateProduct() {
+    this.characteristics.forEach(ch => {
+      ch.value = this.characteristicFormGroup.controls[ch.name].value
+    })
+
+    const categoryId: string = this.categories.find(x => x.name == this.selectedCategory)?.id ?? '';
+
+    const product: Product = {
+      name: this.productInformationFormGroup.controls['nameCtrl'].value,
+      description: this.productInformationFormGroup.controls['descriptionCtrl'].value,
+      categoryId: categoryId,
+      weight: this.characteristicFormGroup.controls['weightCtrl'].value,
+      price: this.characteristicFormGroup.controls['priceCtrl'].value,
+      imagePath: this.product?.imagePath,
+      imageId: this.product?.imageId,
+      inStock: true,
+      characteristics: this.characteristics
+    }
+
+    this._productService.updateProduct(product, this.product?.id ?? '').subscribe((id) => {
+      this._router.navigateByUrl(`/products/${id}`)
+    });
+  }
+
+  next() {
+    this.productInformationFormGroup.controls['imageCtrl'].markAsTouched()
+  }
+
+  setProductValues(product: Product) {
+    this.productInformationFormGroup.controls['nameCtrl'].setValue(product.name)
+    this.productInformationFormGroup.controls['descriptionCtrl'].setValue(product.description)
+    this.productInformationFormGroup.controls['categoryCtrl'].setValue(product.category?.name)
+    this.selectedCategory = product.category?.name ?? '';
+    this.characteristicFormGroup = this.createCharacteristicFormGroup(product.characteristics,
+      true, product.weight, product.price)
+    this.characteristics = product.characteristics
+
+    this.product = product
+    this.imageId = product.imageId;
+    this.displayImagePath = product.imagePath;
+    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
   }
 }

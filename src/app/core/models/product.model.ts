@@ -7,7 +7,8 @@ export interface Product {
   ownerId?: string;
   name?: string;
   description?: string;
-  category: Category;
+  categoryId?: string;
+  category?: Category;
   price?: number;
   weight?: number;
   imagePath?: string;

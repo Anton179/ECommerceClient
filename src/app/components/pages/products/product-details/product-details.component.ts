@@ -68,11 +68,14 @@ export class ProductDetailsComponent implements OnInit {
         this.characteristicRows = 4;
       }
 
-      this.categoryLink.push(this.product.category.name)
-      let category: Category = this.product?.category;
-      while (category?.parent) {
-        category = category.parent;
-        this.categoryLink.push(category.name)
+      this.categoryLink.push(this.product.category?.name ?? '')
+
+      if (this.product?.category) {
+        let category: Category = this.product.category;
+        while (category?.parent) {
+          category = category.parent;
+          this.categoryLink.push(category.name)
+        }
       }
 
       this.categoryLink.reverse()

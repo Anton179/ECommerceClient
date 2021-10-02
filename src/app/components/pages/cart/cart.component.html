@@ -131,7 +131,8 @@
                   <ng-container *ngFor="let shipping of shippingList">
                     <mat-radio-button [value]="shipping.name">
                       <div>
-                        <img height="50px" src="{{shipping.imagePath}}" style="border-radius: 5px; vertical-align: bottom"
+                        <img height="50px" src="{{shipping.imagePath}}"
+                             style="border-radius: 5px; vertical-align: bottom"
                              width="50px">
                         <div class="mat-title inline" style="margin-top: 10px">
                           {{shipping.name}}

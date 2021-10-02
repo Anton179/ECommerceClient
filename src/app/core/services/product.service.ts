@@ -28,7 +28,15 @@ export class ProductService {
     return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlService.api_url}/products/getOrderedProducts?${params.toString()}`);
   }
 
+  updateProduct(product: Product, id: string): Observable<string> {
+    return this._httpClient.put<string>(`${this._envUrlService.api_url}/products/${id}`, product);
+  }
+
   getProduct(id: string): Observable<Product> {
     return this._httpClient.get<Product>(`${this._envUrlService.api_url}/products/${id}`);
+  }
+
+  createProduct(product: Product): Observable<string> {
+    return this._httpClient.post<string>(`${this._envUrlService.api_url}/products`, product);
   }
 }

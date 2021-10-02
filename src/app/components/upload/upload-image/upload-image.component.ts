@@ -27,7 +27,7 @@ export class UploadImageComponent {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
 
-    this.http.post<{dbPath: string, productId: string}>(`${this._envUrlservice.api_url}/upload?${this.imageId != undefined ? 'imageId=' + this.imageId : ''}`,
+    this.http.post<{ dbPath: string, productId: string }>(`${this._envUrlservice.api_url}/upload?${this.imageId != undefined ? 'imageId=' + this.imageId : ''}`,
       formData, {reportProgress: true, observe: 'events'})
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
