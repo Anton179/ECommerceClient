@@ -1,5 +1,5 @@
 import {AfterViewChecked, Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Category} from 'src/app/core/models/category.model';
 import {Product} from 'src/app/core/models/product.model';
@@ -19,6 +19,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewChecked {
   characteristicRows: number = 4;
   categoryLink: string[] = [];
   userRole: string = ''
+  userId: string = ''
 
   quantityControl = new FormControl(1, [
     Validators.required,
@@ -31,8 +32,20 @@ export class ProductDetailsComponent implements OnInit, AfterViewChecked {
   private subscription: Subscription;
 
   constructor(private activateRoute: ActivatedRoute, private productService: ProductService,
-              private _authService: AuthService, private _cartService: CartService) {
+              private _authService: AuthService, private _cartService: CartService,
+              private _router: Router) {
     this.subscription = activateRoute.params.subscribe(params => this.id = params['id']);
+    this._authService.isAuthenticated().then(userAuthenticated => {
+      if (userAuthenticated) {
+        this._authService.getUserId().then(id => {
+          this.userId = id;
+        })
+      }
+    })
+  }
+
+  updateProduct(id: string) {
+    this._router.navigateByUrl(`/account/product?id=${id}`)
   }
 
   addToCart() {
