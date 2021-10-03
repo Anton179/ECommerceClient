@@ -14,8 +14,12 @@ export class CategoryService {
   constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
-  getCategories(pagedRequest: PagedRequest): Observable<PaginatedResult<Category>> {
+  getPaginatedCategories(pagedRequest: PagedRequest): Observable<PaginatedResult<Category>> {
     const params = this._envUrlService.getParams(pagedRequest)
-    return this._httpClient.get<PaginatedResult<Category>>(`${this._envUrlService.api_url}/categories?${params.toString()}`);
+    return this._httpClient.get<PaginatedResult<Category>>(`${this._envUrlService.api_url}/categories/paginated-search?${params.toString()}`);
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this._httpClient.get<Category[]>(`${this._envUrlService.api_url}/categories`);
   }
 }

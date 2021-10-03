@@ -5,6 +5,7 @@ import {HeaderComponent} from './layout/header/header.component';
 import {FooterComponent} from './layout/footer/footer.component';
 import {MaterialModule} from './material/material.module';
 import {RouterModule} from '@angular/router';
+import {MenuItemComponent} from "./layout/header/menu-item/menu-item.component";
 
 @NgModule({
   imports: [
@@ -16,11 +17,13 @@ import {RouterModule} from '@angular/router';
   declarations: [
     HeaderComponent,
     FooterComponent,
+    MenuItemComponent
   ],
   exports: [
     CommonModule,
     HeaderComponent,
     FooterComponent,
+    MenuItemComponent
   ]
 })
 

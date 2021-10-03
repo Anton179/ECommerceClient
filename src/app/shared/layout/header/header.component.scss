@@ -3,9 +3,12 @@
 }
 
 a.title {
-  margin-left: 50px;
+  margin-left: 40px;
 }
 
+.shopping-cart {
+  margin-right: 40px;
+}
 
 :host ::ng-deep .mat-select-value-text {
   font-size: 14px !important;
@@ -44,8 +47,6 @@ a.title {
   background: #E7E7E7
 }
 
-// </mat-form-field>
-
 ::ng-deep .mat-select-panel {
   font-size: 14px !important;
   width: 120px !important;
@@ -60,29 +61,14 @@ a.title {
 }
 
 mat-form-field.search {
-  width: 300px;
-  padding-left: 10px;
+  width: 250px;
+  padding-left: 150px;
 }
 
 mat-form-field.filterCategory {
-  padding-left: 10px;
-  width: 120px;
-}
-
-button.category {
-  margin-left: 120px;
+  width: 230px;
 }
 
 .noHover {
   pointer-events: none;
 }
-
-//::ng-deep {
-//  .mat-select-panel-wrap {
-//    overflow: hidden !important;
-//  }
-//  .mat-select-panel {
-//
-//    overflow-y: auto !important;
-//  }
-//}
