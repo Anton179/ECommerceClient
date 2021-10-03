@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <div class="category">
     <ng-container *ngFor="let cat of categoryLink; let idx = index">
       <a [routerLink]="'/products'" [queryParams]="{category: cat}">
@@ -45,10 +45,11 @@
             <tr>
               <td align="center" colspan="2">
                 <hr>
-                <button *ngIf="product?.inStock" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>
+                <button *ngIf="product?.inStock && userId != product?.ownerId" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>
                   Add to cart
                 </button>
-                <button *ngIf="!product?.inStock" class="addToCart" color="accent" mat-raised-button>Notify me</button>
+                <button *ngIf="!product?.inStock && userId != product?.ownerId" class="addToCart" color="accent" mat-raised-button>Notify me</button>
+                <button *ngIf="userId == product?.ownerId" class="addToCart" (click)="updateProduct(product?.id ?? '')" color="accent" mat-raised-button>Update product</button>
               </td>
             </tr>
           </table>

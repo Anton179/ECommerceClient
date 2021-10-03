@@ -14,19 +14,19 @@
                 <mat-divider></mat-divider>
               </td>
             </tr>
-            <tr style="font-size: 18px;">
+            <tr class="size-18">
               <td>
                 Subtotal:
               </td>
-              <td style="text-align: end;">
+              <td class="align-end">
                 {{subTotalPrice | currency}}
               </td>
             </tr>
-            <tr style="font-size: 16px;">
+            <tr class="size-16">
               <td>
                 Shipping:
               </td>
-              <td style="text-align: end;">
+              <td class="align-end">
                 {{selectedShipping?.price | currency}}
               </td>
             </tr>
@@ -41,22 +41,22 @@
                 <mat-divider></mat-divider>
               </td>
             </tr>
-            <tr style="font-size: 18px; font-weight: bold;">
+            <tr class="size-18 bold">
               <td>
                 Total:
               </td>
-              <td style="text-align: end;">
+              <td class="align-end">
                 {{totalPrice | currency}}
               </td>
             </tr>
             <tr>
-              <td colspan="2" style="text-align: center;">
+              <td colspan="2" class="align-center">
                 <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
               </td>
             </tr>
           </table>
         </div>
-        <table style="width: 100%; margin: 20px 0px; padding-right: 500px;">
+        <table class="product-info">
           <tr>
             <td style="width: 50px;">
               Product
@@ -78,10 +78,10 @@
             </td>
           </tr>
           <ng-container *ngFor="let cart of cartList">
-            <tr style="vertical-align: top;">
+            <tr class="product-info">
               <td>
-                <a [routerLink]="['/products', cart.product?.id]" style="width: 120px;">
-                  <img height="120px" src="{{cart.product?.imagePath}}" width="120px"/>
+                <a [routerLink]="['/products', cart.product?.id]" class="product">
+                  <img class="product" src="{{cart.product?.imagePath}}"/>
                 </a>
               </td>
               <td>
@@ -89,7 +89,7 @@
                 <div class="mat-body-2">Weight: {{cart.product?.weight}}kg</div>
                 <br><br>
                 <button (click)="removeProduct(cart.product?.id)" mat-flat-button
-                        style="background: unset; color: green;">Remove
+                        class="remove">Remove
                 </button>
               </td>
               <td>
@@ -131,13 +131,11 @@
                   <ng-container *ngFor="let shipping of shippingList">
                     <mat-radio-button [value]="shipping.name">
                       <div>
-                        <img height="50px" src="{{shipping.imagePath}}"
-                             style="border-radius: 5px; vertical-align: bottom"
-                             width="50px">
-                        <div class="mat-title inline" style="margin-top: 10px">
+                        <img class="shipping" src="{{shipping.imagePath}}">
+                        <div class="mat-title inline shipping">
                           {{shipping.name}}
                         </div>
-                        <div class="mat-subheading-2 inline2" style="margin-top: 10px">
+                        <div class="mat-subheading-2 inline2 shipping">
                           {{shipping.price | currency}}
                         </div>
                         <div class="inline3">
@@ -176,7 +174,7 @@
                 <mat-divider></mat-divider>
               </td>
             </tr>
-            <tr style="font-size: 18px;">
+            <tr class="size-18">
               <td>
                 Subtotal:
               </td>
@@ -184,11 +182,11 @@
                 {{subTotalPrice | currency}}
               </td>
             </tr>
-            <tr style="font-size: 16px;">
+            <tr class="size-16">
               <td>
                 Shipping:
               </td>
-              <td style="text-align: end;">
+              <td class="align-end">
                 {{selectedShipping?.price | currency}}
               </td>
             </tr>
@@ -203,16 +201,16 @@
                 <mat-divider></mat-divider>
               </td>
             </tr>
-            <tr style="font-size: 18px; font-weight: bold;">
+            <tr class="size-18 bold">
               <td>
                 Total:
               </td>
-              <td style="text-align: end;">
+              <td class="align-end">
                 {{totalPrice | currency}}
               </td>
             </tr>
             <tr>
-              <td colspan="2" style="text-align: center;">
+              <td colspan="2" class="align-end">
                 <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
               </td>
             </tr>

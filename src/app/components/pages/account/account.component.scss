@@ -10,12 +10,17 @@ mat-nav-list.list-horizontal {
   }
 }
 
+div.account {
+  width: 1100px;
+  margin: 0 auto;
+}
+
 table.account-info {
   background: #F1F1F1;
   margin: 50px auto;
   padding-bottom: 10px;
-  width: 1100px;
-  border-radius: 10px; //padding: 10px;
+  width: 100%;
+  border-radius: 10px;
 }
 
 div.products {
@@ -41,6 +46,9 @@ table.order-info {
   margin: 50px auto;
   width: 1100px;
   padding-top: 20px;
+}
+
+.border {
   border: solid 1px lightgray;
   border-radius: 10px;
 }
@@ -68,12 +76,46 @@ div.Confirmed {
 
 div.inline {
   display: inline-block;
-  padding-left: 20px;
-  width: 320px;
   vertical-align: top;
 }
 
 div.create-product {
-  text-align: right;
-  width: 720px !important;
+  float: right;
+}
+
+img.product-image {
+  width: 120px;
+  max-height: 120px;
+}
+
+td.count {
+  vertical-align: top;
+  width: 250px
+}
+
+td.image {
+  width: 100px;
+}
+
+tr.center {
+  text-align: center!important;
+}
+
+mat-divider.profile {
+  background: white;
+  margin-bottom: 10px
+}
+
+mat-divider.order {
+  background: lightgray;
+  margin: 10px 0
+}
+
+div.user-name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+mat-icon.profile {
+  font-size: 100px
 }

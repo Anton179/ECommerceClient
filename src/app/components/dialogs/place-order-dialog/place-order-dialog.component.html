@@ -5,6 +5,7 @@
     <mat-form-field [style.width.px]=350 appearance="fill" color="accent">
       <mat-label>Address</mat-label>
       <input matInput required autocomplete="off" type="search" formControlName="address">
+      <mat-error *ngIf="placeOrderForm.controls['address'].invalid">This field is required</mat-error>
     </mat-form-field>
     <p>Payment type</p>
     <mat-form-field appearance="fill" color="accent">
@@ -14,10 +15,11 @@
           {{payment}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="placeOrderForm.controls['payment'].invalid">This field is required</mat-error>
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button type="submit" [disabled]="!placeOrderForm.valid" mat-dialog-close>Place order</button>
+    <button mat-button type="submit">Place order</button>
   </div>
 </form>
