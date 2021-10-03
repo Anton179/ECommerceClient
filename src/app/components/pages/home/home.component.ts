@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
         this.superDealsProducts = paginatedResult.items;
       });
 
-    this.categoryService.getCategories({
+    this.categoryService.getPaginatedCategories({
       pageIndex: 1, pageSize: 7,
       sortDirection: "Ascending", columnNameForSorting: "Name",
       requestFilters: {

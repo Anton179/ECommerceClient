@@ -3,9 +3,12 @@
 }
 
 a.title {
-  margin-left: 50px;
+  margin-left: 40px;
 }
 
+.shopping-cart {
+  margin-right: 40px;
+}
 
 :host ::ng-deep .mat-select-value-text {
   font-size: 14px !important;

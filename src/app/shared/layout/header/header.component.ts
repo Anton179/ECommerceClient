@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {AuthService} from 'src/app/core/services/auth.service';
 import {CartService} from 'src/app/core/services/cart.service';
 import {CategoryService} from "../../../core/services/category.service";
-import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
 import {Category} from "../../../core/models/category.model";
 import {HttpParams} from "@angular/common/http";
 
@@ -22,10 +21,19 @@ export class HeaderComponent implements OnInit {
   hiddenCartBadge: boolean = true;
   filterCategories: string[] = ['All categories'];
   selectedCategory: string = 'All categories';
+  categories: Category[] = [{name: 'Shop by category'}]
   userAuthenticated = false;
 
   constructor(private _authService: AuthService, private _router: Router,
               private _cartService: CartService, private _categoryService: CategoryService) {
+    this._categoryService.getCategories().subscribe((categories: Category[]) => {
+      this.categories[0].subCategories = categories.filter(c => c.parent == null);
+
+      categories.forEach((category: Category) => {
+        this.filterCategories.push(category.name)
+      });
+    })
+
     this._authService.loginChanged
       .subscribe(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
@@ -81,15 +89,6 @@ export class HeaderComponent implements OnInit {
           this.shoppingCartBadge = 0;
         }
       })
-
-    this._categoryService.getCategories({
-      pageIndex: 1, pageSize: 40,
-      sortDirection: "Ascending", columnNameForSorting: "Name"
-    }).subscribe((pagedResult: PaginatedResult<Category>) => {
-      pagedResult.items.forEach((category: Category) => {
-        this.filterCategories.push(category.name)
-      });
-    })
   }
 
   public updateShoppingCartBadge() {

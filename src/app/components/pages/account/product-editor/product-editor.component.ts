@@ -79,7 +79,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
     _route.queryParams.subscribe((queryParam: Params) => {
       const id: string | undefined = queryParam['id'];
 
-      this._categoryService.getCategories(pagedRequest)
+      this._categoryService.getPaginatedCategories(pagedRequest)
         .subscribe((paginatedResult: PaginatedResult<Category>) => {
           this.categories = paginatedResult.items;
 
