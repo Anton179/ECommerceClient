@@ -113,7 +113,6 @@ export class AccountComponent implements OnInit {
 
       for (let j = 1; j < Math.floor(i); j++) {
         this.slidesNumber.push(5 * j)
-        console.log(i)
       }
     })
   }

@@ -181,7 +181,6 @@ export class ProductEditorComponent {
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      imageId: this.imageId,
       inStock: true,
       characteristics: this.characteristics
     }
@@ -204,8 +203,7 @@ export class ProductEditorComponent {
       categoryId: categoryId,
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
-      imagePath: this.product?.imagePath,
-      imageId: this.product?.imageId,
+      imagePath: this.imagePath,
       inStock: true,
       characteristics: this.characteristics
     }
@@ -229,7 +227,7 @@ export class ProductEditorComponent {
     this.characteristics = product.characteristics
 
     this.product = product
-    this.imageId = product.imageId;
+    this.imagePath = product.imagePath
     this.displayImagePath = product.imagePath;
     this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
   }
