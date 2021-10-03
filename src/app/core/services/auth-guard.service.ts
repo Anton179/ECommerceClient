@@ -6,8 +6,6 @@ import {
   CanLoad,
   Route,
   Router,
-  RouterStateSnapshot,
-  UrlSegment
 } from "@angular/router";
 import {Observable} from "rxjs";
 
@@ -24,7 +22,7 @@ export class AuthGuardService implements CanActivate, CanLoad {
   }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean | Promise<boolean> {
-    const canActivate = this.isAuthenticated().then(res => {
+    return this.isAuthenticated().then(res => {
       if (res) {
         switch (route.url.toString()) {
           case 'cart': {
@@ -46,8 +44,6 @@ export class AuthGuardService implements CanActivate, CanLoad {
       }
       return false;
     });
-
-    return canActivate;
   }
 
   private isAuthenticated = () => {
@@ -63,7 +59,7 @@ export class AuthGuardService implements CanActivate, CanLoad {
   }
 
   canLoad(route: Route): Observable<boolean> | boolean | Promise<boolean> {
-    const canLoad = this.isAuthenticated().then(res => {
+    return this.isAuthenticated().then(res => {
       if (res) {
         switch (route.path) {
           case 'cart': {
@@ -85,7 +81,5 @@ export class AuthGuardService implements CanActivate, CanLoad {
       }
       return false;
     });
-
-    return canLoad;
   }
 }
