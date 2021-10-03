@@ -13,7 +13,7 @@ import {FormControl, Validators} from "@angular/forms";
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit, AfterViewChecked {
+export class ProductDetailsComponent implements OnInit {
   price: number | undefined;
   product: Product | undefined;
   characteristicRows: number = 4;
@@ -94,11 +94,4 @@ export class ProductDetailsComponent implements OnInit, AfterViewChecked {
       this.categoryLink.reverse()
     });
   }
-
-  ngAfterViewChecked(): void {
-    if (this.product?.imagePath) {
-      this.product.imagePath += '?' + Date.now();
-    }
-  }
-
 }

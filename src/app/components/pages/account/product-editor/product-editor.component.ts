@@ -12,13 +12,16 @@ import {PaginatedResult} from "../../../../core/models/pageRequest/paginatedResu
 import {CharacteristicService} from "../../../../core/services/characteristic.service";
 import {Characteristic} from "../../../../core/models/characteristic.model";
 import {AuthService} from "../../../../core/services/auth.service";
+import {Observable} from "rxjs";
+import {DialogService} from "../../../../core/services/dialog.service";
+import {CanComponentDeactivate} from "../../../../core/services/canDeactivate-guard.service";
 
 @Component({
   selector: 'app-product-editor',
   templateUrl: './product-editor.component.html',
   styleUrls: ['./product-editor.component.scss']
 })
-export class ProductEditorComponent {
+export class ProductEditorComponent implements CanComponentDeactivate{
   imageId?: string;
   product?: Product;
   categories: Category[] = [];
@@ -27,7 +30,8 @@ export class ProductEditorComponent {
   characteristics: Characteristic[] = [];
   type: string = 'number';
   imagePath?: string;
-  displayImagePath?: string
+  displayImagePath?: string;
+  isUpdating: boolean = false;
 
   productInformationFormGroup: FormGroup = new FormGroup({
     nameCtrl: new FormControl('', [
@@ -60,7 +64,7 @@ export class ProductEditorComponent {
   constructor(private _route: ActivatedRoute, private _productService: ProductService,
               private _formBuilder: FormBuilder, private _categoryService: CategoryService,
               private _characteristicService: CharacteristicService, private cdr: ChangeDetectorRef,
-              private _router: Router, private _authService: AuthService) {
+              private _router: Router, private _authService: AuthService, private _dialogService: DialogService) {
 
     const pagedRequest: PagedRequest = {
       pageIndex: 1, pageSize: 40,
@@ -167,6 +171,13 @@ export class ProductEditorComponent {
     return group;
   }
 
+  canDeactivate(): Observable<boolean> | boolean {
+    if (!this.isUpdating && (this.productInformationFormGroup.dirty || this.characteristicFormGroup.dirty)) {
+      return this._dialogService.confirm('Discard changes for Product?');
+    }
+    return true;
+  }
+
   createProduct() {
     this.characteristics.forEach(ch => {
       ch.value = this.characteristicFormGroup.controls[ch.name].value
@@ -181,10 +192,11 @@ export class ProductEditorComponent {
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      imageId: this.imageId,
       inStock: true,
       characteristics: this.characteristics
     }
+
+    this.isUpdating = true;
 
     this._productService.createProduct(product).subscribe((id) => {
       this._router.navigateByUrl(`/products/${id}`)
@@ -204,11 +216,12 @@ export class ProductEditorComponent {
       categoryId: categoryId,
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
-      imagePath: this.product?.imagePath,
-      imageId: this.product?.imageId,
+      imagePath: this.imagePath,
       inStock: true,
       characteristics: this.characteristics
     }
+
+    this.isUpdating = true;
 
     this._productService.updateProduct(product, this.product?.id ?? '').subscribe((id) => {
       this._router.navigateByUrl(`/products/${id}`)
@@ -229,7 +242,7 @@ export class ProductEditorComponent {
     this.characteristics = product.characteristics
 
     this.product = product
-    this.imageId = product.imageId;
+    this.imagePath = product.imagePath
     this.displayImagePath = product.imagePath;
     this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
   }

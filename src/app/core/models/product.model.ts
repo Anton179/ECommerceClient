@@ -12,7 +12,6 @@ export interface Product {
   price?: number;
   weight?: number;
   imagePath?: string;
-  imageId?: string;
   characteristics: Characteristic[];
   user?: User;
   inStock: boolean;

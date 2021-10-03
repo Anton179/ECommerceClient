@@ -10,7 +10,8 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: () => import('./components/pages/orders/orders.module').then(m => m.OrdersModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService]
   },
   {
     path: 'products',
@@ -23,12 +24,14 @@ const routes: Routes = [
   {
     path: 'cart',
     loadChildren: () => import('./components/pages/cart/cart.module').then(m => m.CartModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService]
   },
   {
     path: 'account',
     loadChildren: () => import('./components/pages/account/account.module').then(m => m.AccountModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService]
   },
   {
     path: '',
