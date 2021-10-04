@@ -23,6 +23,7 @@ export class ProductsComponent {
     _route.queryParams.subscribe((queryParam: any) => {
       const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
+      const vendorName: string | undefined = queryParam['vendor'];
 
       this.pagedRequest = {
         pageIndex: 1, pageSize: 21,
@@ -42,6 +43,14 @@ export class ProductsComponent {
         this.pagedRequest.requestFilters?.filters.push({
           path: 'Category.Name',
           value: categoryName,
+          operator: FilterOperators.Equals
+        })
+      }
+
+      if (vendorName) {
+        this.pagedRequest.requestFilters?.filters.push({
+          path: 'User.UserName',
+          value: vendorName,
           operator: FilterOperators.Equals
         })
       }

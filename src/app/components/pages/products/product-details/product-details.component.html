@@ -17,7 +17,10 @@
       <mat-grid-tile>
         <div class="container-row title">
           <p class="name">{{product?.name}}</p>
-          By <a routerLink="/">{{product?.user?.userName}}</a><br>
+          By
+          <a [routerLink]="['/products']" [queryParams]="{vendor: product?.user?.userName}">
+            {{product?.user?.userName}}
+          </a><br>
         </div>
       </mat-grid-tile>
       <mat-grid-tile rowspan="2" style="margin-left: 40px">
