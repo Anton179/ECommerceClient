@@ -26,14 +26,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _authService: AuthService, private _router: Router,
               private _cartService: CartService, private _categoryService: CategoryService) {
-    this._categoryService.getCategories().subscribe((categories: Category[]) => {
-      this.categories[0].subCategories = categories.filter(c => c.parent == null);
-
-      categories.forEach((category: Category) => {
-        this.filterCategories.push(category.name)
-      });
-    })
-
     this._authService.loginChanged
       .subscribe(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
@@ -45,15 +37,17 @@ export class HeaderComponent implements OnInit {
 
           this._authService.getRole().then(role => {
             this.userRole = role;
+
+            if (role == 'user') {
+              this._cartService.notifyObservable.subscribe((notifyState) => {
+                if (this.userAuthenticated) {
+                  this.updateShoppingCartBadge();
+                }
+              })
+            }
           })
         }
-
       })
-    this._cartService.notifyObservable.subscribe((notifyState) => {
-      if (this.userAuthenticated) {
-        this.updateShoppingCartBadge();
-      }
-    })
   }
 
   searchProducts() {
@@ -89,6 +83,14 @@ export class HeaderComponent implements OnInit {
           this.shoppingCartBadge = 0;
         }
       })
+
+    this._categoryService.getCategories().subscribe((categories: Category[]) => {
+      this.categories[0].subCategories = categories.filter(c => c.parent == null);
+
+      categories.forEach((category: Category) => {
+        this.filterCategories.push(category.name)
+      });
+    })
   }
 
   public updateShoppingCartBadge() {
