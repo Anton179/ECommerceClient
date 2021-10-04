@@ -9,6 +9,11 @@ div.product {
   padding-top: 30px;
 }
 
+img.product {
+  width: 300px;
+  max-height: 300px;
+}
+
 .my-grid-tile {
   border: solid 1px black;
   height: 50px !important;

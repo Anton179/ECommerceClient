@@ -14,8 +14,8 @@ import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.
 })
 export class ProductsComponent {
 
+  category?: string;
   products: Product[] = []
-  str = '';
   length: number = 0;
   pagedRequest?: PagedRequest;
 
@@ -46,6 +46,7 @@ export class ProductsComponent {
         })
       }
 
+      this.category = categoryName;
       this.getProducts(0)
     })
   }

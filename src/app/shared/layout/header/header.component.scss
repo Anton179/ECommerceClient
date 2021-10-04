@@ -2,8 +2,13 @@
   flex: 1 1 auto;
 }
 
-a.title {
-  margin-left: 40px;
+button.home {
+  margin-left: 40px
+}
+
+mat-label.title {
+  font-size: 20px;
+  margin-left: 6px
 }
 
 .shopping-cart {

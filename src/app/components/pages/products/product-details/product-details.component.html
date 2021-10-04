@@ -12,13 +12,12 @@
   <div class="product">
     <mat-grid-list cols="3" rowHeight="100px">
       <mat-grid-tile rowspan="3">
-        <img height="300px" src="{{product?.imagePath}}" width="300px">
+        <img class="product"src="{{product?.imagePath}}">
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="container-row title">
           <p class="name">{{product?.name}}</p>
           By <a routerLink="/">{{product?.user?.userName}}</a><br>
-          "Raiting"
         </div>
       </mat-grid-tile>
       <mat-grid-tile rowspan="2" style="margin-left: 40px">

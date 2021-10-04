@@ -91,6 +91,7 @@ export class PlaceOrderDialogComponent implements OnInit, AfterContentChecked {
 
   paymentChange(value: number) {
     this.checkPayment()
+    this.paymentType = PaymentType[this.placeOrderForm.value.payment as keyof typeof PaymentType]
 
     if (PaymentType[value].toString() === PaymentType.Card.toString()) {
       this.payButton.disabled = false;
