@@ -1,8 +1,9 @@
 <p>
   <mat-toolbar>
-    <a class="title" disableRipple mat-button routerLink="/">
-<h1>eSearch</h1>
-</a>
+    <button class="home" routerLink="/" mat-button matSuffix>
+      <mat-icon>home</mat-icon>
+      <mat-label class="title">eSearch</mat-label>
+</button>
 <div>
     <span *ngFor="let category of categories">
       <span *ngIf="category.subCategories && category.subCategories.length > 0">

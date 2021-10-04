@@ -10,8 +10,21 @@ mat-nav-list.list-horizontal {
   }
 }
 
+div.products-not-found {
+  text-align: center;
+  height: 400px;
+  width: 100%;
+  margin-top: 100px;
+}
+
 div.center {
   text-align: center;
+}
+
+div.category {
+  padding-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 :host ::ng-deep .mat-icon-button.mat-button-disabled.mat-button-disabled {
@@ -21,4 +34,10 @@ div.center {
 :host ::ng-deep .mat-paginator-outer-container {
   color: black;
   background: white;
+}
+
+mat-icon.products-not-found {
+  font-size: 100px;
+  color: lightgray;
+  margin-right: 60px;
 }

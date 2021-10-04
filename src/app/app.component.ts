@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from './core/services/auth.service';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {PaymentService} from "./core/services/payment.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -8,20 +9,30 @@ import {AuthService} from './core/services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'eSearch-client';
+  paymentHandler:any = null;
 
-  public userAuthenticated = false;
+  constructor(private _paymentService: PaymentService, private _router: Router) { }
 
-  constructor(private _authService: AuthService,) {
-    this._authService.loginChanged
-      .subscribe(userAuthenticated => {
-        this.userAuthenticated = userAuthenticated;
-      })
+  ngOnInit() {
+    this.invokeStripe();
   }
 
-  async ngOnInit(): Promise<void> {
-    this._authService.isAuthenticated()
-      .then(userAuthenticated => {
-        this.userAuthenticated = userAuthenticated;
-      })
+  invokeStripe() {
+    if(!window.document.getElementById('stripe-script')) {
+      const script = window.document.createElement("script");
+      script.id = "stripe-script";
+      script.type = "text/javascript";
+      script.src = "https://checkout.stripe.com/checkout.js";
+      script.onload = () => {
+        this.paymentHandler = (<any>window).StripeCheckout.configure({
+          key: 'pk_test_51JgUpAHuRSgDQFZdapSTaRdX7reSwkvQmnoMWVNczb58YUcDwYCpJgiaLjDGVo9HQoIK5yyZDMLWh339LjnMqVky00b0CTxTGj',
+          locale: 'auto',
+          token: function (stripeToken: any) {
+          },
+        });
+      }
+
+      window.document.body.appendChild(script);
+    }
   }
 }

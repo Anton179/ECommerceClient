@@ -1,15 +1,31 @@
 <div class="container">
-  <div class="center" style="padding-top: 60px">
-    <mat-nav-list class="list-horizontal">
-      <mat-list-item *ngFor="let product of products">
-        <app-product-item [productItem]="product"></app-product-item>
-      </mat-list-item>
-    </mat-nav-list>
-    <mat-paginator [length]="length"
-                   [pageSize]="21"
-                   (page)="getProducts($event.pageIndex)"
-                   aria-label="Select page"
-                   [showFirstLastButtons]="true">
-    </mat-paginator>
-  </div>
+  <ng-container *ngIf="products.length; else productsNotFoundBlock">
+    <div class="category">
+      {{category ?? 'All products'}}
+    </div>
+    <div class="center">
+      <mat-nav-list class="list-horizontal">
+        <mat-list-item *ngFor="let product of products">
+          <app-product-item [productItem]="product"></app-product-item>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-paginator [length]="length"
+                     [pageSize]="21"
+                     (page)="getProducts($event.pageIndex)"
+                     aria-label="Select page"
+                     [showFirstLastButtons]="true">
+      </mat-paginator>
+    </div>
+  </ng-container>
+  <ng-template #productsNotFoundBlock>
+    <div class="products-not-found">
+      <mat-icon class="products-not-found">history</mat-icon>
+      <h2>
+        We were unable to find any items matching your filters
+      </h2>
+      <h4>
+        Try updating your filters to find a specific product.
+      </h4>
+    </div>
+  </ng-template>
 </div>
