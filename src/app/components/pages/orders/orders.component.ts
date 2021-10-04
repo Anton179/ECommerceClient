@@ -14,6 +14,7 @@ import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model"
 import {AuthService} from "../../../core/services/auth.service";
 import {OrderProduct} from "../../../core/models/orderProduct.model";
 import {ConfirmOrderDialogComponent} from "../../dialogs/confirm-order-dialog/confirm-order-dialog.component";
+import {Product} from "../../../core/models/product.model";
 
 @Component({
   selector: 'app-orders',
@@ -29,6 +30,8 @@ export class OrdersComponent implements OnInit {
   timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months']
   orderProducts: OrderProduct[] = [];
   userRole: string = '';
+  length: number = 0;
+  pageIndex: number = 0;
 
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
@@ -43,13 +46,13 @@ export class OrdersComponent implements OnInit {
   ngOnInit(): void {
     this._authService.getRole().then(role => {
       this.userRole = role;
-      this.filterStatus();
+      this.filterStatus(0);
     })
   }
 
-  filterStatus() {
+  filterStatus(pageIndex: number) {
     const request: PagedRequest = {
-      pageIndex: 1, pageSize: 10,
+      pageIndex: pageIndex + 1, pageSize: 10,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
       requestFilters: {
         logicalOperator: FilterLogicalOperators.And,
@@ -79,6 +82,7 @@ export class OrdersComponent implements OnInit {
       this._orderService.getOrderProducts(request)
         .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
           this.orderProducts = paginatedResult.items;
+          this.length = paginatedResult.total
         })
     } else {
       if (orderStatus != -1) {
@@ -92,6 +96,7 @@ export class OrdersComponent implements OnInit {
       this._orderService.getOrders(request)
         .subscribe((paginatedResult: PaginatedResult<Order>) => {
           this.orders = paginatedResult.items;
+          this.length = paginatedResult.total
         })
     }
   }

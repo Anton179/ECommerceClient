@@ -15,11 +15,12 @@ import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.
 export class ProductsComponent {
 
   category?: string;
+  vendor?: string;
   products: Product[] = []
   length: number = 0;
   pagedRequest?: PagedRequest;
 
-  constructor(private _route: ActivatedRoute, private _prooductService: ProductService) {
+  constructor(private _route: ActivatedRoute, private _productService: ProductService) {
     _route.queryParams.subscribe((queryParam: any) => {
       const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
@@ -47,12 +48,15 @@ export class ProductsComponent {
         })
       }
 
+      this.vendor = undefined;
       if (vendorName) {
         this.pagedRequest.requestFilters?.filters.push({
           path: 'User.UserName',
           value: vendorName,
           operator: FilterOperators.Equals
         })
+
+        this.vendor = vendorName;
       }
 
       this.category = categoryName;
@@ -64,7 +68,7 @@ export class ProductsComponent {
     if (this.pagedRequest) {
       this.pagedRequest.pageIndex = pageIndex + 1;
 
-      this._prooductService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
+      this._productService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
         this.products = paginatedResult.items;
         this.length = paginatedResult.total;
       })

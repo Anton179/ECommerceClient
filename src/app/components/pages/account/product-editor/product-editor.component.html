@@ -52,6 +52,26 @@
             </td>
           </tr>
           <tr>
+            <td>
+              In stock:
+            </td>
+            <td>
+              <mat-form-field appearance="fill">
+                <mat-select formControlName="inStockCtrl">
+                  <mat-option [value]="true">
+                    Exist
+                  </mat-option>
+                  <mat-option [value]="false">
+                    Not exist
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="productInformationFormGroup.controls['inStockCtrl'].invalid">
+                  You must select the value!
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
             <td colspan="1" rowspan="3" style="vertical-align: bottom">
               <app-upload-image (onUploadFinished)="uploadFinished($event)"
                                 [imageId]="imageId"></app-upload-image>

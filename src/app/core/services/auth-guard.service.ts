@@ -39,6 +39,13 @@ export class AuthGuardService implements CanActivate, CanLoad {
             }
             break;
           }
+          case 'product': {
+            if (this._userRole != 'vendor') {
+              this._router.navigateByUrl('/home')
+              return false;
+            }
+            break;
+          }
         }
         return true;
       }

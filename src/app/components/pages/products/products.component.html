@@ -1,7 +1,10 @@
 <div class="container">
   <ng-container *ngIf="products.length; else productsNotFoundBlock">
     <div class="category">
-      {{category ?? 'All products'}}
+      {{category ?? 'All categories'}}
+    </div>
+    <div *ngIf="vendor" class="vendor">
+      By {{vendor}}
     </div>
     <div class="center">
       <mat-nav-list class="list-horizontal">

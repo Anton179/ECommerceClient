@@ -46,6 +46,9 @@ export class ProductEditorComponent implements CanComponentDeactivate{
     categoryCtrl: new FormControl(undefined, [
       Validators.required
     ]),
+    inStockCtrl: new FormControl(true, [
+      Validators.required
+    ]),
     imageCtrl: new FormControl('', [
       Validators.required
     ])
@@ -192,7 +195,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      inStock: true,
+      inStock: this.productInformationFormGroup.controls['inStockCtrl'].value,
       characteristics: this.characteristics
     }
 
@@ -217,7 +220,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      inStock: true,
+      inStock: this.productInformationFormGroup.controls['inStockCtrl'].value,
       characteristics: this.characteristics
     }
 
@@ -236,6 +239,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
     this.productInformationFormGroup.controls['nameCtrl'].setValue(product.name)
     this.productInformationFormGroup.controls['descriptionCtrl'].setValue(product.description)
     this.productInformationFormGroup.controls['categoryCtrl'].setValue(product.category?.name)
+    this.productInformationFormGroup.controls['inStockCtrl'].setValue(product.inStock)
     this.selectedCategory = product.category?.name ?? '';
     this.characteristicFormGroup = this.createCharacteristicFormGroup(product.characteristics,
       true, product.weight, product.price)

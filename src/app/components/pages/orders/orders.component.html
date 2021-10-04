@@ -13,7 +13,7 @@
       <tr>
         <td align="right" colspan="2">
           <mat-form-field appearance="fill">
-            <mat-select (selectionChange)="filterStatus()" [(value)]="selectedOrderStatus">
+            <mat-select (selectionChange)="filterStatus(pageIndex)" [(value)]="selectedOrderStatus">
               <mat-option *ngFor="let st of status" value="{{st}}">
                 {{st}}
               </mat-option>
@@ -22,7 +22,7 @@
         </td>
         <td align="right" style="width: 250px">
           <mat-form-field appearance="fill">
-            <mat-select (selectionChange)="filterStatus()" [(value)]="timeFilter">
+            <mat-select (selectionChange)="filterStatus(pageIndex)" [(value)]="timeFilter">
               <mat-option *ngFor="let time of timeFilterArray" [value]="time">{{time}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -101,6 +101,13 @@
           </table>
           <br><br>
         </ng-container>
+        <mat-paginator [length]="length"
+                       [pageSize]="10"
+                       (page)="filterStatus($event.pageIndex)"
+                       aria-label="Select page"
+                       [pageIndex]="pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </ng-container>
     </ng-container>
     <ng-template #orderProductsBlock>
@@ -148,6 +155,13 @@
             </tr>
           </table>
         </ng-template>
+        <mat-paginator [length]="length"
+                       [pageSize]="10"
+                       (page)="filterStatus($event.pageIndex)"
+                       aria-label="Select page"
+                       [pageIndex]="pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </ng-container>
     </ng-template>
     <ng-template #ordersNotFoundBlock>
