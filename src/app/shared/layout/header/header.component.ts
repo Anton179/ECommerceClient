@@ -6,6 +6,7 @@ import {CartService} from 'src/app/core/services/cart.service';
 import {CategoryService} from "../../../core/services/category.service";
 import {Category} from "../../../core/models/category.model";
 import {HttpParams} from "@angular/common/http";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-layout-header',
@@ -21,8 +22,9 @@ export class HeaderComponent implements OnInit {
   hiddenCartBadge: boolean = true;
   filterCategories: string[] = ['All categories'];
   selectedCategory: string = 'All categories';
-  categories: Category[] = [{name: 'Shop by category'}]
+  categories: Category[] = [{name: 'Shop by category'}];
   userAuthenticated = false;
+  Roles = Roles;
 
   constructor(private _authService: AuthService, private _router: Router,
               private _cartService: CartService, private _categoryService: CategoryService) {
@@ -38,7 +40,7 @@ export class HeaderComponent implements OnInit {
           this._authService.getRole().then(role => {
             this.userRole = role;
 
-            if (role == 'user') {
+            if (role == Roles.user) {
               this._cartService.notifyObservable.subscribe((notifyState) => {
                 if (this.userAuthenticated) {
                   this.updateShoppingCartBadge();
@@ -77,7 +79,7 @@ export class HeaderComponent implements OnInit {
       .then(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
 
-        if (this.userAuthenticated && this.userRole == 'user') {
+        if (this.userAuthenticated && this.userRole == Roles.user) {
           this.updateShoppingCartBadge();
         } else {
           this.shoppingCartBadge = 0;

@@ -9,6 +9,7 @@ import {Product} from "../../../core/models/product.model";
 import {ProductService} from "../../../core/services/product.service";
 import {FilterLogicalOperators} from "../../../core/models/pageRequest/enums/FilterLogicalOperators";
 import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOperators";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-account',
@@ -16,8 +17,8 @@ import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOper
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  userRole: string = ''
-  userName: string = ''
+  userRole: string = '';
+  userName: string = '';
   numberOfOrders: number = 0;
   pendingOrders: number = 0;
   cancelledOrders: number = 0;
@@ -27,6 +28,7 @@ export class AccountComponent implements OnInit {
   OrderStatus = OrderStatus;
   slidesNumber: number[] = [];
   length: number = 0;
+  Roles = Roles;
 
   constructor(private _authService: AuthService, private _orderService: OrderService,
               private _productService: ProductService) {
@@ -36,7 +38,7 @@ export class AccountComponent implements OnInit {
     this._authService.getRole().then(role => {
       this.userRole = role;
 
-      if (role == 'user') {
+      if (role == Roles.user) {
         this._orderService.getNumberOfOrders().subscribe(count => {
           this.numberOfOrders = count;
 

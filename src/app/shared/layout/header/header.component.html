@@ -1,10 +1,9 @@
-<p>
-  <mat-toolbar>
-    <button class="home" routerLink="/" mat-button matSuffix>
-      <mat-icon>home</mat-icon>
-      <mat-label class="title">eSearch</mat-label>
-</button>
-<div>
+<mat-toolbar>
+  <button class="home" mat-button matSuffix routerLink="/">
+    <mat-icon>home</mat-icon>
+    <mat-label class="title">eSearch</mat-label>
+  </button>
+  <div>
     <span *ngFor="let category of categories">
       <span *ngIf="category.subCategories && category.subCategories.length > 0">
         <button [matMenuTriggerFor]="menu.childMenu" mat-button>
@@ -14,48 +13,47 @@
         <app-menu-item #menu [items]="category.subCategories"></app-menu-item>
       </span>
     </span>
-</div>
-<mat-form-field class="search">
-  <span matPrefix> </span>
-  <input [(ngModel)]="productName" matInput name="search" placeholder="Search for anything" type="tel">
-</mat-form-field>
-<mat-form-field class="filterCategory">
-  <mat-select [(ngModel)]="selectedCategory">
-    <mat-option *ngFor="let category of filterCategories" value="{{category}}">
-      {{category}}
-    </mat-option>
-  </mat-select>
+  </div>
+  <mat-form-field class="search">
+    <span matPrefix> </span>
+    <input [(ngModel)]="productName" matInput name="search" placeholder="Search for anything" type="tel">
+  </mat-form-field>
+  <mat-form-field class="filterCategory">
+    <mat-select [(ngModel)]="selectedCategory">
+      <mat-option *ngFor="let category of filterCategories" value="{{category}}">
+        {{category}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <button (click)="searchProducts()" mat-button matSuffix>
     <mat-icon>search</mat-icon>
   </button>
-</mat-form-field>
-<span class="example-spacer"></span>
-<mat-label #loginMenuTrigger="matMenuTrigger" (mouseenter)="menuTrigger()" *ngIf="userAuthenticated"
-           [matMenuTriggerFor]="loginMenu" style="font-size: 16px">
-  {{userName}}
-</mat-label>
-<button (click)="login()" (mouseenter)="menuTrigger()" *ngIf="!userAuthenticated" disableRipple mat-button>
-  Sign In
-</button>
-<button (mouseenter)="menuTrigger()" *ngIf="userAuthenticated" mat-icon-button>
-  <mat-icon>supervisor_account</mat-icon>
-</button>
-<button class="shopping-cart" (click)="cartOpen()" *ngIf="!userAuthenticated || userRole == 'user'"
-        [matBadgeHidden]="hiddenCartBadge" [matBadge]="shoppingCartBadge" mat-icon-button>
-  <mat-icon>shopping_cart</mat-icon>
-</button>
+  <span class="example-spacer"></span>
+  <mat-label #loginMenuTrigger="matMenuTrigger" (mouseenter)="menuTrigger()" *ngIf="userAuthenticated"
+             [matMenuTriggerFor]="loginMenu" style="font-size: 16px">
+    {{userName}}
+  </mat-label>
+  <button (click)="login()" (mouseenter)="menuTrigger()" *ngIf="!userAuthenticated" disableRipple mat-button>
+    Sign In
+  </button>
+  <button (mouseenter)="menuTrigger()" *ngIf="userAuthenticated" mat-icon-button>
+    <mat-icon>supervisor_account</mat-icon>
+  </button>
+  <button (click)="cartOpen()" *ngIf="!userAuthenticated || userRole == Roles.user" [matBadgeHidden]="hiddenCartBadge"
+          [matBadge]="shoppingCartBadge" class="shopping-cart" mat-icon-button>
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
 </mat-toolbar>
-</p>
 
 <mat-menu #loginMenu="matMenu">
   <mat-list (mouseleave)="loginMenuTrigger?.closeMenu()" class="profile-info" role="mat-list">
-    <mat-list-item *ngIf="userRole != 'operator'">
+    <mat-list-item *ngIf="userRole != Roles.operator">
       <a mat-flat-button role="listitem" routerLink="/account">My Account</a>
     </mat-list-item>
     <mat-list-item>
       <a mat-flat-button role="listitem" routerLink="/orders">Orders</a>
     </mat-list-item>
-    <mat-list-item *ngIf="userRole == 'user'">
+    <mat-list-item *ngIf="userRole == Roles.user">
       <a mat-flat-button role="listitem" routerLink="/">My Reviews</a>
     </mat-list-item>
     <mat-list-item>

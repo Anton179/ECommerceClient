@@ -6,6 +6,7 @@ import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOper
 import {ProductService} from "../../../core/services/product.service";
 import {Product} from "../../../core/models/product.model";
 import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-products',
@@ -16,7 +17,7 @@ export class ProductsComponent {
 
   category?: string;
   vendor?: string;
-  products: Product[] = []
+  products: Product[] = [];
   length: number = 0;
   pagedRequest?: PagedRequest;
 
@@ -24,7 +25,7 @@ export class ProductsComponent {
     _route.queryParams.subscribe((queryParam: any) => {
       const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
-      const vendorName: string | undefined = queryParam['vendor'];
+      const vendorName: string | undefined = queryParam[Roles.vendor];
 
       this.pagedRequest = {
         pageIndex: 1, pageSize: 21,

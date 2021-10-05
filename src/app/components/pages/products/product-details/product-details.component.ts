@@ -7,6 +7,7 @@ import {AuthService} from 'src/app/core/services/auth.service';
 import {CartService} from 'src/app/core/services/cart.service';
 import {ProductService} from 'src/app/core/services/product.service';
 import {FormControl, Validators} from "@angular/forms";
+import {Roles} from "../../../../constants/roles";
 
 @Component({
   selector: 'app-product-details',
@@ -58,7 +59,7 @@ export class ProductDetailsComponent implements OnInit {
         if (!userAuthenticated) {
           this._authService.login();
         } else {
-          if (this.userRole == 'user') {
+          if (this.userRole == Roles.user) {
             this._cartService.addCartItem({productId: this.id, quantity: this.quantityControl.value});
           }
         }

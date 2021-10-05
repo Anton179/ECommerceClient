@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuardService} from "./core/services/auth-guard.service";
+import {Roles} from "./constants/roles";
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
     path: 'orders',
     loadChildren: () => import('./components/pages/orders/orders.module').then(m => m.OrdersModule),
     canActivate: [AuthGuardService],
-    canLoad: [AuthGuardService]
+    canLoad: [AuthGuardService],
   },
   {
     path: 'products',
@@ -25,13 +26,15 @@ const routes: Routes = [
     path: 'cart',
     loadChildren: () => import('./components/pages/cart/cart.module').then(m => m.CartModule),
     canActivate: [AuthGuardService],
-    canLoad: [AuthGuardService]
+    canLoad: [AuthGuardService],
+    data: {roles: [Roles.user]}
   },
   {
     path: 'account',
     loadChildren: () => import('./components/pages/account/account.module').then(m => m.AccountModule),
     canActivate: [AuthGuardService],
-    canLoad: [AuthGuardService]
+    canLoad: [AuthGuardService],
+    data: {roles: [Roles.user, Roles.vendor]}
   },
   {
     path: '',

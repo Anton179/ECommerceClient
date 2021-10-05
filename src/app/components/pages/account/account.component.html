@@ -23,7 +23,7 @@
           <mat-divider class="profile"></mat-divider>
         </td>
       </tr>
-      <tr *ngIf="userRole == 'user'" class="center">
+      <tr *ngIf="userRole == Roles.user" class="center">
         <td class="count" colspan="2">
           <div>
             {{numberOfOrders}}
@@ -49,7 +49,7 @@
           </div>
         </td>
       </tr>
-      <tr *ngIf="userRole == 'vendor'" class="center">
+      <tr *ngIf="userRole == Roles.vendor" class="center">
         <td class="count" colspan="2">
           <div>
             {{pendingOrders + confirmedOrders + cancelledOrders}}
@@ -76,7 +76,7 @@
         </td>
       </tr>
     </table>
-    <table *ngIf="userRole == 'user' && order" class="order-info border">
+    <table *ngIf="userRole == Roles.user && order" class="order-info border">
       <tr>
         <td style="width: 200px; padding-left: 15px">
           <div style="font-size: 20px; font-weight: bold">
@@ -125,7 +125,7 @@
         </td>
       </tr>
     </table>
-    <div *ngIf="userRole == 'vendor'" class="products">
+    <div *ngIf="userRole == Roles.vendor" class="products">
       <div class="inline">
         <h2>Your products</h2>
       </div>

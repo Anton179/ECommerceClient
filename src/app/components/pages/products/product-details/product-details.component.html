@@ -1,31 +1,29 @@
 <div class="container">
   <div class="category">
-    <ng-container *ngFor="let cat of categoryLink; let idx = index">
-      <a [routerLink]="'/products'" [queryParams]="{category: cat}">
+    <mat-chip-list>
+      <mat-chip *ngFor="let cat of categoryLink; let idx = index" [queryParams]="{category: cat}"
+                [routerLink]="'/products'" class="category-link">
         {{cat}}
-      </a>
-      <ng-container *ngIf="idx < categoryLink.length - 1">
-        ->
-      </ng-container>
-    </ng-container>
+      </mat-chip>
+    </mat-chip-list>
   </div>
   <div class="product">
     <mat-grid-list cols="3" rowHeight="100px">
       <mat-grid-tile rowspan="3">
-        <img class="product"src="{{product?.imagePath}}">
+        <img class="product" src="{{product?.imagePath}}">
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="container-row title">
           <p class="name">{{product?.name}}</p>
           By
-          <a [routerLink]="['/products']" [queryParams]="{vendor: product?.user?.userName}">
+          <a [queryParams]="{vendor: product?.user?.userName}" [routerLink]="['/products']">
             {{product?.user?.userName}}
           </a><br>
         </div>
       </mat-grid-tile>
       <mat-grid-tile rowspan="2" style="margin-left: 40px">
         <div class="container-row">
-          <table cols="2" width="200px">
+          <table class="cart-information" cols="2">
             <tr>
               <td>
                 Our price:
@@ -40,18 +38,23 @@
               </td>
               <td align="right" style="width: 70px">
                 <mat-form-field appearance="fill" color="accent" style="width: 70px">
-                  <input matInput placeholder="quantity" type="number" [formControl]="quantityControl" required>
+                  <input [formControl]="quantityControl" matInput placeholder="quantity" required type="number">
                 </mat-form-field>
               </td>
             </tr>
             <tr>
               <td align="center" colspan="2">
                 <hr>
-                <button *ngIf="product?.inStock && userId != product?.ownerId" (click)="addToCart()" class="addToCart" color="warn" mat-raised-button>
+                <button (click)="addToCart()" *ngIf="product?.inStock && userId != product?.ownerId" class="addToCart"
+                        color="warn" mat-raised-button>
                   Add to cart
                 </button>
-                <button *ngIf="!product?.inStock && userId != product?.ownerId" class="addToCart" color="accent" mat-raised-button>Notify me</button>
-                <button *ngIf="userId == product?.ownerId" class="addToCart" (click)="updateProduct(product?.id ?? '')" color="accent" mat-raised-button>Update product</button>
+                <button *ngIf="!product?.inStock && userId != product?.ownerId" class="addToCart" color="accent"
+                        mat-raised-button>Notify me
+                </button>
+                <button (click)="updateProduct(product?.id ?? '')" *ngIf="userId == product?.ownerId" class="addToCart"
+                        color="accent" mat-raised-button>Update product
+                </button>
               </td>
             </tr>
           </table>

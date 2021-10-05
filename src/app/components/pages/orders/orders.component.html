@@ -4,7 +4,7 @@
         <td colspan="4" style="border: 0px!important" rowspan="2">
           <div>
             <h2 style="margin-bottom: 0px"><b>Orders</b></h2>
-            <ng-container *ngIf="userRole != 'operator'">
+            <ng-container *ngIf="userRole != Roles.operator">
               <a class="account" routerLink="/account">My account</a> > Orders
             </ng-container>
           </div>
@@ -29,10 +29,10 @@
         </td>
       </tr>
     </table>
-    <ng-container *ngIf="userRole != 'vendor'; else orderProductsBlock">
+    <ng-container *ngIf="userRole != Roles.vendor; else orderProductsBlock">
       <ng-container *ngIf="orders.length; else ordersNotFoundBlock">
         <ng-container *ngFor="let order of orders">
-          <div *ngIf="userRole == 'operator'" class="order-userName">
+          <div *ngIf="userRole == Roles.operator" class="order-userName">
             Ordered by {{order?.user?.userName}}
           </div>
           <div class="inline">
@@ -60,10 +60,10 @@
                 <div class="order-button">
                   <button class="order-button" (click)="orderDetails(order?.id)" mat-button>Order Details</button>
                 </div>
-                <div *ngIf="userRole == 'user'" class="order-button">
+                <div *ngIf="userRole == Roles.user" class="order-button">
                   <button class="order-button" mat-button (click)="reorder(order?.id)">Reorder</button>
                 </div>
-                <div *ngIf="order?.status == 0 && userRole == 'operator'" class="order-button">
+                <div *ngIf="order?.status == 0 && userRole == Roles.operator" class="order-button">
                   <button class="order-button" mat-button (click)="confirmOrder(order?.id)">Confirm</button>
                 </div>
                 <div *ngIf="order?.status == 0">
@@ -92,7 +92,7 @@
               </tr>
               <tr>
                 <td style="padding-bottom: 20px!important; padding-top: 15px">
-                  <button *ngIf="userRole == 'user'" class="product-button" mat-button
+                  <button *ngIf="userRole == Roles.user" class="product-button" mat-button
                           (click)="addToCart(product?.product?.id)">Buy again
                   </button>
                 </td>

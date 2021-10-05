@@ -18,7 +18,7 @@ export class ProductService {
 
   getProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {
     const params = this._envUrlService.getParams(pagedRequest)
-    return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlService.api_url}/products?${params.toString()}`);
+    return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlService.api_url}/products`, {params: params});
   }
 
   getOrderedProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {

@@ -8,14 +8,14 @@ import {BehaviorSubject, Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class CartService {
-  public notify = new BehaviorSubject<string>('');
-  notifyObservable = this.notify.asObservable();
+  private _notify = new BehaviorSubject<string>('');
+  notifyObservable = this._notify.asObservable();
 
   constructor(private http: HttpClient, private envUrlservice: EnvironmentUrlService) {
   }
 
   changeState(value: string): void {
-    this.notify.next(value);
+    this._notify.next(value);
   }
 
   addCartItem(cart: CartItem) {

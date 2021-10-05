@@ -15,7 +15,7 @@ import {Observable} from "rxjs";
 export class AuthGuardService implements CanActivate, CanLoad {
   private _userRole: string = '';
 
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(private _authService: AuthService) {
     this._authService.getRole().then(role => {
       this._userRole = role;
     })
@@ -24,29 +24,12 @@ export class AuthGuardService implements CanActivate, CanLoad {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean | Promise<boolean> {
     return this.isAuthenticated().then(res => {
       if (res) {
-        switch (route.url.toString()) {
-          case 'cart': {
-            if (this._userRole != 'user') {
-              this._router.navigateByUrl('/home')
-              return false;
-            }
-            break;
-          }
-          case 'account': {
-            if (this._userRole == 'operator') {
-              this._router.navigateByUrl('/home')
-              return false;
-            }
-            break;
-          }
-          case 'product': {
-            if (this._userRole != 'vendor') {
-              this._router.navigateByUrl('/home')
-              return false;
-            }
-            break;
-          }
+        const roles = route.data.roles as string[]
+
+        if (roles && roles.length > 0) {
+          return roles.includes(this._userRole)
         }
+
         return true;
       }
       return false;
@@ -68,22 +51,13 @@ export class AuthGuardService implements CanActivate, CanLoad {
   canLoad(route: Route): Observable<boolean> | boolean | Promise<boolean> {
     return this.isAuthenticated().then(res => {
       if (res) {
-        switch (route.path) {
-          case 'cart': {
-            if (this._userRole != 'user') {
-              this._router.navigateByUrl('/home')
-              return false;
-            }
-            break;
-          }
-          case 'account': {
-            if (this._userRole == 'operator') {
-              this._router.navigateByUrl('/home')
-              return false;
-            }
-            break;
-          }
+        const roles = route.data?.roles as string[]
+
+        if (roles && roles.length > 0) {
+          return roles.includes(this._userRole)
         }
+
+        return true;
         return true;
       }
       return false;

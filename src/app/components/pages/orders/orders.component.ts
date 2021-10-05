@@ -14,7 +14,7 @@ import {PagedRequest} from "../../../core/models/pageRequest/pagedRequest.model"
 import {AuthService} from "../../../core/services/auth.service";
 import {OrderProduct} from "../../../core/models/orderProduct.model";
 import {ConfirmOrderDialogComponent} from "../../dialogs/confirm-order-dialog/confirm-order-dialog.component";
-import {Product} from "../../../core/models/product.model";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-orders',
@@ -32,6 +32,7 @@ export class OrdersComponent implements OnInit {
   userRole: string = '';
   length: number = 0;
   pageIndex: number = 0;
+  Roles = Roles;
 
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
@@ -70,7 +71,7 @@ export class OrdersComponent implements OnInit {
       request.requestFilters?.filters.push(timeFilter)
     }
 
-    if (this.userRole == 'vendor') {
+    if (this.userRole == Roles.vendor) {
       if (orderStatus != -1) {
         request.requestFilters?.filters.push({
           path: "Order.Status",

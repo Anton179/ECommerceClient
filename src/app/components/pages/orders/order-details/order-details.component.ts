@@ -7,6 +7,7 @@ import {OrderStatus} from "../../../../core/enums/OrderStatus";
 import {PaymentType} from "../../../../core/enums/PaymentType";
 import {CartService} from "../../../../core/services/cart.service";
 import {AuthService} from "../../../../core/services/auth.service";
+import {Roles} from "../../../../constants/roles";
 
 @Component({
   selector: 'app-order-details',
@@ -16,17 +17,17 @@ import {AuthService} from "../../../../core/services/auth.service";
 export class OrderDetailsComponent implements OnInit {
 
   order: Order | undefined;
-  test: OrderStatus = OrderStatus.Confirmed;
   OrderStatus = OrderStatus;
   PaymentType = PaymentType;
   subTotalPrice: number = 0;
-  userRole: string = ''
+  userRole: string = '';
+  Roles = Roles;
 
   constructor(private _activateRoute: ActivatedRoute, private _orderService: OrderService,
               private _cartService: CartService, private _authService: AuthService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._activateRoute.paramMap.pipe(
       switchMap(params => params.getAll('id'))
     )
@@ -36,7 +37,7 @@ export class OrderDetailsComponent implements OnInit {
           this.subTotalPrice = 0;
 
           order.orderProducts?.forEach(p => {
-            this.subTotalPrice += p.product?.price ?? 0;
+            this.subTotalPrice += (p.product?.price ?? 0) * (p.quantity ?? 0);
           })
         });
       });
@@ -46,7 +47,7 @@ export class OrderDetailsComponent implements OnInit {
     })
   }
 
-  addToCart(id: string | undefined) {
+  addToCart(id: string | undefined): void {
     this._cartService.addCartItem({productId: id ?? '', quantity: 1})
   }
 

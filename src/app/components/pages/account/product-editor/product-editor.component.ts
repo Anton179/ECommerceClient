@@ -32,6 +32,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
   imagePath?: string;
   displayImagePath?: string;
   isUpdating: boolean = false;
+  inStock: boolean = false;
 
   productInformationFormGroup: FormGroup = new FormGroup({
     nameCtrl: new FormControl('', [
