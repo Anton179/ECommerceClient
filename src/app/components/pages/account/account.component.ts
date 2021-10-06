@@ -29,6 +29,7 @@ export class AccountComponent implements OnInit {
   slidesNumber: number[] = [];
   length: number = 0;
   Roles = Roles;
+  pageSize = 8;
 
   constructor(private _authService: AuthService, private _orderService: OrderService,
               private _productService: ProductService) {
@@ -84,7 +85,7 @@ export class AccountComponent implements OnInit {
     this._authService.getUserId().then(id => {
       const pagedRequest: PagedRequest = {
         pageIndex: index + 1,
-        pageSize: 10,
+        pageSize: this.pageSize,
         sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
         requestFilters: {
           logicalOperator: FilterLogicalOperators.And,
@@ -110,11 +111,11 @@ export class AccountComponent implements OnInit {
 
       this.slidesNumber = [0];
 
-      let i = (this.order?.orderProducts?.length ?? 0) / 5;
-      i += (this.order?.orderProducts?.length ?? 0) % 5 == 0 ? 0 : 1;
+      let i = (this.order?.orderProducts?.length ?? 0) / 4;
+      i += (this.order?.orderProducts?.length ?? 0) % 4 == 0 ? 0 : 1;
 
       for (let j = 1; j < Math.floor(i); j++) {
-        this.slidesNumber.push(5 * j);
+        this.slidesNumber.push(4 * j);
       }
     });
   }

@@ -162,7 +162,7 @@
     </mat-tab>
     <mat-tab label="Buy it again">
       <div *ngIf="orderedProducts.length; else elseBlock2" style="min-height: 400px">
-        <div class="summary">
+        <div class="summary" *ngIf="cartList.length">
           <table>
             <tr>
               <td colspan="2">
@@ -210,7 +210,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2" class="align-end">
+              <td colspan="2" class="align-center">
                 <mat-button-toggle class="checkout" (click)="placeOrder()">Place order</mat-button-toggle>
               </td>
             </tr>
@@ -219,7 +219,7 @@
         <div class="ordered-products">
           <mat-carousel [autoplay]="false"
                         [hideArrows]="false"
-                        [loop]="true" [proportion]=40 [slides]="slidesNumber.length"
+                        [loop]="true" [proportion]=45 [slides]="slidesNumber.length"
                         maxWidth="auto"
                         orientation="ltr">
             <mat-carousel-slide
@@ -227,7 +227,7 @@
               [hideOverlay]="true">
               <div class="center">
                 <mat-nav-list class="list-horizontal">
-                  <mat-list-item *ngFor="let product of orderedProducts.slice(pos, pos + 4)">
+                  <mat-list-item *ngFor="let product of orderedProducts.slice(pos, pos + 3)">
                     <app-product-item [productItem]="product"></app-product-item>
                   </mat-list-item>
                 </mat-nav-list>

@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   superDealsProducts: Product[] = [];
   categories: Category[] = [];
   slidesNumber = [
-    0, 6, 12
+    0, 5, 10, 15
   ];
 
   constructor(private _productService: ProductService, private _categoryService: CategoryService,
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this._productService.getProducts({
-      pageIndex: 1, pageSize: 18,
+      pageIndex: 1, pageSize: 20,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
     })
       .subscribe((paginatedResult: PaginatedResult<Product>) => {
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
       });
 
     this._productService.getProducts({
-      pageIndex: 1, pageSize: 18,
+      pageIndex: 1, pageSize: 20,
       sortDirection: 'Descending', columnNameForSorting: 'Price'
     })
       .subscribe((paginatedResult: PaginatedResult<Product>) => {

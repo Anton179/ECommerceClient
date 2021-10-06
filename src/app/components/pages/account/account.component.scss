@@ -4,9 +4,10 @@ mat-nav-list.list-horizontal {
   .mat-list-item {
     display: inline-block;
     height: auto;
-    max-width: 160px;
+    //max-width: 160px;
+    width: auto;
     color: black;
-    padding: 25px;
+    //padding: 25px;
   }
 }
 

@@ -62,11 +62,11 @@ export class CartComponent implements OnInit, DoCheck {
 
       this.slidesNumber = [0];
 
-      let i = this.orderedProducts.length / 4;
-      i += this.orderedProducts.length % 4 == 0 ? 0 : 1;
+      let i = this.orderedProducts.length / 3;
+      i += this.orderedProducts.length % 3 == 0 ? 0 : 1;
 
       for (let j = 1; j < Math.floor(i); j++) {
-        this.slidesNumber.push(4 * j);
+        this.slidesNumber.push(3 * j);
       }
     })
   }

@@ -65,6 +65,8 @@ export class PlaceOrderDialogComponent implements OnInit {
   }
 
   private placeOrder(): void {
+    this.paymentType = (PaymentType[this.placeOrderForm.controls['payment'].value]) as unknown as PaymentType
+
     this._orderService.createOrder({
       orderProducts: this.orderProducts,
       shipping: this.shipping,

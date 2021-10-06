@@ -20,6 +20,10 @@ export class ProductsComponent {
   products: Product[] = [];
   length: number = 0;
   pagedRequest?: PagedRequest;
+  pageSize: number = 20;
+  columnName: string = 'Price';
+  sortBy: string = 'Ascending';
+  sortList: string[] = ['Ascending', 'Descending']
 
   constructor(private _route: ActivatedRoute, private _productService: ProductService) {
     _route.queryParams.subscribe((queryParam: any) => {
@@ -28,8 +32,8 @@ export class ProductsComponent {
       const vendorName: string | undefined = queryParam[Roles.vendor];
 
       this.pagedRequest = {
-        pageIndex: 1, pageSize: 21,
-        sortDirection: 'Ascending', columnNameForSorting: 'Name',
+        pageIndex: 1, pageSize: this.pageSize,
+        sortDirection: this.sortBy, columnNameForSorting: this.columnName,
         requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
       };
 
@@ -63,6 +67,15 @@ export class ProductsComponent {
       this.category = categoryName;
       this.getProducts(0);
     })
+  }
+
+  sortingChange(): void {
+    if (this.pagedRequest) {
+      this.pagedRequest.sortDirection = this.sortBy;
+      this.pagedRequest.columnNameForSorting = this.columnName;
+    }
+
+    this.getProducts(0)
   }
 
   getProducts(pageIndex: number): void {

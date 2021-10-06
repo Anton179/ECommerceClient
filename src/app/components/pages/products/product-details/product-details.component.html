@@ -49,7 +49,7 @@
                         color="warn" mat-raised-button>
                   Add to cart
                 </button>
-                <button *ngIf="!product?.inStock && userId != product?.ownerId" class="addToCart" color="accent"
+                <button *ngIf="!product?.inStock && userId != product?.ownerId" class="addToCart" color="primary"
                         mat-raised-button>Notify me
                 </button>
                 <button (click)="updateProduct(product?.id ?? '')" *ngIf="userId == product?.ownerId" class="addToCart"
