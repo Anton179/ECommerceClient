@@ -119,7 +119,7 @@
                 <h3>{{orderProduct.product?.name}}</h3>
               </td>
               <td rowspan="4" style="vertical-align: top">
-                <button class="order-button" mat-button>Product details</button>
+                <button class="order-button" [routerLink]="['/products', orderProduct.product?.id]" mat-button>Product details</button>
               </td>
             </tr>
             <tr>

@@ -11,37 +11,37 @@ export class CartService {
   private _notify = new BehaviorSubject<string>('');
   notifyObservable = this._notify.asObservable();
 
-  constructor(private http: HttpClient, private envUrlservice: EnvironmentUrlService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
   changeState(value: string): void {
     this._notify.next(value);
   }
 
-  addCartItem(cart: CartItem) {
-    this.http.post(`${this.envUrlservice.api_url}/cart`, cart).subscribe(() => {
+  addCartItem(cart: CartItem): void {
+    this._httpClient.post(`${this._envUrlService.api_url}/cart`, cart).subscribe(() => {
       this.changeState('Product added')
     });
   }
 
   clearCart(): Observable<void> {
-    return this.http.delete<void>(`${this.envUrlservice.api_url}/cart`);
+    return this._httpClient.delete<void>(`${this._envUrlService.api_url}/cart`);
   }
 
   getNumberOfProducts(): Observable<number> {
-    return this.http.get<number>(`${this.envUrlservice.api_url}/cart/getCount`);
+    return this._httpClient.get<number>(`${this._envUrlService.api_url}/cart/getCount`);
   }
 
   removeCartItem(id: string): Observable<string> {
-    return this.http.delete<string>(`${this.envUrlservice.api_url}/cart/${id}`);
+    return this._httpClient.delete<string>(`${this._envUrlService.api_url}/cart/${id}`);
   }
 
   getCart(): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(`${this.envUrlservice.api_url}/cart`);
+    return this._httpClient.get<CartItem[]>(`${this._envUrlService.api_url}/cart`);
   }
 
   reorderProducts(orderId: string) {
-    this.http.post(`${this.envUrlservice.api_url}/cart/reorder/${orderId}`, null).subscribe(() => {
+    this._httpClient.post(`${this._envUrlService.api_url}/cart/reorder/${orderId}`, null).subscribe(() => {
       this.changeState('Products added')
     });
   }

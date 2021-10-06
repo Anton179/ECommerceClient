@@ -16,7 +16,7 @@ export class MenuItemComponent {
   constructor(public router: Router) {
   }
 
-  navigate(categoryName: string) {
+  navigate(categoryName: string): any {
     this.router.navigateByUrl(`/products?category=${categoryName}`);
   }
 }

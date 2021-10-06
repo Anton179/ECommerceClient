@@ -32,7 +32,7 @@ export class PlaceOrderDialogComponent implements OnInit {
 
   constructor(private _orderService: OrderService, private _cartService: CartService,
               @Inject(MAT_DIALOG_DATA) public data: any, private _router: Router,
-              private dialogRef: MatDialogRef<PlaceOrderDialogComponent>, private _paymentService: PaymentService) {
+              private _dialogRef: MatDialogRef<PlaceOrderDialogComponent>, private _paymentService: PaymentService) {
     this.shipping = data.shipping;
 
     data.cartItems.forEach((item: CartItem) => {
@@ -75,6 +75,6 @@ export class PlaceOrderDialogComponent implements OnInit {
       this._cartService.changeState('Cart is empty')
     });
 
-    this.dialogRef.close()
+    this._dialogRef.close()
   }
 }

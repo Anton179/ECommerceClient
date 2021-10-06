@@ -51,7 +51,7 @@
             </tr>
             <tr>
               <td colspan="2" class="align-center">
-                <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
+                <mat-button-toggle class="checkout" (click)="placeOrder()">Place order</mat-button-toggle>
               </td>
             </tr>
           </table>
@@ -211,15 +211,15 @@
             </tr>
             <tr>
               <td colspan="2" class="align-end">
-                <mat-button-toggle class="checkout" (click)="placeOrder(totalPrice)">Place order</mat-button-toggle>
+                <mat-button-toggle class="checkout" (click)="placeOrder()">Place order</mat-button-toggle>
               </td>
             </tr>
           </table>
         </div>
-        <div style="max-width: 800px">
+        <div class="ordered-products">
           <mat-carousel [autoplay]="false"
                         [hideArrows]="false"
-                        [loop]="true" [proportion]=50 [slides]="slidesNumber.length"
+                        [loop]="true" [proportion]=40 [slides]="slidesNumber.length"
                         maxWidth="auto"
                         orientation="ltr">
             <mat-carousel-slide

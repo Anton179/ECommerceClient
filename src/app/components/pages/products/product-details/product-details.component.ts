@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Category} from 'src/app/core/models/category.model';
@@ -19,8 +19,8 @@ export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
   characteristicRows: number = 4;
   categoryLink: string[] = [];
-  userRole: string = ''
-  userId: string = ''
+  userRole: string = '';
+  userId: string = '';
 
   quantityControl = new FormControl(1, [
     Validators.required,
@@ -29,13 +29,13 @@ export class ProductDetailsComponent implements OnInit {
     Validators.pattern('^[0-9]*$')
   ]);
 
-  private id: string = "";
-  private subscription: Subscription;
+  private _id: string = "";
+  private _subscription: Subscription;
 
-  constructor(private activateRoute: ActivatedRoute, private productService: ProductService,
+  constructor(private _activateRoute: ActivatedRoute, private _productService: ProductService,
               private _authService: AuthService, private _cartService: CartService,
               private _router: Router) {
-    this.subscription = activateRoute.params.subscribe(params => this.id = params['id']);
+    this._subscription = _activateRoute.params.subscribe(params => this._id = params['id']);
     this._authService.isAuthenticated().then(userAuthenticated => {
       if (userAuthenticated) {
         this._authService.getUserId().then(id => {
@@ -45,11 +45,11 @@ export class ProductDetailsComponent implements OnInit {
     })
   }
 
-  updateProduct(id: string) {
+  updateProduct(id: string): void {
     this._router.navigateByUrl(`/account/product?id=${id}`)
   }
 
-  addToCart() {
+  addToCart(): void {
     if (this.quantityControl.invalid) {
       return;
     }
@@ -60,18 +60,18 @@ export class ProductDetailsComponent implements OnInit {
           this._authService.login();
         } else {
           if (this.userRole == Roles.user) {
-            this._cartService.addCartItem({productId: this.id, quantity: this.quantityControl.value});
+            this._cartService.addCartItem({productId: this._id, quantity: this.quantityControl.value});
           }
         }
       })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._authService.getRole().then(role => {
       this.userRole = role;
     })
 
-    this.productService.getProduct(this.id).subscribe((product: Product) => {
+    this._productService.getProduct(this._id).subscribe((product: Product) => {
       this.product = product;
       this.price = product.price;
 
@@ -82,17 +82,17 @@ export class ProductDetailsComponent implements OnInit {
         this.characteristicRows = 4;
       }
 
-      this.categoryLink.push(this.product.category?.name ?? '')
+      this.categoryLink.push(this.product.category?.name ?? '');
 
       if (this.product?.category) {
         let category: Category = this.product.category;
         while (category?.parent) {
           category = category.parent;
-          this.categoryLink.push(category.name)
+          this.categoryLink.push(category.name);
         }
       }
 
-      this.categoryLink.reverse()
+      this.categoryLink.reverse();
     });
   }
 }

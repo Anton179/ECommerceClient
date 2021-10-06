@@ -43,7 +43,7 @@ export class AccountComponent implements OnInit {
           this.numberOfOrders = count;
 
           if (count > 0) {
-            this.getLastOrder()
+            this.getLastOrder();
           }
         })
 
@@ -80,7 +80,7 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  getProducts(index: number) {
+  getProducts(index: number): void {
     this._authService.getUserId().then(id => {
       const pagedRequest: PagedRequest = {
         pageIndex: index + 1,
@@ -90,20 +90,20 @@ export class AccountComponent implements OnInit {
           logicalOperator: FilterLogicalOperators.And,
           filters: [{path: 'OwnerId.ToString()', value: id, operator: FilterOperators.Equals}]
         }
-      }
+      };
 
       this._productService.getProducts(pagedRequest).subscribe(paginatedResult => {
         this.products = paginatedResult.items;
         this.length = paginatedResult.total;
-      })
+      });
     })
   }
 
-  getLastOrder() {
+  getLastOrder(): void {
     const request: PagedRequest = {
       pageIndex: 1, pageSize: 1,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
-    }
+    };
 
     this._orderService.getOrders(request).subscribe((paginatedResult: PaginatedResult<Order>) => {
       this.order = paginatedResult.items[0];
@@ -114,9 +114,9 @@ export class AccountComponent implements OnInit {
       i += (this.order?.orderProducts?.length ?? 0) % 5 == 0 ? 0 : 1;
 
       for (let j = 1; j < Math.floor(i); j++) {
-        this.slidesNumber.push(5 * j)
+        this.slidesNumber.push(5 * j);
       }
-    })
+    });
   }
 
 }

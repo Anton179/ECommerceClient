@@ -27,7 +27,7 @@ export class OrdersComponent implements OnInit {
   status: string[] = ['All orders'];
   selectedOrderStatus: string = 'All orders';
   timeFilter: string = 'All time';
-  timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months']
+  timeFilterArray: string[] = ['All time', 'Last 7 Days', 'Last 30 Days', 'Last 6 Months'];
   orderProducts: OrderProduct[] = [];
   userRole: string = '';
   length: number = 0;
@@ -37,10 +37,10 @@ export class OrdersComponent implements OnInit {
   constructor(private _orderService: OrderService, private _router: Router,
               private _route: ActivatedRoute, private _cartService: CartService,
               public dialog: MatDialog, private _authService: AuthService) {
-    const arr = Object.keys(this.OrderStatus).filter(k => isNaN(Number(k)))
+    const arr = Object.keys(this.OrderStatus).filter(k => isNaN(Number(k)));
 
     arr.forEach(status => {
-      this.status.push(status)
+      this.status.push(status);
     })
   }
 
@@ -51,7 +51,7 @@ export class OrdersComponent implements OnInit {
     })
   }
 
-  filterStatus(pageIndex: number) {
+  filterStatus(pageIndex: number): void {
     const request: PagedRequest = {
       pageIndex: pageIndex + 1, pageSize: 10,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
@@ -59,16 +59,16 @@ export class OrdersComponent implements OnInit {
         logicalOperator: FilterLogicalOperators.And,
         filters: []
       }
-    }
+    };
 
     const orderStatus: number = Object.keys(this.OrderStatus)
       .filter(k => isNaN(Number(k)))
-      .findIndex(x => x == this.selectedOrderStatus)
+      .findIndex(x => x == this.selectedOrderStatus);
 
     const timeFilter: Filter | null = this.getTimeFilter();
 
     if (timeFilter) {
-      request.requestFilters?.filters.push(timeFilter)
+      request.requestFilters?.filters.push(timeFilter);
     }
 
     if (this.userRole == Roles.vendor) {
@@ -77,32 +77,32 @@ export class OrdersComponent implements OnInit {
           path: "Order.Status",
           value: orderStatus.toString(),
           operator: FilterOperators.EqualsNumber
-        })
+        });
       }
 
       this._orderService.getOrderProducts(request)
         .subscribe((paginatedResult: PaginatedResult<OrderProduct>) => {
           this.orderProducts = paginatedResult.items;
           this.length = paginatedResult.total
-        })
+        });
     } else {
       if (orderStatus != -1) {
         request.requestFilters?.filters.push({
           path: "Status",
           value: orderStatus.toString(),
           operator: FilterOperators.EqualsNumber
-        })
+        });
       }
 
       this._orderService.getOrders(request)
         .subscribe((paginatedResult: PaginatedResult<Order>) => {
           this.orders = paginatedResult.items;
           this.length = paginatedResult.total
-        })
+        });
     }
   }
 
-  cancelOrder(id: string | undefined) {
+  cancelOrder(id: string | undefined): void {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.data = {
       orderId: id
@@ -114,7 +114,7 @@ export class OrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  confirmOrder(id: string | undefined) {
+  confirmOrder(id: string | undefined): void {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.data = {
       orderId: id
@@ -126,15 +126,15 @@ export class OrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  reorder(id: string | undefined) {
+  reorder(id: string | undefined): void {
     this._cartService.reorderProducts(id ?? '');
   }
 
-  addToCart(id: string | undefined) {
+  addToCart(id: string | undefined): void {
     this._cartService.addCartItem({productId: id ?? '', quantity: 1})
   }
 
-  orderDetails(id: string | undefined) {
+  orderDetails(id: string | undefined): void {
     this._router.navigate([id], {relativeTo: this._route});
   }
 
@@ -142,15 +142,15 @@ export class OrdersComponent implements OnInit {
     let filter: Filter | null = null;
     switch (this.timeFilter) {
       case 'Last 7 Days': {
-        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-7)", operator: FilterOperators.Custom}
+        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-7)", operator: FilterOperators.Custom};
         break;
       }
       case 'Last 30 Days': {
-        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-30)", operator: FilterOperators.Custom}
+        filter = {path: "CreatedDate >= DateTime.Today.AddDays(-30)", operator: FilterOperators.Custom};
         break;
       }
       case 'Last 6 Months': {
-        filter = {path: "CreatedDate >= DateTime.Today.AddMonths(-6)", operator: FilterOperators.Custom}
+        filter = {path: "CreatedDate >= DateTime.Today.AddMonths(-6)", operator: FilterOperators.Custom};
         break;
       }
     }

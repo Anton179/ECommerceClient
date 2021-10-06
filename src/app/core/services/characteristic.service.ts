@@ -9,10 +9,10 @@ import {Characteristic} from "../models/characteristic.model";
 })
 export class CharacteristicService {
 
-  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
   getCharacteristicsByCategoryId(id: string): Observable<Characteristic[]> {
-    return this._httpClient.get<Characteristic[]>(`${this._envUrlservice.api_url}/characteristics/${id}`);
+    return this._httpClient.get<Characteristic[]>(`${this._envUrlService.api_url}/characteristics/${id}`);
   }
 }

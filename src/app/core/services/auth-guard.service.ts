@@ -1,12 +1,6 @@
 import {Injectable} from "@angular/core";
 import {AuthService} from "./auth.service";
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanLoad,
-  Route,
-  Router,
-} from "@angular/router";
+import {ActivatedRouteSnapshot, CanActivate, CanLoad, Route,} from "@angular/router";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -36,18 +30,6 @@ export class AuthGuardService implements CanActivate, CanLoad {
     });
   }
 
-  private isAuthenticated = () => {
-    return this._authService.isAuthenticated()
-      .then(userAuthenticated => {
-        if (!userAuthenticated) {
-          this._authService.login()
-          return false
-        } else {
-          return true
-        }
-      });
-  }
-
   canLoad(route: Route): Observable<boolean> | boolean | Promise<boolean> {
     return this.isAuthenticated().then(res => {
       if (res) {
@@ -58,9 +40,20 @@ export class AuthGuardService implements CanActivate, CanLoad {
         }
 
         return true;
-        return true;
       }
       return false;
     });
+  }
+
+  private isAuthenticated = (): Promise<false | true> => {
+    return this._authService.isAuthenticated()
+      .then(userAuthenticated => {
+        if (!userAuthenticated) {
+          this._authService.login()
+          return false
+        } else {
+          return true
+        }
+      });
   }
 }

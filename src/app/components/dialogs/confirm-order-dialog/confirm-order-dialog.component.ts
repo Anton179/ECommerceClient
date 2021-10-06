@@ -20,7 +20,7 @@ export class ConfirmOrderDialogComponent {
     })
   }
 
-  confirmOrder() {
+  confirmOrder(): void {
     if (this.order) {
       this.order.status = OrderStatus.Confirmed;
 

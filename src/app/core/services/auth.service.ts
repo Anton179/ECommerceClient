@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User, UserManager, UserManagerSettings} from 'oidc-client';
+import {SignoutResponse, User, UserManager, UserManagerSettings} from 'oidc-client';
 import {AuthContants} from '../../constants/authConstants';
 import {Subject} from 'rxjs';
 import {CartService} from './cart.service';
@@ -32,25 +32,25 @@ export class AuthService {
     }
   }
 
-  public getUserName = () => {
+  public getUserName = (): Promise<string> => {
     return this.getAccessToken().then(token => {
       return this.getDecodedAccessToken(token ?? '')?.userName ?? ''
     })
   }
 
-  public getRole = () => {
+  public getRole = (): Promise<string> => {
     return this.getAccessToken().then(token => {
       return this.getDecodedAccessToken(token ?? '')?.role ?? ''
     })
   }
 
-  public getUserId = () => {
+  public getUserId = (): Promise<string> => {
     return this.getAccessToken().then(token => {
       return this.getDecodedAccessToken(token ?? '')?.sub ?? ''
     })
   }
 
-  public login = () => {
+  public login = (): Promise<void> => {
     return this._userManager.signinRedirect();
   }
 
@@ -61,13 +61,6 @@ export class AuthService {
       });
   }
 
-  public getRefreshToken = (): Promise<string | null> => {
-    return this._userManager.getUser()
-      .then(user => {
-        return !!user && !!user.refresh_token ? user.refresh_token : null;
-      });
-  }
-
   public isAuthenticated = (): Promise<boolean> => {
     return this._userManager.getUser()
       .then(user => {
@@ -75,7 +68,7 @@ export class AuthService {
           this._loginChangedSubject.next(this.checkUser(user));
         }
 
-        this._user = user; // Check
+        this._user = user;
 
         return this.checkUser(this._user);
       })
@@ -92,11 +85,11 @@ export class AuthService {
       })
   }
 
-  public logout = () => {
+  public logout = (): void => {
     this._userManager.signoutRedirect();
   }
 
-  public finishLogout = () => {
+  public finishLogout = (): Promise<SignoutResponse> => {
     this._user = null;
     return this._userManager.signoutRedirectCallback();
   }

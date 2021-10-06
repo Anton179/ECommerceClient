@@ -1,6 +1,5 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {AuthService} from './auth.service';
 import {EnvironmentUrlService} from './environment-url.service';
 import {PagedRequest} from "../models/pageRequest/pagedRequest.model";
 import {PaginatedResult} from "../models/pageRequest/paginatedResult.model";
@@ -12,8 +11,7 @@ import {Observable} from "rxjs";
 })
 export class ProductService {
 
-  constructor(private _httpClient: HttpClient,
-              private _envUrlService: EnvironmentUrlService, private _authService: AuthService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
   getProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {
@@ -24,7 +22,7 @@ export class ProductService {
   getOrderedProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<Product>> {
     const params = this._envUrlService.getParams(pagedRequest);
 
-    return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlService.api_url}/products/getOrderedProducts?${params.toString()}`);
+    return this._httpClient.get<PaginatedResult<Product>>(`${this._envUrlService.api_url}/products/getOrderedProducts`, {params: params});
   }
 
   updateProduct(product: Product, id: string): Observable<string> {

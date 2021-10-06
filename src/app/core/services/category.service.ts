@@ -16,7 +16,7 @@ export class CategoryService {
 
   getPaginatedCategories(pagedRequest: PagedRequest): Observable<PaginatedResult<Category>> {
     const params = this._envUrlService.getParams(pagedRequest)
-    return this._httpClient.get<PaginatedResult<Category>>(`${this._envUrlService.api_url}/categories/paginated-search?${params.toString()}`);
+    return this._httpClient.get<PaginatedResult<Category>>(`${this._envUrlService.api_url}/categories/paginated-search`, {params: params});
   }
 
   getCategories(): Observable<Category[]> {

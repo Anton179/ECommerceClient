@@ -38,7 +38,7 @@ export class ProductsComponent {
           path: 'Name',
           value: productName,
           operator: FilterOperators.Contains
-        })
+        });
       }
 
       if (categoryName) {
@@ -46,7 +46,7 @@ export class ProductsComponent {
           path: 'Category.Name',
           value: categoryName,
           operator: FilterOperators.Equals
-        })
+        });
       }
 
       this.vendor = undefined;
@@ -55,24 +55,24 @@ export class ProductsComponent {
           path: 'User.UserName',
           value: vendorName,
           operator: FilterOperators.Equals
-        })
+        });
 
         this.vendor = vendorName;
       }
 
       this.category = categoryName;
-      this.getProducts(0)
+      this.getProducts(0);
     })
   }
 
-  getProducts(pageIndex: number) {
+  getProducts(pageIndex: number): void {
     if (this.pagedRequest) {
       this.pagedRequest.pageIndex = pageIndex + 1;
 
       this._productService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
         this.products = paginatedResult.items;
         this.length = paginatedResult.total;
-      })
+      });
     }
   }
 }

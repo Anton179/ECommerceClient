@@ -9,10 +9,10 @@ import {ShippingMethod} from "../models/shippingMethod.model";
 })
 export class ShippingService {
 
-  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
-  getShippings(): Observable<ShippingMethod[]> {
-    return this._httpClient.get<ShippingMethod[]>(`${this._envUrlservice.api_url}/shipping`)
+  getShippingMethods(): Observable<ShippingMethod[]> {
+    return this._httpClient.get<ShippingMethod[]>(`${this._envUrlService.api_url}/shipping`)
   }
 }

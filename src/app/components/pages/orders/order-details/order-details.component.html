@@ -49,7 +49,7 @@
     </table>
   </div>
 
-  <a class="gray" mat-stroked-button routerLink="/orders">Back to orders</a>
+  <a class="gray back" mat-stroked-button routerLink="/orders">Back to orders</a>
   <div>
     <div class="mat-headline inline {{OrderStatus[order?.status ?? 0]}}">{{OrderStatus[order?.status ?? 0]}}</div>
     <div *ngIf="order?.status == 2" class="inline delivered">Confirmed on {{order?.updatedDate | date: 'medium'}}</div>

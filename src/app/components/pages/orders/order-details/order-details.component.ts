@@ -44,11 +44,11 @@ export class OrderDetailsComponent implements OnInit {
 
     this._authService.getRole().then(role => {
       this.userRole = role;
-    })
+    });
   }
 
   addToCart(id: string | undefined): void {
-    this._cartService.addCartItem({productId: id ?? '', quantity: 1})
+    this._cartService.addCartItem({productId: id ?? '', quantity: 1});
   }
 
 }
