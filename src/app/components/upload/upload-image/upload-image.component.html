@@ -8,7 +8,7 @@
       </span>
   </div>
   <div>
-    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" multiple>
+    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" class="upload-file" multiple>
     <button mat-flat-button type="button" class="btn btn-success" (click)="file.click()">Upload Image</button>
   </div>
 </div>

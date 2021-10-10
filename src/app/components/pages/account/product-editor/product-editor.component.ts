@@ -134,7 +134,8 @@ export class ProductEditorComponent implements CanComponentDeactivate {
     this.imagePath = event.result.imagePath;
     this.imageId = event.result.imageId;
 
-    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
+    this.productInformationFormGroup.controls['imageCtrl'].markAsDirty();
+    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null);
   }
 
   changeCategory(): void {

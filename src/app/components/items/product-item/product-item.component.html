@@ -8,12 +8,12 @@
         <div class="mat-body-2 product-name">{{productItem?.name}}</div>
         <div>
           <mat-chip-list>
-            <mat-chip color="warn" selected>{{productItem?.price | currency}}</mat-chip>
+            <mat-chip style="buy" color="accent" selected>{{productItem?.price | currency}}</mat-chip>
           </mat-chip-list>
         </div>
       </a>
       <div *ngIf="!userRole || userRole == Roles.user" class="buttons">
-        <button *ngIf="productItem?.inStock" color="accent" mat-raised-button class="btn" (click)="addToCart(productItem?.id ?? '')">Add to cart
+        <button *ngIf="productItem?.inStock" color="warn" mat-raised-button class="btn" (click)="addToCart(productItem?.id ?? '')">Buy
         </button>
         <button *ngIf="!productItem?.inStock" color="primary" mat-raised-button class="btn">
           Notify me

@@ -15,13 +15,19 @@ div.buttons {
   position: absolute;
   bottom: 10px;
   left: 66px
+  //left: 81px
 }
 
 button.btn {
-  border-radius: 10px;
-  height: 28px;
-  line-height: 28px;
-  margin-top: 10px
+  border-radius: 17px;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 10px;
+  width: 100px;
+}
+
+:host ::ng-deep .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent {
+  background-color: #18D900;
 }
 
 div.image {
