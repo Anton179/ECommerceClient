@@ -10,23 +10,16 @@
     <p>Payment type</p>
     <mat-form-field appearance="fill" color="accent">
       <mat-label>Payment type</mat-label>
-      <mat-select (selectionChange)="paymentChange($event.value)" formControlName="payment" required>
+      <mat-select formControlName="payment" required>
         <mat-option *ngFor="let payment of payments" [value]="payment">
           {{payment}}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="placeOrderForm.controls['payment'].invalid">This field is required</mat-error>
     </mat-form-field>
-    <p>
-      <mat-checkbox [checked]="payed" [disabled]="true" formControlName="payed">Paid</mat-checkbox>
-      <mat-error *ngIf="placeOrderForm.controls['payed'].invalid &&
-        placeOrderForm.controls['payed'].touched">This field is required
-      </mat-error>
-    </p>
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button #payButton (click)="pay()" disabled mat-button type="button">Pay</button>
     <button mat-button type="submit">Place order</button>
   </div>
 </form>

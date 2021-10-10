@@ -8,11 +8,11 @@ import {Observable} from "rxjs";
 })
 export class UploadService {
 
-  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
   uploadImage(formData: FormData, imageId?: string): Observable<HttpEvent<{ dbPath: string, productId: string }>> {
-    return this._httpClient.post<{ dbPath: string, productId: string }>(`${this._envUrlservice.api_url}/upload?${imageId != undefined ? 'imageId=' + imageId : ''}`,
+    return this._httpClient.post<{ dbPath: string, productId: string }>(`${this._envUrlService.api_url}/upload?${imageId != undefined ? 'imageId=' + imageId : ''}`,
       formData, {reportProgress: true, observe: 'events'})
   }
 }

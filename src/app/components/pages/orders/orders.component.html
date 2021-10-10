@@ -1,10 +1,10 @@
 <div class="container">
     <table class="orders">
       <tr>
-        <td colspan="4" style="border: 0px!important" rowspan="2">
+        <td colspan="4" rowspan="2">
           <div>
             <h2 style="margin-bottom: 0px"><b>Orders</b></h2>
-            <ng-container *ngIf="userRole != 'operator'">
+            <ng-container *ngIf="userRole != Roles.operator">
               <a class="account" routerLink="/account">My account</a> > Orders
             </ng-container>
           </div>
@@ -13,7 +13,7 @@
       <tr>
         <td align="right" colspan="2">
           <mat-form-field appearance="fill">
-            <mat-select (selectionChange)="filterStatus()" [(value)]="selectedOrderStatus">
+            <mat-select (selectionChange)="filterStatus(pageIndex)" [(value)]="selectedOrderStatus">
               <mat-option *ngFor="let st of status" value="{{st}}">
                 {{st}}
               </mat-option>
@@ -22,17 +22,17 @@
         </td>
         <td align="right" style="width: 250px">
           <mat-form-field appearance="fill">
-            <mat-select (selectionChange)="filterStatus()" [(value)]="timeFilter">
+            <mat-select (selectionChange)="filterStatus(pageIndex)" [(value)]="timeFilter">
               <mat-option *ngFor="let time of timeFilterArray" [value]="time">{{time}}</mat-option>
             </mat-select>
           </mat-form-field>
         </td>
       </tr>
     </table>
-    <ng-container *ngIf="userRole != 'vendor'; else orderProductsBlock">
+    <ng-container *ngIf="userRole != Roles.vendor; else orderProductsBlock">
       <ng-container *ngIf="orders.length; else ordersNotFoundBlock">
         <ng-container *ngFor="let order of orders">
-          <div *ngIf="userRole == 'operator'" class="order-userName">
+          <div *ngIf="userRole == Roles.operator" class="order-userName">
             Ordered by {{order?.user?.userName}}
           </div>
           <div class="inline">
@@ -60,10 +60,10 @@
                 <div class="order-button">
                   <button class="order-button" (click)="orderDetails(order?.id)" mat-button>Order Details</button>
                 </div>
-                <div *ngIf="userRole == 'user'" class="order-button">
+                <div *ngIf="userRole == Roles.user" class="order-button">
                   <button class="order-button" mat-button (click)="reorder(order?.id)">Reorder</button>
                 </div>
-                <div *ngIf="order?.status == 0 && userRole == 'operator'" class="order-button">
+                <div *ngIf="order?.status == 0 && userRole == Roles.operator" class="order-button">
                   <button class="order-button" mat-button (click)="confirmOrder(order?.id)">Confirm</button>
                 </div>
                 <div *ngIf="order?.status == 0">
@@ -92,7 +92,7 @@
               </tr>
               <tr>
                 <td style="padding-bottom: 20px!important; padding-top: 15px">
-                  <button *ngIf="userRole == 'user'" class="product-button" mat-button
+                  <button *ngIf="userRole == Roles.user" class="product-button" mat-button
                           (click)="addToCart(product?.product?.id)">Buy again
                   </button>
                 </td>
@@ -101,6 +101,13 @@
           </table>
           <br><br>
         </ng-container>
+        <mat-paginator [length]="length"
+                       [pageSize]="10"
+                       (page)="filterStatus($event.pageIndex)"
+                       aria-label="Select page"
+                       [pageIndex]="pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </ng-container>
     </ng-container>
     <ng-template #orderProductsBlock>
@@ -112,7 +119,7 @@
                 <h3>{{orderProduct.product?.name}}</h3>
               </td>
               <td rowspan="4" style="vertical-align: top">
-                <button class="order-button" mat-button>Product details</button>
+                <button class="order-button" [routerLink]="['/products', orderProduct.product?.id]" mat-button>Product details</button>
               </td>
             </tr>
             <tr>
@@ -148,6 +155,13 @@
             </tr>
           </table>
         </ng-template>
+        <mat-paginator [length]="length"
+                       [pageSize]="10"
+                       (page)="filterStatus($event.pageIndex)"
+                       aria-label="Select page"
+                       [pageIndex]="pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </ng-container>
     </ng-template>
     <ng-template #ordersNotFoundBlock>

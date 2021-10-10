@@ -6,6 +6,7 @@ import {CartService} from 'src/app/core/services/cart.service';
 import {CategoryService} from "../../../core/services/category.service";
 import {Category} from "../../../core/models/category.model";
 import {HttpParams} from "@angular/common/http";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-layout-header',
@@ -21,8 +22,9 @@ export class HeaderComponent implements OnInit {
   hiddenCartBadge: boolean = true;
   filterCategories: string[] = ['All categories'];
   selectedCategory: string = 'All categories';
-  categories: Category[] = [{name: 'Shop by category'}]
+  categories: Category[] = [{name: 'Shop by category'}];
   userAuthenticated = false;
+  Roles = Roles;
 
   constructor(private _authService: AuthService, private _router: Router,
               private _cartService: CartService, private _categoryService: CategoryService) {
@@ -32,14 +34,14 @@ export class HeaderComponent implements OnInit {
 
         if (userAuthenticated) {
           this._authService.getUserName().then(userName => {
-            this.userName = userName
+            this.userName = userName;
           })
 
           this._authService.getRole().then(role => {
             this.userRole = role;
 
-            if (role == 'user') {
-              this._cartService.notifyObservable.subscribe((notifyState) => {
+            if (role == Roles.user) {
+              this._cartService.notifyObservable.subscribe(() => {
                 if (this.userAuthenticated) {
                   this.updateShoppingCartBadge();
                 }
@@ -50,21 +52,21 @@ export class HeaderComponent implements OnInit {
       })
   }
 
-  searchProducts() {
+  searchProducts(): void {
     let params = new HttpParams();
 
     if (this.productName != '') {
-      params = params.set('product', this.productName)
+      params = params.set('product', this.productName);
 
       if (this.selectedCategory != 'All categories') {
-        params = params.set('category', this.selectedCategory)
+        params = params.set('category', this.selectedCategory);
       }
 
-      this._router.navigateByUrl(`/products?${params.toString()}`)
+      this._router.navigateByUrl(`/products?${params.toString()}`);
     }
   }
 
-  cartOpen() {
+  cartOpen(): void {
     if (this.userAuthenticated) {
       this._router.navigateByUrl('/cart');
     } else {
@@ -77,7 +79,7 @@ export class HeaderComponent implements OnInit {
       .then(userAuthenticated => {
         this.userAuthenticated = userAuthenticated;
 
-        if (this.userAuthenticated && this.userRole == 'user') {
+        if (this.userAuthenticated && this.userRole == Roles.user) {
           this.updateShoppingCartBadge();
         } else {
           this.shoppingCartBadge = 0;
@@ -88,31 +90,31 @@ export class HeaderComponent implements OnInit {
       this.categories[0].subCategories = categories.filter(c => c.parent == null);
 
       categories.forEach((category: Category) => {
-        this.filterCategories.push(category.name)
+        this.filterCategories.push(category.name);
       });
     })
   }
 
-  public updateShoppingCartBadge() {
+  updateShoppingCartBadge(): void {
     this._cartService.getNumberOfProducts().subscribe((count: number) => {
       this.shoppingCartBadge = count;
       this.hiddenCartBadge = !this.shoppingCartBadge;
     })
   }
 
-  public menuTrigger() {
+  menuTrigger(): void {
     if (this.userAuthenticated) {
       this.loginMenuTrigger?.openMenu();
     }
   }
 
-  public login = () => {
+  login = (): void => {
     if (!this.userAuthenticated) {
       this._authService.login();
     }
   }
 
-  public logout = () => {
+  logout = (): void => {
     this._authService.logout();
   }
 }

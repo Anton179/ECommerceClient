@@ -9,6 +9,7 @@ import {Product} from "../../../core/models/product.model";
 import {ProductService} from "../../../core/services/product.service";
 import {FilterLogicalOperators} from "../../../core/models/pageRequest/enums/FilterLogicalOperators";
 import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOperators";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-account',
@@ -16,8 +17,8 @@ import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOper
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  userRole: string = ''
-  userName: string = ''
+  userRole: string = '';
+  userName: string = '';
   numberOfOrders: number = 0;
   pendingOrders: number = 0;
   cancelledOrders: number = 0;
@@ -27,6 +28,8 @@ export class AccountComponent implements OnInit {
   OrderStatus = OrderStatus;
   slidesNumber: number[] = [];
   length: number = 0;
+  Roles = Roles;
+  pageSize = 8;
 
   constructor(private _authService: AuthService, private _orderService: OrderService,
               private _productService: ProductService) {
@@ -36,12 +39,12 @@ export class AccountComponent implements OnInit {
     this._authService.getRole().then(role => {
       this.userRole = role;
 
-      if (role == 'user') {
+      if (role == Roles.user) {
         this._orderService.getNumberOfOrders().subscribe(count => {
           this.numberOfOrders = count;
 
           if (count > 0) {
-            this.getLastOrder()
+            this.getLastOrder();
           }
         })
 
@@ -78,43 +81,43 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  getProducts(index: number) {
+  getProducts(index: number): void {
     this._authService.getUserId().then(id => {
       const pagedRequest: PagedRequest = {
         pageIndex: index + 1,
-        pageSize: 10,
+        pageSize: this.pageSize,
         sortDirection: 'Descending', columnNameForSorting: 'CreatedDate',
         requestFilters: {
           logicalOperator: FilterLogicalOperators.And,
           filters: [{path: 'OwnerId.ToString()', value: id, operator: FilterOperators.Equals}]
         }
-      }
+      };
 
       this._productService.getProducts(pagedRequest).subscribe(paginatedResult => {
         this.products = paginatedResult.items;
         this.length = paginatedResult.total;
-      })
+      });
     })
   }
 
-  getLastOrder() {
+  getLastOrder(): void {
     const request: PagedRequest = {
       pageIndex: 1, pageSize: 1,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
-    }
+    };
 
     this._orderService.getOrders(request).subscribe((paginatedResult: PaginatedResult<Order>) => {
       this.order = paginatedResult.items[0];
 
       this.slidesNumber = [0];
 
-      let i = (this.order?.orderProducts?.length ?? 0) / 5;
-      i += (this.order?.orderProducts?.length ?? 0) % 5 == 0 ? 0 : 1;
+      let i = (this.order?.orderProducts?.length ?? 0) / 4;
+      i += (this.order?.orderProducts?.length ?? 0) % 4 == 0 ? 0 : 1;
 
       for (let j = 1; j < Math.floor(i); j++) {
-        this.slidesNumber.push(5 * j)
+        this.slidesNumber.push(4 * j);
       }
-    })
+    });
   }
 
 }

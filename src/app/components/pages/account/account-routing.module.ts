@@ -4,6 +4,7 @@ import {ProductEditorComponent} from "./product-editor/product-editor.component"
 import {AccountComponent} from "./account.component";
 import {AuthGuardService} from "../../../core/services/auth-guard.service";
 import {CanDeactivateGuard} from "../../../core/services/canDeactivate-guard.service";
+import {Roles} from "../../../constants/roles";
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
     component:
     ProductEditorComponent,
     canActivate: [AuthGuardService],
-    canDeactivate: [CanDeactivateGuard]
+    canDeactivate: [CanDeactivateGuard],
+    data: {roles: [Roles.vendor]}
   },
   {path: '', pathMatch: 'full', component: AccountComponent}
 ];

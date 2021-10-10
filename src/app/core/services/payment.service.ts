@@ -1,16 +1,19 @@
 import {Injectable} from "@angular/core";
-import {PlaceOrderDialogComponent} from "../../components/dialogs/place-order-dialog/place-order-dialog.component";
+import {BehaviorSubject, Observable} from "rxjs";
+
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
 
-  makePayment(amount: number) {
+  makePayment(amount: number): Observable<string> {
+    const subject = new BehaviorSubject<string>('');
+
     const paymentHandler = (<any>window).StripeCheckout.configure({
       key: 'pk_test_51JgUpAHuRSgDQFZdapSTaRdX7reSwkvQmnoMWVNczb58YUcDwYCpJgiaLjDGVo9HQoIK5yyZDMLWh339LjnMqVky00b0CTxTGj',
       locale: 'auto',
       token: function (stripeToken: any) {
-        PlaceOrderDialogComponent.paymentId = stripeToken.id;
+        subject.next(stripeToken.id)
       }
     });
 
@@ -19,5 +22,7 @@ export class PaymentService {
       description: 'Payment',
       amount: amount * 100
     })
+
+    return subject.asObservable()
   }
 }

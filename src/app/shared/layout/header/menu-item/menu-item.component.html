@@ -1,8 +1,8 @@
-<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
+<mat-menu #childMenu="matMenu" [overlapTrigger]="true">
   <span *ngFor="let child of items">
     <span *ngIf="child.subCategories && child.subCategories.length > 0">
-      <button #childMenuTrigger="matMenuTrigger" (click)="navigate(child.name)" (mouseenter)="menuTrigger()"
-              [matMenuTriggerFor]="menu.childMenu" color="primary" mat-menu-item>
+      <button #childMenuTrigger="matMenuTrigger" (click)="navigate(child.name)" (mouseenter)="childMenuTrigger.openMenu()"
+              [matMenuTriggerFor]="menu.childMenu" mat-menu-item>
         <span>{{child.name}}</span>
       </button>
       <app-menu-item #menu [items]="child.subCategories"></app-menu-item>

@@ -6,6 +6,7 @@ import {FilterOperators} from "../../../core/models/pageRequest/enums/FilterOper
 import {ProductService} from "../../../core/services/product.service";
 import {Product} from "../../../core/models/product.model";
 import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.model";
+import {Roles} from "../../../constants/roles";
 
 @Component({
   selector: 'app-products',
@@ -15,18 +16,24 @@ import {PaginatedResult} from "../../../core/models/pageRequest/paginatedResult.
 export class ProductsComponent {
 
   category?: string;
-  products: Product[] = []
+  vendor?: string;
+  products: Product[] = [];
   length: number = 0;
   pagedRequest?: PagedRequest;
+  pageSize: number = 20;
+  columnName: string = 'Price';
+  sortBy: string = 'Ascending';
+  sortList: string[] = ['Ascending', 'Descending']
 
-  constructor(private _route: ActivatedRoute, private _prooductService: ProductService) {
+  constructor(private _route: ActivatedRoute, private _productService: ProductService) {
     _route.queryParams.subscribe((queryParam: any) => {
       const categoryName: string | undefined = queryParam['category'];
       const productName: string | undefined = queryParam['product'];
+      const vendorName: string | undefined = queryParam[Roles.vendor];
 
       this.pagedRequest = {
-        pageIndex: 1, pageSize: 21,
-        sortDirection: 'Ascending', columnNameForSorting: 'Name',
+        pageIndex: 1, pageSize: this.pageSize,
+        sortDirection: this.sortBy, columnNameForSorting: this.columnName,
         requestFilters: {logicalOperator: FilterLogicalOperators.And, filters: []}
       };
 
@@ -35,7 +42,7 @@ export class ProductsComponent {
           path: 'Name',
           value: productName,
           operator: FilterOperators.Contains
-        })
+        });
       }
 
       if (categoryName) {
@@ -43,22 +50,42 @@ export class ProductsComponent {
           path: 'Category.Name',
           value: categoryName,
           operator: FilterOperators.Equals
-        })
+        });
+      }
+
+      this.vendor = undefined;
+      if (vendorName) {
+        this.pagedRequest.requestFilters?.filters.push({
+          path: 'User.UserName',
+          value: vendorName,
+          operator: FilterOperators.Equals
+        });
+
+        this.vendor = vendorName;
       }
 
       this.category = categoryName;
-      this.getProducts(0)
+      this.getProducts(0);
     })
   }
 
-  getProducts(pageIndex: number) {
+  sortingChange(): void {
+    if (this.pagedRequest) {
+      this.pagedRequest.sortDirection = this.sortBy;
+      this.pagedRequest.columnNameForSorting = this.columnName;
+    }
+
+    this.getProducts(0)
+  }
+
+  getProducts(pageIndex: number): void {
     if (this.pagedRequest) {
       this.pagedRequest.pageIndex = pageIndex + 1;
 
-      this._prooductService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
+      this._productService.getProducts(this.pagedRequest).subscribe((paginatedResult: PaginatedResult<Product>) => {
         this.products = paginatedResult.items;
         this.length = paginatedResult.total;
-      })
+      });
     }
   }
 }

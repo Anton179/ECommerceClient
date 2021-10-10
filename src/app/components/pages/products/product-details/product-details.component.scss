@@ -1,7 +1,7 @@
 div.category {
+  padding-top: 8px;
   height: 40px;
 }
-
 
 div.product {
   border: solid 1px lightgray;
@@ -12,6 +12,11 @@ div.product {
 img.product {
   width: 300px;
   max-height: 300px;
+}
+
+table.cart-information {
+  width: 200px;
+  border-radius: 10px;
 }
 
 .my-grid-tile {
@@ -72,6 +77,10 @@ table {
 a {
   text-decoration: none;
   color: #0000FF;
+}
+
+.category-link {
+  cursor: pointer;
 }
 
 button.addToCart {

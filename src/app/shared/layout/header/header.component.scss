@@ -71,9 +71,17 @@ mat-form-field.search {
 }
 
 mat-form-field.filterCategory {
-  width: 230px;
+  width: 180px;
 }
 
 .noHover {
   pointer-events: none;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0px;
+}
+
+mat-toolbar {
+  height: 75px;
 }

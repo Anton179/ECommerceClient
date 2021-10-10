@@ -13,40 +13,40 @@ import {OrderStatus} from "../enums/OrderStatus";
 })
 export class OrderService {
 
-  constructor(private _httpClient: HttpClient, private _envUrlservice: EnvironmentUrlService) {
+  constructor(private _httpClient: HttpClient, private _envUrlService: EnvironmentUrlService) {
   }
 
   createOrder(order: Order): Observable<string> {
-    return this._httpClient.post<string>(`${this._envUrlservice.api_url}/orders`, order);
+    return this._httpClient.post<string>(`${this._envUrlService.api_url}/orders`, order);
   }
 
   updateOrder(order: Order): Observable<string> {
-    return this._httpClient.put<string>(`${this._envUrlservice.api_url}/orders`, order);
+    return this._httpClient.put<string>(`${this._envUrlService.api_url}/orders`, order);
   }
 
   getOrder(id: string): Observable<Order> {
-    return this._httpClient.get<Order>(`${this._envUrlservice.api_url}/orders/${id}`);
+    return this._httpClient.get<Order>(`${this._envUrlService.api_url}/orders/${id}`);
   }
 
   getNumberOfOrders(orderStatus?: OrderStatus): Observable<number> {
     return orderStatus === undefined ?
-      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getCount`) :
-      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getCount?Status=${orderStatus}`);
+      this._httpClient.get<number>(`${this._envUrlService.api_url}/orders/getCount`) :
+      this._httpClient.get<number>(`${this._envUrlService.api_url}/orders/getCount?Status=${orderStatus}`);
   }
 
   getNumberOfOrderProducts(orderStatus?: OrderStatus): Observable<number> {
     return orderStatus === undefined ?
-      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount`) :
-      this._httpClient.get<number>(`${this._envUrlservice.api_url}/orders/getProductsCount?Status=${orderStatus}`);
+      this._httpClient.get<number>(`${this._envUrlService.api_url}/orders/getProductsCount`) :
+      this._httpClient.get<number>(`${this._envUrlService.api_url}/orders/getProductsCount?Status=${orderStatus}`);
   }
 
   getOrderProducts(pagedRequest: PagedRequest): Observable<PaginatedResult<OrderProduct>> {
-    const params = this._envUrlservice.getParams(pagedRequest)
-    return this._httpClient.get<PaginatedResult<OrderProduct>>(`${this._envUrlservice.api_url}/orders/products?${params.toString()}`);
+    const params = this._envUrlService.getParams(pagedRequest)
+    return this._httpClient.get<PaginatedResult<OrderProduct>>(`${this._envUrlService.api_url}/orders/products`, {params: params});
   }
 
   getOrders(pagedRequest: PagedRequest): Observable<PaginatedResult<Order>> {
-    const params = this._envUrlservice.getParams(pagedRequest)
-    return this._httpClient.get<PaginatedResult<Order>>(`${this._envUrlservice.api_url}/orders?${params.toString()}`);
+    const params = this._envUrlService.getParams(pagedRequest)
+    return this._httpClient.get<PaginatedResult<Order>>(`${this._envUrlService.api_url}/orders`, {params: params});
   }
 }

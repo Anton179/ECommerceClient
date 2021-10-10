@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {HttpClient, HttpEventType} from '@angular/common/http';
-import {EnvironmentUrlService} from "../../../core/services/environment-url.service";
+import {HttpEventType} from '@angular/common/http';
 import {UploadService} from "../../../core/services/upload.service";
 
 @Component({
@@ -16,8 +15,7 @@ export class UploadImageComponent {
   @Output() public onUploadFinished = new EventEmitter();
   @Input() imageId: string | undefined;
 
-  constructor(private http: HttpClient, private _envUrlservice: EnvironmentUrlService,
-              private _uploadService: UploadService) {
+  constructor(private _uploadService: UploadService) {
   }
 
   public uploadFile = (files: any) => {

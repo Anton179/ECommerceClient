@@ -21,7 +21,7 @@ import {CanComponentDeactivate} from "../../../../core/services/canDeactivate-gu
   templateUrl: './product-editor.component.html',
   styleUrls: ['./product-editor.component.scss']
 })
-export class ProductEditorComponent implements CanComponentDeactivate{
+export class ProductEditorComponent implements CanComponentDeactivate {
   imageId?: string;
   product?: Product;
   categories: Category[] = [];
@@ -32,6 +32,7 @@ export class ProductEditorComponent implements CanComponentDeactivate{
   imagePath?: string;
   displayImagePath?: string;
   isUpdating: boolean = false;
+  inStock: boolean = false;
 
   productInformationFormGroup: FormGroup = new FormGroup({
     nameCtrl: new FormControl('', [
@@ -44,6 +45,9 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       Validators.minLength(4),
       Validators.maxLength(470)]),
     categoryCtrl: new FormControl(undefined, [
+      Validators.required
+    ]),
+    inStockCtrl: new FormControl(true, [
       Validators.required
     ]),
     imageCtrl: new FormControl('', [
@@ -84,16 +88,16 @@ export class ProductEditorComponent implements CanComponentDeactivate{
           this.categories = paginatedResult.items;
 
           this.categories.forEach((category: Category) => {
-            this.categoriesName.push(category.name)
+            this.categoriesName.push(category.name);
           })
 
           if (id) {
             _productService.getProduct(id).subscribe((product: Product) => {
               this._authService.getUserId().then(userId => {
                 if (product.ownerId != userId) {
-                  this._router.navigateByUrl('/account/product')
+                  this._router.navigateByUrl('/account/product');
                 } else {
-                  this.setProductValues(product)
+                  this.setProductValues(product);
                 }
               })
             })
@@ -104,14 +108,14 @@ export class ProductEditorComponent implements CanComponentDeactivate{
               .subscribe((characteristics: Characteristic[]) => {
                 this.characteristics = characteristics;
 
-                this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
+                this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics);
               })
           }
         })
     })
   }
 
-  getType(type: string) {
+  getType(type: string): string {
     switch (type) {
       case 'String': {
         return 'text';
@@ -125,27 +129,28 @@ export class ProductEditorComponent implements CanComponentDeactivate{
     }
   }
 
-  uploadFinished = (event: any) => {
+  uploadFinished = (event: any): void => {
     this.displayImagePath = event.result.imagePath + '?' + Date.now()
-    this.imagePath = event.result.imagePath
+    this.imagePath = event.result.imagePath;
     this.imageId = event.result.imageId;
 
-    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
+    this.productInformationFormGroup.controls['imageCtrl'].markAsDirty();
+    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null);
   }
 
-  changeCategory() {
+  changeCategory(): void {
     const id = this.categories.find(x => x.name == this.selectedCategory)?.id ?? '';
 
     this._characteristicService.getCharacteristicsByCategoryId(id)
       .subscribe((characteristics: Characteristic[]) => {
         this.characteristics = characteristics;
 
-        this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics)
+        this.characteristicFormGroup = this.createCharacteristicFormGroup(characteristics);
       })
   }
 
   createCharacteristicFormGroup(characteristics: Characteristic[], setValue: boolean = false,
-                                weight: number = 0, price: number = 0) {
+                                weight: number = 0, price: number = 0): FormGroup {
     const group = this._formBuilder.group({
       weightCtrl: new FormControl(0, [
         Validators.required,
@@ -162,10 +167,10 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       ])))
 
     if (setValue) {
-      group.controls['weightCtrl'].setValue(weight)
-      group.controls['priceCtrl'].setValue(price)
+      group.controls['weightCtrl'].setValue(weight);
+      group.controls['priceCtrl'].setValue(price);
 
-      characteristics.forEach(ch => group.controls[ch.name].setValue(ch.value))
+      characteristics.forEach(ch => group.controls[ch.name].setValue(ch.value));
     }
 
     return group;
@@ -178,10 +183,8 @@ export class ProductEditorComponent implements CanComponentDeactivate{
     return true;
   }
 
-  createProduct() {
-    this.characteristics.forEach(ch => {
-      ch.value = this.characteristicFormGroup.controls[ch.name].value
-    })
+  createProduct(): void {
+    this.setCharacteristicValuesFromControls();
 
     const categoryId: string = this.categories.find(x => x.name == this.selectedCategory)?.id ?? '';
 
@@ -192,21 +195,19 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      inStock: true,
+      inStock: this.productInformationFormGroup.controls['inStockCtrl'].value,
       characteristics: this.characteristics
     }
 
     this.isUpdating = true;
 
     this._productService.createProduct(product).subscribe((id) => {
-      this._router.navigateByUrl(`/products/${id}`)
+      this._router.navigateByUrl(`/products/${id}`);
     });
   }
 
-  updateProduct() {
-    this.characteristics.forEach(ch => {
-      ch.value = this.characteristicFormGroup.controls[ch.name].value
-    })
+  updateProduct(): void {
+    this.setCharacteristicValuesFromControls();
 
     const categoryId: string = this.categories.find(x => x.name == this.selectedCategory)?.id ?? '';
 
@@ -217,33 +218,40 @@ export class ProductEditorComponent implements CanComponentDeactivate{
       weight: this.characteristicFormGroup.controls['weightCtrl'].value,
       price: this.characteristicFormGroup.controls['priceCtrl'].value,
       imagePath: this.imagePath,
-      inStock: true,
+      inStock: this.productInformationFormGroup.controls['inStockCtrl'].value,
       characteristics: this.characteristics
-    }
+    };
 
     this.isUpdating = true;
 
     this._productService.updateProduct(product, this.product?.id ?? '').subscribe((id) => {
-      this._router.navigateByUrl(`/products/${id}`)
+      this._router.navigateByUrl(`/products/${id}`);
     });
   }
 
-  next() {
-    this.productInformationFormGroup.controls['imageCtrl'].markAsTouched()
+  next(): void {
+    this.productInformationFormGroup.controls['imageCtrl'].markAsTouched();
   }
 
-  setProductValues(product: Product) {
-    this.productInformationFormGroup.controls['nameCtrl'].setValue(product.name)
-    this.productInformationFormGroup.controls['descriptionCtrl'].setValue(product.description)
-    this.productInformationFormGroup.controls['categoryCtrl'].setValue(product.category?.name)
+  setProductValues(product: Product): void {
+    this.productInformationFormGroup.controls['nameCtrl'].setValue(product.name);
+    this.productInformationFormGroup.controls['descriptionCtrl'].setValue(product.description);
+    this.productInformationFormGroup.controls['categoryCtrl'].setValue(product.category?.name);
+    this.productInformationFormGroup.controls['inStockCtrl'].setValue(product.inStock);
     this.selectedCategory = product.category?.name ?? '';
     this.characteristicFormGroup = this.createCharacteristicFormGroup(product.characteristics,
       true, product.weight, product.price)
-    this.characteristics = product.characteristics
+    this.characteristics = product.characteristics;
 
-    this.product = product
-    this.imagePath = product.imagePath
+    this.product = product;
+    this.imagePath = product.imagePath;
     this.displayImagePath = product.imagePath;
-    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null)
+    this.productInformationFormGroup.controls['imageCtrl'].setErrors(null);
+  }
+
+  private setCharacteristicValuesFromControls(): void {
+    this.characteristics.forEach(ch => {
+      ch.value = this.characteristicFormGroup.controls[ch.name].value;
+    })
   }
 }

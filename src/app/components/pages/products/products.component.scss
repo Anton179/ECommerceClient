@@ -10,6 +10,15 @@ mat-nav-list.list-horizontal {
   }
 }
 
+div.inline {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+div.sorting {
+  padding-top: 20px;
+}
+
 div.products-not-found {
   text-align: center;
   height: 400px;
@@ -18,7 +27,15 @@ div.products-not-found {
 }
 
 div.center {
+  padding: 10px;
+  margin-top: 10px;
   text-align: center;
+  border: solid 1px lightgray;
+  border-radius: 15px;
+}
+
+div.vendor {
+  margin-top: 5px;
 }
 
 div.category {
@@ -40,4 +57,52 @@ mat-icon.products-not-found {
   font-size: 100px;
   color: lightgray;
   margin-right: 60px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #E7E7E7;
+}
+
+:host ::ng-deep .mat-select-value {
+  color: rgba(0, 0, 0, .87);
+}
+
+::ng-deep .mat-option {
+  color: black;
+}
+
+::ng-deep .mat-option.mat-active {
+  color: black;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: black;
+}
+
+::ng-deep .mat-select-panel {
+  background: #E7E7E7
+}
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0 .75em 0 .75em !important;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+:host ::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #E7E7E7;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: blue;
+}
+
+:host ::ng-deep .mat-select-arrow {
+  color: black;
 }

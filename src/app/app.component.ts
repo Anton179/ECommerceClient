@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PaymentService} from "./core/services/payment.service";
 import {Router} from "@angular/router";
 
@@ -8,17 +8,17 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'eSearch-client';
-  paymentHandler:any = null;
+  paymentHandler: any = null;
 
-  constructor(private _paymentService: PaymentService, private _router: Router) { }
+  constructor(private _paymentService: PaymentService, private _router: Router) {
+  }
 
   ngOnInit() {
     this.invokeStripe();
   }
 
   invokeStripe() {
-    if(!window.document.getElementById('stripe-script')) {
+    if (!window.document.getElementById('stripe-script')) {
       const script = window.document.createElement("script");
       script.id = "stripe-script";
       script.type = "text/javascript";

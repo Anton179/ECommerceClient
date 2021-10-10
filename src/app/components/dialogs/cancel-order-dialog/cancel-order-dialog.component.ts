@@ -21,7 +21,7 @@ export class CancelOrderDialogComponent {
     })
   }
 
-  cancelOrder() {
+  cancelOrder(): void {
     if (this.order) {
       this.order.status = OrderStatus.Cancelled;
 

@@ -20,37 +20,37 @@ export class HomeComponent implements OnInit {
   superDealsProducts: Product[] = [];
   categories: Category[] = [];
   slidesNumber = [
-    0, 6, 12
+    0, 5, 10, 15
   ];
 
-  constructor(private productService: ProductService, private categoryService: CategoryService,
+  constructor(private _productService: ProductService, private _categoryService: CategoryService,
               private _router: Router) {
   }
 
-  goToCategory(categoryName: string) {
+  goToCategory(categoryName: string): void {
     const params = new HttpParams().set('category', categoryName);
 
     this._router.navigateByUrl(`/products?${params.toString()}`);
   }
 
   ngOnInit(): void {
-    this.productService.getProducts({
-      pageIndex: 1, pageSize: 18,
+    this._productService.getProducts({
+      pageIndex: 1, pageSize: 20,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
     })
       .subscribe((paginatedResult: PaginatedResult<Product>) => {
         this.productList = paginatedResult.items;
       });
 
-    this.productService.getProducts({
-      pageIndex: 1, pageSize: 18,
+    this._productService.getProducts({
+      pageIndex: 1, pageSize: 20,
       sortDirection: 'Descending', columnNameForSorting: 'Price'
     })
       .subscribe((paginatedResult: PaginatedResult<Product>) => {
         this.superDealsProducts = paginatedResult.items;
       });
 
-    this.categoryService.getPaginatedCategories({
+    this._categoryService.getPaginatedCategories({
       pageIndex: 1, pageSize: 7,
       sortDirection: "Ascending", columnNameForSorting: "Name",
       requestFilters: {
@@ -60,6 +60,6 @@ export class HomeComponent implements OnInit {
     })
       .subscribe((pagedResult: PaginatedResult<Category>) => {
         this.categories = pagedResult.items;
-      })
+      });
   }
 }

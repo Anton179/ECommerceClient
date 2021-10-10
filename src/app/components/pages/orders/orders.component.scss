@@ -96,7 +96,7 @@ a.account {
 
 table.orders {
   width: 100%;
-  padding: 20px 20px 20px 30px;
+  padding: 20px 20px 0 30px;
 }
 
 tr.header {
@@ -154,4 +154,13 @@ div.Cancelled {
 div.Confirmed {
   color: green;
   font-weight: bold;
+}
+
+:host ::ng-deep .mat-icon-button.mat-button-disabled.mat-button-disabled {
+  color: #C3C3C3;
+}
+
+:host ::ng-deep .mat-paginator-outer-container {
+  color: black;
+  background: white;
 }

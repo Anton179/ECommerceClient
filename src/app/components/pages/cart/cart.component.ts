@@ -21,7 +21,7 @@ export class CartComponent implements OnInit, DoCheck {
   shippingList: ShippingMethod[] = [];
   delivery = [{name: 'Nova Poshta', price: 25}, {name: 'DHL Express', price: 40}];
   selectedShipping: ShippingMethod | undefined;
-  shippingName = ''
+  shippingName = '';
   shippingPrice: number = this.delivery[0].price;
   subTotalPrice: number = 0;
   totalPrice: number = 0;
@@ -32,21 +32,21 @@ export class CartComponent implements OnInit, DoCheck {
 
   constructor(private _cartService: CartService, private _shippingService: ShippingService,
               private _authService: AuthService, public dialog: MatDialog, private _productService: ProductService) {
-    this._cartService.notifyObservable.subscribe((notifyState) => {
+    this._cartService.notifyObservable.subscribe(() => {
       this.updateCartList();
     })
   }
 
-  ngDoCheck() {
+  ngDoCheck(): void {
     this.totalPrice = this.subTotalPrice + (this.selectedShipping?.price ?? 0);
   }
 
   ngOnInit(): void {
     this._cartService.getCart().subscribe((cart: CartItem[]) => {
-      this.updateCartList()
+      this.updateCartList();
     });
 
-    this._shippingService.getShippings().subscribe((shipping: ShippingMethod[]) => {
+    this._shippingService.getShippingMethods().subscribe((shipping: ShippingMethod[]) => {
       this.shippingList = shipping;
       this.selectedShipping = this.shippingList[0];
       this.shippingName = this.selectedShipping.name ?? '';
@@ -55,23 +55,23 @@ export class CartComponent implements OnInit, DoCheck {
     const request: PagedRequest = {
       pageIndex: 1, pageSize: 20,
       sortDirection: 'Descending', columnNameForSorting: 'CreatedDate'
-    }
+    };
 
     this._productService.getOrderedProducts(request).subscribe((paginatedResult: PaginatedResult<Product>) => {
       this.orderedProducts = paginatedResult.items;
 
       this.slidesNumber = [0];
 
-      let i = this.orderedProducts.length / 4;
-      i += this.orderedProducts.length % 4 == 0 ? 0 : 1;
+      let i = this.orderedProducts.length / 3;
+      i += this.orderedProducts.length % 3 == 0 ? 0 : 1;
 
       for (let j = 1; j < Math.floor(i); j++) {
-        this.slidesNumber.push(4 * j)
+        this.slidesNumber.push(3 * j);
       }
     })
   }
 
-  updateCartList() {
+  updateCartList(): void {
     this._cartService.getCart().subscribe((cart: CartItem[]) => {
       this.cartList = cart;
       this.subTotalPrice = 0;
@@ -82,12 +82,12 @@ export class CartComponent implements OnInit, DoCheck {
     });
   }
 
-  updateShipping() {
+  updateShipping(): void {
     this.selectedShipping = this.shippingList.find(x => x.name == this.shippingName);
     this.shippingPrice = this.selectedShipping?.price ?? 0;
   }
 
-  placeOrder(price: number) {
+  placeOrder(): void {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.data = {
       shipping: this.selectedShipping,
@@ -100,13 +100,13 @@ export class CartComponent implements OnInit, DoCheck {
     dialogRef.afterClosed().subscribe();
   }
 
-  removeProduct(id: string | undefined) {
+  removeProduct(id: string | undefined): void {
     this._cartService.removeCartItem(id ?? "").subscribe(() => {
       this._cartService.changeState('Product was removed');
     });
   }
 
-  clearCart() {
+  clearCart(): void {
     this._cartService.clearCart().subscribe(() => {
       this._cartService.changeState('Cart is empty');
     });

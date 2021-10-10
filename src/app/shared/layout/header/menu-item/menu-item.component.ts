@@ -1,7 +1,7 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Category} from "../../../../core/models/category.model";
-import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
+import {MatMenuTrigger} from "@angular/material/menu";
 
 @Component({
   selector: 'app-menu-item',
@@ -16,11 +16,7 @@ export class MenuItemComponent {
   constructor(public router: Router) {
   }
 
-  navigate(categoryName: string) {
+  navigate(categoryName: string): any {
     this.router.navigateByUrl(`/products?category=${categoryName}`);
-  }
-
-  menuTrigger() {
-    this.childMenuTrigger?.openMenu();
   }
 }
